@@ -22,7 +22,7 @@ class BasePage extends StatelessWidget {
         } else if (stream.hasError) {
           return Scaffold(
             body: Center(
-              child: Text('Stream Error Occured'),
+              child: Text('Stream Error Occured.'),
             ),
           );
         } else {
