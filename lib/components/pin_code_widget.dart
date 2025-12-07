@@ -1,0 +1,109 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:stockallagent/classes/action_result.dart';
+import 'package:stockallagent/constants/comp_constants.dart';
+import 'package:stockallagent/main.dart';
+
+class PinCodeWidget extends StatefulWidget {
+  final Function()? action;
+  final TextEditingController controller;
+  final String? text;
+  final bool hideText;
+  final int? length;
+
+  final Function(String value)? onChanged;
+  final bool? focus;
+
+  const PinCodeWidget({
+    super.key,
+    required this.controller,
+    this.text,
+    this.action,
+    required this.hideText,
+    this.onChanged,
+    this.focus,
+    this.length,
+  });
+
+  @override
+  State<PinCodeWidget> createState() =>
+      _PinCodeWidgetState();
+}
+
+class _PinCodeWidgetState extends State<PinCodeWidget> {
+  @override
+  Widget build(BuildContext context) {
+    var theme = returnTheme(
+      context: context,
+      listen: false,
+    );
+    return PinCodeTextField(
+      beforeTextPaste: (text) => true,
+      autoDisposeControllers: false,
+      autoFocus:
+          widget.focus != null && widget.focus == true,
+      appContext: context,
+      length: widget.length ?? 4,
+      onChanged: (value) {
+        widget.onChanged != null
+            ? widget.onChanged!(value)
+            : {};
+        print(widget.controller.text);
+        // print(value);
+        print(widget.text);
+        //   if (value.length > 2) {
+        //     widget.controller.clear();
+        //   }
+      },
+      controller: widget.controller,
+      onCompleted: (value) {
+        if (widget.text != null) {
+          if (value != widget.text!) {
+            showSnackbar(
+              message:
+                  'PIN Does not match. Please Check the two PIN\'s, and Try again.',
+              title: 'PIN Mismatch',
+              context: context,
+              actionResult: ActionResult().error,
+            );
+            widget.controller.clear();
+          }
+        }
+        widget.action != null ? widget.action!() : {};
+        // return;
+      },
+      pinTheme: PinTheme(
+        shape: PinCodeFieldShape.box,
+        borderRadius: BorderRadius.circular(5),
+        fieldHeight: 45,
+        fieldWidth: 35,
+        activeFillColor: Colors.white,
+        selectedFillColor: Colors.grey.shade100,
+        inactiveFillColor: Colors.grey.shade100,
+        activeColor: theme.lightModeColor.secColor200,
+        selectedColor: theme.lightModeColor.prColor300,
+        inactiveColor: Colors.grey,
+      ),
+      cursorColor: theme.lightModeColor.prColor300,
+      keyboardType: TextInputType.number,
+      blinkWhenObscuring: widget.hideText,
+      obscureText: widget.hideText,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+      ],
+      obscuringWidget: widget.hideText
+          ? Container(
+              height: 12,
+              width: 12,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey.shade800,
+              ),
+            )
+          : null,
+      animationType: AnimationType.fade,
+      enableActiveFill: true,
+    );
+  }
+}
