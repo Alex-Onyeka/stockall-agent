@@ -1,4 +1,4 @@
-package com.example.stockallagent
+package com.stockallsolutions.stockallagent
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -8,6 +8,7 @@ import 'package:stockallagent/components/textfields/my_text_field.dart';
 import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/constants/media_links.dart';
 import 'package:stockallagent/main.dart';
+import 'package:stockallagent/pages/settings_page.dart/settings_page.dart';
 import 'package:stockallagent/service/auth_service.dart';
 
 class Profile extends StatefulWidget {
@@ -53,7 +54,34 @@ class _ProfileState extends State<Profile> {
               vertical: 20,
             ),
             children: [
-              SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SettingsPage();
+                          },
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0,
+                        vertical: 10,
+                      ),
+                      child: Icon(
+                        size: 20,
+                        color: Colors.grey.shade700,
+                        Icons.settings,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -371,6 +399,7 @@ class _ProfileState extends State<Profile> {
                                 text:
                                     returnUserProvider(
                                           context: context,
+                                          listen: false,
                                         )
                                         .currentUser
                                         ?.referralCode ??
@@ -378,14 +407,13 @@ class _ProfileState extends State<Profile> {
                               ),
                             );
 
-                            ScaffoldMessenger.of(
-                              context,
-                            ).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  "Copied to Clipboard!",
-                                ),
-                              ),
+                            showSnackbar(
+                              message:
+                                  'YOur Referral Code has been copied to clipboard.',
+                              title: 'Copied to Clipboard!',
+                              context: context,
+                              actionResult:
+                                  ActionResult().success,
                             );
                           },
                           titleBoxWidth: 50,
@@ -945,38 +973,33 @@ class InfoSections extends StatelessWidget {
           ),
         ),
         Flexible(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Visibility(
-                visible: copyAction != null,
-                child: Column(
-                  children: [
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: copyAction,
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            4.0,
-                          ),
-                          child: Icon(size: 16, Icons.copy),
-                        ),
-                      ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: copyAction,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Visibility(
+                    visible: copyAction != null,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Icon(size: 16, Icons.copy),
                     ),
-                    SizedBox(width: 3),
-                  ],
-                ),
+                  ),
+                  Text(
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize:
+                          theme.mobileTexts.b3.fontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    mainInfo,
+                  ),
+                ],
               ),
-              Text(
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                  fontSize: theme.mobileTexts.b3.fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-                mainInfo,
-              ),
-            ],
+            ),
           ),
         ),
       ],

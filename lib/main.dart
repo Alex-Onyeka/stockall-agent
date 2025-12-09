@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stockallagent/pages/authentication/base_page.dart';
+import 'package:stockallagent/pages/profile/delete_account.dart';
 import 'package:stockallagent/providers/admin_provider.dart';
 import 'package:stockallagent/providers/bank_provider.dart';
 import 'package:stockallagent/providers/payments_provider.dart';
@@ -161,7 +162,11 @@ class MyApp extends StatelessWidget {
           ).lightModeColor.prColor300,
         ),
       ),
-      home: BasePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => BasePage(),
+        '/delete-account': (context) => DeleteAccount(),
+      },
     );
   }
 }
