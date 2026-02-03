@@ -8,7 +8,7 @@ import 'package:stockallagent/components/pin_code_widget.dart';
 import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/constants/media_links.dart';
 import 'package:stockallagent/main.dart';
-import 'package:stockallagent/pages/authentication/base_page.dart';
+import 'package:stockallagent/pages/home/home.dart';
 import 'package:stockallagent/service/auth_service.dart';
 
 class ConfirmEmail extends StatefulWidget {
@@ -186,7 +186,7 @@ class ConfirmEmailState extends State<ConfirmEmail> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) {
-                                              return BasePage();
+                                              return Home();
                                             },
                                           ),
                                         );

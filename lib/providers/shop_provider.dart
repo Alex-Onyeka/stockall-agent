@@ -39,10 +39,31 @@ class ShopProvider extends ChangeNotifier {
           var res = await _client
               .from(tableName)
               .select()
-              .eq('ref_code', user.referralCode!);
+              .eq(
+                'ref_code',
+                user.referralCode!.toLowerCase(),
+              );
 
           if (res.isEmpty) {
             print('No Shops Gotten');
+            shops = [];
+            returnSubscriptionProvider(
+              context: context,
+              listen: false,
+            ).clearSubscriptions();
+            returnBankProvider(
+              context: context,
+              listen: false,
+            ).clearBanks();
+            returnRefPaymentsProvider(
+              context: context,
+              listen: false,
+            ).clearPayments();
+            returnSubPaymentsProvider(
+              context: context,
+              listen: false,
+            ).clearSubPayments();
+            notifyListeners();
             return [];
           }
 
@@ -68,13 +89,20 @@ class ShopProvider extends ChangeNotifier {
                 listen: false,
               ).getPayments();
             }
+            if (context.mounted) {
+              await returnSubPaymentsProvider(
+                context: context,
+                listen: false,
+              ).getSubPayments();
+            }
           }
           shops.sort((a, b) => a.name.compareTo(b.name));
           notifyListeners();
           return shops;
         } catch (e) {
           print('❌ Error Getting Shops: ${e.toString()}');
-          // notifyListeners();
+          shops = [];
+          notifyListeners();
           return [];
         }
       } else {
@@ -87,9 +115,12 @@ class ShopProvider extends ChangeNotifier {
           shops = res
               .map((sh) => ShopClass.fromJson(sh))
               .toList();
+          shops.sort((a, b) => a.name.compareTo(b.name));
 
           if (shops.isEmpty) {
             print("No Shops Found");
+            shops = [];
+            notifyListeners();
             return [];
           }
 
@@ -97,7 +128,7 @@ class ShopProvider extends ChangeNotifier {
             await returnUserProvider(
               context: context,
               listen: false,
-            ).getAllUsers();
+            ).getAgents();
             if (context.mounted) {
               returnSubscriptionProvider(
                 context: context,
@@ -116,6 +147,18 @@ class ShopProvider extends ChangeNotifier {
                 listen: false,
               ).getAllPayments();
             }
+            if (context.mounted) {
+              await returnSubPaymentsProvider(
+                context: context,
+                listen: false,
+              ).getSubPayments();
+            }
+            if (context.mounted) {
+              await returnReportProvider(
+                context: context,
+                listen: false,
+              ).getReports();
+            }
           }
           print(
             "✅ All Shops Gotten Success: ${shops.length}",
@@ -125,10 +168,34 @@ class ShopProvider extends ChangeNotifier {
           print(
             "❌ Error Getting all Shops: ${e.toString()}",
           );
+          shops = [];
+          notifyListeners();
           return [];
         }
       }
     }
+  }
+
+  List<ShopClass> getHeadQuaters() {
+    return shops.where((sh) => sh.isHeadQuaters).toList();
+  }
+
+  List<ShopClass> getBranches() {
+    return shops.where((sh) => !sh.isHeadQuaters).toList();
+  }
+
+  List<ShopClass> getThisMonthRegisteredStores() {
+    var tempSh = getHeadQuaters()
+        .where(
+          (sh) =>
+              sh.createdAt.isAfter(monthStart()) ||
+              sh.createdAt.isAtSameMomentAs(monthStart()),
+        )
+        .toList();
+    tempSh.sort(
+      (a, b) => b.createdAt.compareTo(a.createdAt),
+    );
+    return tempSh;
   }
 
   List<ShopClass> getThisMonthSubscribedShops(
@@ -147,7 +214,9 @@ class ShopProvider extends ChangeNotifier {
                       Duration(microseconds: 1),
                     ),
                   ) &&
-                  pay.plan != 0,
+                  pay.plan != 0 &&
+                  // pay.amount != 0 &&
+                  pay.amount != null,
             )
             .toList();
 
@@ -156,7 +225,7 @@ class ShopProvider extends ChangeNotifier {
     );
 
     final Map<String, ShopClass> shopByUserId = {
-      for (var sh in shops) sh.userId: sh,
+      for (var sh in getHeadQuaters()) sh.userId: sh,
     };
 
     List<ShopClass> sortedShops = [];
@@ -170,20 +239,55 @@ class ShopProvider extends ChangeNotifier {
     return sortedShops;
   }
 
+  // List<ShopClass> getTotalTrialShops(BuildContext context) {
+  //   var payments =
+  //       returnSubscriptionProvider(
+  //             context: context,
+  //             listen: false,
+  //           ).subscriptions
+  //           .where(
+  //             (pay) => pay.plan != 0 && pay.amount == null,
+  //           )
+  //           .toList();
+
+  //   payments.sort(
+  //     (a, b) => b.lastPayment!.compareTo(a.lastPayment!),
+  //   );
+
+  //   final Map<String, ShopClass> shopByUserId = {
+  //     for (var sh in getHeadQuaters()) sh.userId: sh,
+  //   };
+
+  //   List<ShopClass> sortedShops = [];
+  //   for (var pay in payments) {
+  //     final shop = shopByUserId[pay.userId];
+  //     if (shop != null && !sortedShops.contains(shop)) {
+  //       sortedShops.add(shop);
+  //     }
+  //   }
+
+  //   return sortedShops;
+  // }
+
   List<ShopClass> getTotalSubscribedShops(
     BuildContext context,
   ) {
-    var payments = returnSubscriptionProvider(
-      context: context,
-      listen: false,
-    ).subscriptions.where((pay) => pay.plan != 0).toList();
+    var payments =
+        returnSubscriptionProvider(
+              context: context,
+              listen: false,
+            ).subscriptions
+            .where(
+              (pay) => pay.plan != 0 && pay.amount != null,
+            )
+            .toList();
 
     payments.sort(
       (a, b) => b.lastPayment!.compareTo(a.lastPayment!),
     );
 
     final Map<String, ShopClass> shopByUserId = {
-      for (var sh in shops) sh.userId: sh,
+      for (var sh in getHeadQuaters()) sh.userId: sh,
     };
 
     List<ShopClass> sortedShops = [];
@@ -210,7 +314,7 @@ class ShopProvider extends ChangeNotifier {
     );
 
     final Map<String, ShopClass> shopByUserId = {
-      for (var sh in shops) sh.userId: sh,
+      for (var sh in getHeadQuaters()) sh.userId: sh,
     };
 
     List<ShopClass> sortedShops = [];

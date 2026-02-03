@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stockallagent/pages/authentication/base_page.dart';
-import 'package:stockallagent/pages/profile/delete_account.dart';
+import 'package:stockallagent/pages/4/delete_account.dart';
 import 'package:stockallagent/providers/admin_provider.dart';
 import 'package:stockallagent/providers/bank_provider.dart';
 import 'package:stockallagent/providers/payments_provider.dart';
+import 'package:stockallagent/providers/report_provider.dart';
+import 'package:stockallagent/providers/sub_payments_provider.dart';
 import 'package:stockallagent/providers/subscription_provider.dart';
 import 'package:stockallagent/providers/resource_provider.dart';
 import 'package:stockallagent/providers/shop_provider.dart';
@@ -63,9 +65,25 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => AdminProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SubPaymentsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ReportProvider(),
+        ),
       ],
       builder: (context, child) => const MyApp(),
     ),
+  );
+}
+
+ReportProvider returnReportProvider({
+  required BuildContext context,
+  bool listen = true,
+}) {
+  return Provider.of<ReportProvider>(
+    context,
+    listen: listen,
   );
 }
 
@@ -135,6 +153,16 @@ AdminProvider returnAdminProvider({
   bool listen = true,
 }) {
   return Provider.of<AdminProvider>(
+    context,
+    listen: listen,
+  );
+}
+
+SubPaymentsProvider returnSubPaymentsProvider({
+  required BuildContext context,
+  bool listen = true,
+}) {
+  return Provider.of<SubPaymentsProvider>(
     context,
     listen: listen,
   );

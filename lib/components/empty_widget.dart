@@ -3,7 +3,12 @@ import 'package:stockallagent/main.dart';
 
 class EmptyWidget extends StatelessWidget {
   final bool isDashboard;
-  const EmptyWidget({super.key, required this.isDashboard});
+  final String? title;
+  const EmptyWidget({
+    super.key,
+    required this.isDashboard,
+    this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class EmptyWidget extends StatelessWidget {
           spacing: 5,
           children: [
             Icon(
-              size: 30,
+              size: 25,
               color: isDashboard
                   ? Colors.white70
                   : Colors.grey.shade800,
@@ -23,13 +28,13 @@ class EmptyWidget extends StatelessWidget {
             ),
             Text(
               style: TextStyle(
-                fontSize: theme.mobileTexts.h4.fontSize,
-                fontWeight: FontWeight.bold,
+                fontSize: theme.mobileTexts.b1.fontSize,
+                fontWeight: FontWeight.normal,
                 color: isDashboard
                     ? Colors.white70
                     : Colors.grey.shade800,
               ),
-              "No Items Found",
+              "No ${title ?? 'Item'} Found",
             ),
           ],
         ),

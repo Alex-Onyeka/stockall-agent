@@ -1,27 +1,124 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/user_class.dart';
+import 'package:stockallagent/main.dart';
 import 'package:stockallagent/service/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserProvider extends ChangeNotifier {
   final SupabaseClient _client = Supabase.instance.client;
-  String tableName = 'users';
+  String tableName = 'agents';
   UserClass? currentUser;
 
-  List<UserClass> users = [];
+  List<UserClass> agents = [];
 
-  Future<List<UserClass>> getAllUsers() async {
+  final List<String> roles = ['Employed', 'Freelance'];
+
+  String selectedRole = '';
+
+  void selectRole(String newRole) {
+    if (selectedRole == newRole) {
+      selectedRole = '';
+    } else {
+      selectedRole = newRole;
+    }
+    notifyListeners();
+    print('Clicked: $selectedRole');
+  }
+
+  List<UserClass> paidUsers(BuildContext context) {
+    final payments = returnRefPaymentsProvider(
+      context: context,
+      listen: false,
+    ).getThisMonthPayments();
+
+    final paidUserIds = payments
+        .map((p) => p.userId)
+        .toSet();
+
+    return activeUsers(context)
+        .where((user) => paidUserIds.contains(user.userId))
+        .toList();
+  }
+
+  List<UserClass> activeUsers(BuildContext context) {
+    final shops = returnShopProvider(
+      context: context,
+      listen: false,
+    ).getThisMonthSubscribedShops(context);
+
+    final activeUserRefs = shops
+        .map((shop) => shop.refCode)
+        .toSet();
+
+    return agents
+        .where(
+          (user) =>
+              activeUserRefs.contains(user.referralCode),
+        )
+        .toList();
+  }
+
+  bool isAgentPaid(UserClass user, BuildContext context) {
+    return paidUsers(context).contains(user);
+  }
+
+  List<UserClass> unPaidUsers(BuildContext context) {
+    var payments = returnRefPaymentsProvider(
+      context: context,
+      listen: false,
+    ).getThisMonthPayments();
+    final paidUserIds = payments
+        .map((p) => p.userId)
+        .toSet();
+
+    return activeUsers(context)
+        .where((user) => !paidUserIds.contains(user.userId))
+        .toList();
+  }
+
+  Future<int> createAgent(UserClass user) async {
+    user.role = selectedRole;
     try {
-      var res = await _client.from(tableName).select();
+      var res = await _client
+          .from(tableName)
+          .insert(user.toJson())
+          .select()
+          .maybeSingle();
+
+      if (res == null) {
+        print('User Creation Failed');
+        return 0;
+      }
+
+      var tempUser = UserClass.fromJson(res);
+      print('✅ User Created Successfully');
+      notifyListeners();
+      currentUser = tempUser;
+      return 1;
+    } catch (e) {
+      print("❌ Error Creating User: ${e.toString()}");
+      return 0;
+    }
+  }
+
+  Future<List<UserClass>> getAgents() async {
+    try {
+      List<Map<String, dynamic>> res = await _client.rpc(
+        'get_agents',
+      );
+
       if (res.isEmpty) {
-        print('User Not Found');
+        print('Users Not Found');
+        agents = [];
+        notifyListeners();
         return [];
       }
-      var tempUsers = res
+      print(res.length);
+      List<UserClass> tempUsers = res
           .map((re) => UserClass.fromJson(re))
           .toList();
       print('✅All Users Gotten: ${tempUsers.length}');
-      users = tempUsers
+      agents = tempUsers
           .where(
             (use) =>
                 use.userId != AuthService().currentUser!.id,
@@ -33,6 +130,8 @@ class UserProvider extends ChangeNotifier {
       print(
         '❌An Error Occured While Getting All Users: ${e.toString()}',
       );
+      agents = [];
+      notifyListeners();
       return [];
     }
   }
@@ -42,7 +141,7 @@ class UserProvider extends ChangeNotifier {
       var res = await _client
           .from(tableName)
           .select()
-          .eq('user_id', AuthService().currentUser!.id)
+          .eq('uuid', AuthService().currentUser!.id)
           .maybeSingle();
       if (res == null) {
         print('User Not Found');
@@ -66,7 +165,7 @@ class UserProvider extends ChangeNotifier {
       var res = await _client
           .from(tableName)
           .update(user.toJson())
-          .eq('user_id', currentUser!.userId!)
+          .eq('uuid', currentUser!.userId!)
           .select()
           .maybeSingle();
 
@@ -91,7 +190,7 @@ class UserProvider extends ChangeNotifier {
       await _client
           .from(tableName)
           .delete()
-          .eq('user_id', currentUser!.userId!);
+          .eq('uuid', currentUser!.userId!);
       print('User Deleted');
     } catch (e) {
       print('❌ Error Deleting User: ${e.toString()}');

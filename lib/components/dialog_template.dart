@@ -30,7 +30,7 @@ class DialogTemplate extends StatelessWidget {
       builder: (context, setState) => AlertDialog(
         constraints: BoxConstraints(
           maxWidth: 500,
-          maxHeight: 500,
+          maxHeight: 600,
         ),
         insetPadding: EdgeInsets.all(20),
         contentPadding: EdgeInsets.all(0),
@@ -48,22 +48,28 @@ class DialogTemplate extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: 10),
                 Visibility(
                   visible: title != null,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: 200,
-                    ),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize:
-                            theme.mobileTexts.h4.fontSize,
-                        fontWeight: FontWeight.bold,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: 200,
+                        ),
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: theme
+                                .mobileTexts
+                                .h4
+                                .fontSize,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          title?.toUpperCase() ?? '',
+                        ),
                       ),
-                      title?.toUpperCase() ?? '',
-                    ),
+                    ],
                   ),
                 ),
                 Visibility(

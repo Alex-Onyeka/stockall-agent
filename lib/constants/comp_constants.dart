@@ -62,15 +62,18 @@ void showSnackbar({
                         : '❔'} ${title.toUpperCase()}",
                   ),
                 ),
-                Material(
-                  type: MaterialType.transparency,
-                  child: InkWell(
-                    onTap: () {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).removeCurrentSnackBar();
-                    },
-                    child: Icon(Icons.clear),
+                Opacity(
+                  opacity: 0,
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: InkWell(
+                      onTap: () {
+                        // ScaffoldMessenger.of(
+                        //   context,
+                        // ).removeCurrentSnackBar();
+                      },
+                      child: Icon(Icons.clear),
+                    ),
                   ),
                 ),
               ],

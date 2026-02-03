@@ -3,21 +3,23 @@ import 'package:stockallagent/components/empty_widget.dart';
 import 'package:stockallagent/components/main_top_bar.dart';
 import 'package:stockallagent/components/shop_tile_main.dart';
 import 'package:stockallagent/main.dart';
+import 'package:stockallagent/pages/2/second_page.dart';
 
-class Stores extends StatefulWidget {
+class SecondPageAdmin extends StatefulWidget {
   final Function()? popPage;
   final Function()? profileNavAction;
-  const Stores({
+  const SecondPageAdmin({
     super.key,
     this.profileNavAction,
     this.popPage,
   });
 
   @override
-  State<Stores> createState() => _StoresState();
+  State<SecondPageAdmin> createState() =>
+      _SecondPageAdminState();
 }
 
-class _StoresState extends State<Stores> {
+class _SecondPageAdminState extends State<SecondPageAdmin> {
   int currentSelection = 0;
   void switchSelection(int index) {
     setState(() {
@@ -60,7 +62,7 @@ class _StoresState extends State<Stores> {
                     TopStoreFilterButton(
                       mainIndex: currentSelection,
                       myIndex: 0,
-                      title: 'All Stores',
+                      title: 'All',
                       action: () {
                         switchSelection(0);
                       },
@@ -68,7 +70,7 @@ class _StoresState extends State<Stores> {
                     TopStoreFilterButton(
                       mainIndex: currentSelection,
                       myIndex: 1,
-                      title: 'Paid',
+                      title: 'Head',
                       action: () {
                         switchSelection(1);
                       },
@@ -76,9 +78,25 @@ class _StoresState extends State<Stores> {
                     TopStoreFilterButton(
                       mainIndex: currentSelection,
                       myIndex: 2,
-                      title: 'Unpaid',
+                      title: 'Paid',
                       action: () {
                         switchSelection(2);
+                      },
+                    ),
+                    TopStoreFilterButton(
+                      mainIndex: currentSelection,
+                      myIndex: 3,
+                      title: 'Unpaid',
+                      action: () {
+                        switchSelection(3);
+                      },
+                    ),
+                    TopStoreFilterButton(
+                      mainIndex: currentSelection,
+                      myIndex: 4,
+                      title: 'New',
+                      action: () {
+                        switchSelection(4);
                       },
                     ),
                   ],
@@ -100,19 +118,29 @@ class _StoresState extends State<Stores> {
                   builder: (context) {
                     if (currentSelection == 1
                         ? returnShopProvider(
+                            context: context,
+                          ).getHeadQuaters().isEmpty
+                        : currentSelection == 2
+                        ? returnShopProvider(
                                 context: context,
                               )
                               .getTotalSubscribedShops(
                                 context,
                               )
                               .isEmpty
-                        : currentSelection == 2
+                        : currentSelection == 3
                         ? returnShopProvider(
                                 context: context,
                               )
                               .getTotalUnsubscribedShops(
                                 context,
                               )
+                              .isEmpty
+                        : currentSelection == 4
+                        ? returnShopProvider(
+                                context: context,
+                              )
+                              .getThisMonthRegisteredStores()
                               .isEmpty
                         : returnShopProvider(
                             context: context,
@@ -141,6 +169,32 @@ class _StoresState extends State<Stores> {
                             ? returnShopProvider(
                                     context: context,
                                   )
+                                  .getHeadQuaters()
+                                  .where(
+                                    (sh) =>
+                                        returnSubscriptionProvider(
+                                              context:
+                                                  context,
+                                            ).subscriptions
+                                            .map(
+                                              (sub) => sub
+                                                  .userId,
+                                            )
+                                            .toList()
+                                            .contains(
+                                              sh.userId,
+                                            ),
+                                  )
+                                  .map(
+                                    (shop) => ShopTileMain(
+                                      shop: shop,
+                                    ),
+                                  )
+                                  .toList()
+                            : currentSelection == 2
+                            ? returnShopProvider(
+                                    context: context,
+                                  )
                                   .getTotalSubscribedShops(
                                     context,
                                   )
@@ -150,7 +204,7 @@ class _StoresState extends State<Stores> {
                                     ),
                                   )
                                   .toList()
-                            : currentSelection == 2
+                            : currentSelection == 3
                             ? returnShopProvider(
                                     context: context,
                                   )
@@ -163,9 +217,35 @@ class _StoresState extends State<Stores> {
                                     ),
                                   )
                                   .toList()
+                            : currentSelection == 4
+                            ? returnShopProvider(
+                                    context: context,
+                                  )
+                                  .getThisMonthRegisteredStores()
+                                  .map(
+                                    (shop) => ShopTileMain(
+                                      shop: shop,
+                                    ),
+                                  )
+                                  .toList()
                             : returnShopProvider(
                                     context: context,
                                   ).shops
+                                  .where(
+                                    (sh) =>
+                                        returnSubscriptionProvider(
+                                              context:
+                                                  context,
+                                            ).subscriptions
+                                            .map(
+                                              (sub) => sub
+                                                  .userId,
+                                            )
+                                            .toList()
+                                            .contains(
+                                              sh.userId,
+                                            ),
+                                  )
                                   .map(
                                     (shop) => ShopTileMain(
                                       shop: shop,
@@ -179,63 +259,6 @@ class _StoresState extends State<Stores> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class TopStoreFilterButton extends StatelessWidget {
-  final int myIndex;
-  final int mainIndex;
-  final String title;
-  final Function()? action;
-
-  const TopStoreFilterButton({
-    super.key,
-    required this.myIndex,
-    required this.mainIndex,
-    required this.title,
-    this.action,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = returnTheme(context: context);
-    return Expanded(
-      child: Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          decoration: BoxDecoration(
-            color: mainIndex == myIndex
-                ? theme.lightModeColor.prColor300
-                : null,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: InkWell(
-            onTap: action,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                vertical: 7,
-                horizontal: 20,
-              ),
-
-              child: Center(
-                child: Text(
-                  style: TextStyle(
-                    fontSize: theme.mobileTexts.b4.fontSize,
-                    fontWeight: mainIndex == myIndex
-                        ? FontWeight.bold
-                        : null,
-                    color: mainIndex == myIndex
-                        ? Colors.white
-                        : theme.lightModeColor.prColor300,
-                  ),
-                  title,
-                ),
-              ),
-            ),
-          ),
         ),
       ),
     );

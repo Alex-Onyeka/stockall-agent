@@ -11,6 +11,12 @@ class SubscriptionProvider extends ChangeNotifier {
 
   List<SubscriptionClass> subscriptions = [];
 
+  void clearSubscriptions() {
+    subscriptions.clear();
+    print('Subscriptions Cleared');
+    notifyListeners();
+  }
+
   Future<List<SubscriptionClass>> getAllSubscriptions({
     required BuildContext context,
   }) async {
@@ -18,6 +24,13 @@ class SubscriptionProvider extends ChangeNotifier {
       List<Map<String, dynamic>> response = await _client
           .from(tableName)
           .select();
+
+      if (response.isEmpty) {
+        print('No Subscription gotten');
+        subscriptions = [];
+        notifyListeners();
+        return [];
+      }
 
       var tempSubscriptions = response
           .map((res) => SubscriptionClass.fromJson(res))
@@ -33,6 +46,8 @@ class SubscriptionProvider extends ChangeNotifier {
       print(
         "❌ Error Getting All Subscriptions: ${e.toString()}",
       );
+      subscriptions = [];
+      notifyListeners();
       return [];
     }
   }
@@ -51,6 +66,13 @@ class SubscriptionProvider extends ChangeNotifier {
             params: {'shop_ids': shopIds},
           );
 
+      if (response.isEmpty) {
+        print('No Subscription gotten');
+        subscriptions = [];
+        notifyListeners();
+        return [];
+      }
+
       var tempSubscriptions = response
           .map((res) => SubscriptionClass.fromJson(res))
           .toList();
@@ -65,18 +87,26 @@ class SubscriptionProvider extends ChangeNotifier {
       print(
         "❌ Error Getting Subscriptions: ${e.toString()}",
       );
+      subscriptions = [];
+      notifyListeners();
       return [];
     }
   }
 
-  int getSubscriptionPlan(String userId) {
+  SubscriptionClass getShopSubscription(String userId) {
+    return subscriptions.firstWhere(
+      (sub) => sub.userId == userId,
+    );
+  }
+
+  int getShopSubscriptionPlan(String userId) {
     return subscriptions
-        .firstWhere((pay) => pay.userId == userId)
+        .firstWhere((sub) => sub.userId == userId)
         .plan;
   }
 
-  String getSubscriptionPlanName(String userId) {
-    var plan = getSubscriptionPlan(userId);
+  String getShopSubscriptionPlanName(String userId) {
+    var plan = getShopSubscriptionPlan(userId);
     if (plan == 0) {
       return "Free";
     } else if (plan == 1) {
@@ -111,7 +141,14 @@ class SubscriptionProvider extends ChangeNotifier {
     return temp;
   }
 
-  double getCut() {
-    return totalMoney() * referralCut;
+  double getCut(
+    BuildContext context,
+    String agentId,
+    String role,
+  ) {
+    return (totalMoney() * referralCut(role)) -
+        returnRefPaymentsProvider(
+          context: context,
+        ).getAgentTotalPayment(agentId);
   }
 }

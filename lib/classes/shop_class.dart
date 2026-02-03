@@ -5,6 +5,7 @@ class ShopClass {
   String name;
   String? phoneNumber;
   String? refCode;
+  bool isHeadQuaters;
 
   ShopClass({
     this.shopId,
@@ -13,6 +14,7 @@ class ShopClass {
     required this.name,
     this.phoneNumber,
     this.refCode,
+    required this.isHeadQuaters,
   });
 
   factory ShopClass.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class ShopClass {
       name: json['name'] as String,
       phoneNumber: json['phone_number'] as String?,
       refCode: json['ref_code'] as String?,
+      isHeadQuaters: json['is_head_quarters'] as bool,
     );
   }
 

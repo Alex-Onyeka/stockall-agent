@@ -18,6 +18,8 @@ class AdminProvider extends ChangeNotifier {
           .maybeSingle();
       if (res == null) {
         print('User is not Admin');
+        admin = null;
+        notifyListeners();
         return null;
       }
 
@@ -30,6 +32,8 @@ class AdminProvider extends ChangeNotifier {
       return admin;
     } catch (e) {
       print("❌ Error Getting Admin: ${e.toString()}");
+      admin = null;
+      notifyListeners();
       return null;
     }
   }

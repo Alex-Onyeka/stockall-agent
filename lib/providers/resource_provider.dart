@@ -4,6 +4,7 @@ class ResourceProvider extends ChangeNotifier {
   bool hideMoneyDashBoard = false;
   void toggleHideMoney() {
     hideMoneyDashBoard = !hideMoneyDashBoard;
+    print("Money is Now: $hideMoneyDashBoard");
     notifyListeners();
   }
 

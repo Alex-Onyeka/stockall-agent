@@ -56,6 +56,7 @@ class AuthService {
         email: newEmail ?? user.email,
         token: otp,
       );
+      print('Finished Verifying');
 
       // Build user row
       final userRow = UserClass(
@@ -66,11 +67,16 @@ class AuthService {
         email: newEmail ?? user.email,
         phone: user.phone,
         password: user.password,
+        role: user.role,
       );
+      print(userRow);
+      print('Finished Mapping User Class');
 
-      await _client.from('users').insert(userRow.toJson());
+      await _client.from('agents').insert(userRow.toJson());
       print(
-        '${newEmail != null ? 'Email Changed Successfully' : 'Email Verified Successfully'}',
+        newEmail != null
+            ? 'Email Changed Successfully'
+            : 'Email Verified Successfully',
       );
       return 1;
     } catch (e) {

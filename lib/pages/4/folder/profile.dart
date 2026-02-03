@@ -8,6 +8,7 @@ import 'package:stockallagent/components/textfields/my_text_field.dart';
 import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/constants/media_links.dart';
 import 'package:stockallagent/main.dart';
+import 'package:stockallagent/pages/authentication/base_page.dart';
 import 'package:stockallagent/pages/settings_page.dart/settings_page.dart';
 import 'package:stockallagent/service/auth_service.dart';
 
@@ -391,38 +392,50 @@ class _ProfileState extends State<Profile> {
                           // endIndent: 50,
                           // indent: 50,
                         ),
-                        InfoSections(
-                          copyAction: () {
-                            print('Copying shit');
-                            Clipboard.setData(
-                              ClipboardData(
-                                text:
-                                    returnUserProvider(
-                                          context: context,
-                                          listen: false,
-                                        )
-                                        .currentUser
-                                        ?.referralCode ??
-                                    'User Ref Code',
-                              ),
-                            );
-
-                            showSnackbar(
-                              message:
-                                  'YOur Referral Code has been copied to clipboard.',
-                              title: 'Copied to Clipboard!',
-                              context: context,
-                              actionResult:
-                                  ActionResult().success,
-                            );
-                          },
-                          titleBoxWidth: 50,
-                          mainInfo:
-                              returnUserProvider(
+                        Visibility(
+                          visible:
+                              returnAdminProvider(
                                 context: context,
-                              ).currentUser?.referralCode ??
-                              'Referral Code',
-                          title: 'Ref. Code',
+                              ).admin ==
+                              null,
+                          child: InfoSections(
+                            copyAction: () {
+                              print('Copying shit');
+                              Clipboard.setData(
+                                ClipboardData(
+                                  text:
+                                      returnUserProvider(
+                                            context:
+                                                context,
+                                            listen: false,
+                                          )
+                                          .currentUser
+                                          ?.referralCode ??
+                                      'User Ref Code',
+                                ),
+                              );
+
+                              showSnackbar(
+                                message:
+                                    'Your Referral Code has been copied to clipboard.',
+                                title:
+                                    'Copied to Clipboard!',
+                                context: context,
+                                actionResult:
+                                    ActionResult().success,
+                              );
+                            },
+                            titleBoxWidth: 50,
+                            mainInfo:
+                                returnUserProvider(
+                                      context: context,
+                                    )
+                                    .currentUser
+                                    ?.referralCode
+                                    ?.toUpperCase() ??
+                                'Referral Code',
+                            title: 'Ref. Code',
+                          ),
                         ),
                       ],
                     ),
@@ -430,429 +443,454 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.fromLTRB(
-                  20,
-                  10,
-                  20,
-                  20,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromARGB(
-                        5,
-                        0,
-                        0,
-                        0,
+              Visibility(
+                visible:
+                    returnAdminProvider(
+                      context: context,
+                    ).admin ==
+                    null,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(
+                    20,
+                    10,
+                    20,
+                    20,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color.fromARGB(
+                          5,
+                          0,
+                          0,
+                          0,
+                        ),
+                        blurRadius: 10,
                       ),
-                      blurRadius: 10,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  spacing: 5,
-                  children: [
-                    Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          spacing: 5,
-                          children: [
-                            Text(
-                              style: TextStyle(
-                                fontSize: theme
-                                    .mobileTexts
-                                    .b1
-                                    .fontSize,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              'Bank Information',
-                            ),
-                            Visibility(
-                              visible:
-                                  returnBankProvider(
-                                    context: context,
-                                  ).bank ==
-                                  null,
-                              child: Text(
+                    ],
+                  ),
+                  child: Column(
+                    spacing: 5,
+                    children: [
+                      Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            spacing: 5,
+                            children: [
+                              Text(
                                 style: TextStyle(
                                   fontSize: theme
                                       .mobileTexts
-                                      .b2
+                                      .b1
                                       .fontSize,
-                                  color: Colors.redAccent,
                                   fontWeight:
-                                      FontWeight.normal,
-                                  fontStyle:
-                                      FontStyle.italic,
+                                      FontWeight.bold,
                                 ),
-                                "(Not Set)",
+                                'Bank Information',
                               ),
-                            ),
-                          ],
-                        ),
-                        Material(
-                          type: MaterialType.transparency,
-                          child: InkWell(
-                            borderRadius:
-                                BorderRadius.circular(5),
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (dialogContext) {
-                                  var bank =
-                                      returnBankProvider(
-                                        context: context,
-                                        listen: false,
-                                      ).bank;
-                                  if (bank != null) {
-                                    bankNameController
-                                            .text =
-                                        bank.bankName;
-                                    accountNameController
-                                            .text =
-                                        bank.accountName;
-                                    accountNumberController
-                                            .text =
-                                        bank.accountNumber;
-                                  }
-                                  return DialogTemplate(
-                                    title:
+                              Visibility(
+                                visible:
+                                    returnBankProvider(
+                                      context: context,
+                                    ).bank ==
+                                    null,
+                                child: Text(
+                                  style: TextStyle(
+                                    fontSize: theme
+                                        .mobileTexts
+                                        .b2
+                                        .fontSize,
+                                    color: Colors.redAccent,
+                                    fontWeight:
+                                        FontWeight.normal,
+                                    fontStyle:
+                                        FontStyle.italic,
+                                  ),
+                                  "(Not Set)",
+                                ),
+                              ),
+                            ],
+                          ),
+                          Material(
+                            type: MaterialType.transparency,
+                            child: InkWell(
+                              borderRadius:
+                                  BorderRadius.circular(5),
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (dialogContext) {
+                                    var bank =
                                         returnBankProvider(
-                                              context:
-                                                  context,
-                                              listen: false,
-                                            ).bank ==
-                                            null
-                                        ? "Create New Bank"
-                                        : 'Edit Bank Detials',
-                                    action: () async {
-                                      var newBank = BankClass(
-                                        bankId:
-                                            returnBankProvider(
-                                              context:
-                                                  context,
-                                              listen: false,
-                                            ).bank?.bankId,
-                                        bankName:
-                                            bankNameController
-                                                .text
-                                                .trim(),
-                                        accountName:
-                                            accountNameController
-                                                .text
-                                                .trim(),
-                                        accountNumber:
-                                            accountNumberController
-                                                .text
-                                                .trim(),
-                                        userId: AuthService()
-                                            .currentUser!
-                                            .id,
-                                      );
-                                      if (formKey
-                                          .currentState!
-                                          .validate()) {
-                                        if (returnBankProvider(
-                                              context:
-                                                  context,
-                                              listen: false,
-                                            ).bank ==
-                                            null) {
-                                          returnResourceProvider(
-                                            context:
-                                                context,
-                                            listen: false,
-                                          ).toggleLoading(
-                                            true,
-                                          );
-                                          var res =
-                                              await returnBankProvider(
+                                          context: context,
+                                          listen: false,
+                                        ).bank;
+                                    if (bank != null) {
+                                      bankNameController
+                                              .text =
+                                          bank.bankName;
+                                      accountNameController
+                                              .text =
+                                          bank.accountName;
+                                      accountNumberController
+                                          .text = bank
+                                          .accountNumber;
+                                    }
+                                    return DialogTemplate(
+                                      title:
+                                          returnBankProvider(
                                                 context:
                                                     context,
                                                 listen:
                                                     false,
-                                              ).createBank(
-                                                newBank,
-                                              );
-                                          if (res == 0 &&
-                                              context
-                                                  .mounted) {
+                                              ).bank ==
+                                              null
+                                          ? "Create New Bank"
+                                          : 'Edit Bank Detials',
+                                      action: () async {
+                                        var newBank = BankClass(
+                                          bankId:
+                                              returnBankProvider(
+                                                context:
+                                                    context,
+                                                listen:
+                                                    false,
+                                              ).bank?.bankId,
+                                          bankName:
+                                              bankNameController
+                                                  .text
+                                                  .trim(),
+                                          accountName:
+                                              accountNameController
+                                                  .text
+                                                  .trim(),
+                                          accountNumber:
+                                              accountNumberController
+                                                  .text
+                                                  .trim(),
+                                          userId: AuthService()
+                                              .currentUser!
+                                              .id,
+                                        );
+                                        if (formKey
+                                            .currentState!
+                                            .validate()) {
+                                          if (returnBankProvider(
+                                                context:
+                                                    context,
+                                                listen:
+                                                    false,
+                                              ).bank ==
+                                              null) {
                                             returnResourceProvider(
                                               context:
                                                   context,
                                               listen: false,
                                             ).toggleLoading(
-                                              false,
+                                              true,
                                             );
-                                            showSnackbar(
-                                              actionResult:
-                                                  ActionResult()
-                                                      .error,
-                                              message:
-                                                  'An Error Occured while creating your bank. Please check your internet and try again.',
-                                              title:
-                                                  'An Error Occoured',
-                                              context:
-                                                  context,
-                                            );
-                                          } else {
-                                            Navigator.of(
-                                              // ignore: use_build_context_synchronously
-                                              dialogContext,
-                                            ).pop();
-                                            if (context
-                                                .mounted) {
+                                            var res =
+                                                await returnBankProvider(
+                                                  context:
+                                                      context,
+                                                  listen:
+                                                      false,
+                                                ).createBank(
+                                                  newBank,
+                                                );
+                                            if (res == 0 &&
+                                                context
+                                                    .mounted) {
+                                              returnResourceProvider(
+                                                context:
+                                                    context,
+                                                listen:
+                                                    false,
+                                              ).toggleLoading(
+                                                false,
+                                              );
                                               showSnackbar(
                                                 actionResult:
                                                     ActionResult()
-                                                        .success,
+                                                        .error,
                                                 message:
-                                                    'Your bank has been added successfully. You can start receiving payments now.',
+                                                    'An Error Occured while creating your bank. Please check your internet and try again.',
                                                 title:
-                                                    "Bank Added Successfully",
+                                                    'An Error Occoured',
                                                 context:
                                                     context,
                                               );
                                             } else {
-                                              print(
-                                                'Context is not Mounted',
-                                              );
+                                              Navigator.of(
+                                                // ignore: use_build_context_synchronously
+                                                dialogContext,
+                                              ).pop();
+                                              if (context
+                                                  .mounted) {
+                                                showSnackbar(
+                                                  actionResult:
+                                                      ActionResult()
+                                                          .success,
+                                                  message:
+                                                      'Your bank has been added successfully. You can start receiving payments now.',
+                                                  title:
+                                                      "Bank Added Successfully",
+                                                  context:
+                                                      context,
+                                                );
+                                              } else {
+                                                print(
+                                                  'Context is not Mounted',
+                                                );
+                                              }
                                             }
-                                          }
-                                        } else {
-                                          returnResourceProvider(
-                                            context:
-                                                context,
-                                            listen: false,
-                                          ).toggleLoading(
-                                            true,
-                                          );
-                                          var res =
-                                              await returnBankProvider(
-                                                context:
-                                                    context,
-                                                listen:
-                                                    false,
-                                              ).updateBank(
-                                                newBank,
-                                              );
-                                          if (res == 0 &&
-                                              context
-                                                  .mounted) {
+                                          } else {
                                             returnResourceProvider(
                                               context:
                                                   context,
                                               listen: false,
                                             ).toggleLoading(
-                                              false,
+                                              true,
                                             );
-                                            showSnackbar(
-                                              actionResult:
-                                                  ActionResult()
-                                                      .error,
-                                              message:
-                                                  'An Error Occured while Updating your bank. Please check your internet and try again.',
-                                              title:
-                                                  'An Error Occoured',
-                                              context:
-                                                  context,
-                                            );
-                                          } else {
-                                            Navigator.of(
-                                              // ignore: use_build_context_synchronously
-                                              dialogContext,
-                                            ).pop();
-                                            if (context
-                                                .mounted) {
+                                            var res =
+                                                await returnBankProvider(
+                                                  context:
+                                                      context,
+                                                  listen:
+                                                      false,
+                                                ).updateBank(
+                                                  newBank,
+                                                );
+                                            if (res == 0 &&
+                                                context
+                                                    .mounted) {
+                                              returnResourceProvider(
+                                                context:
+                                                    context,
+                                                listen:
+                                                    false,
+                                              ).toggleLoading(
+                                                false,
+                                              );
                                               showSnackbar(
                                                 actionResult:
                                                     ActionResult()
-                                                        .success,
+                                                        .error,
                                                 message:
-                                                    'Your bank has been Updated successfully. You can start receiving payments now.',
+                                                    'An Error Occured while Updating your bank. Please check your internet and try again.',
                                                 title:
-                                                    "Bank Updated Successfully",
+                                                    'An Error Occoured',
                                                 context:
                                                     context,
                                               );
                                             } else {
-                                              print(
-                                                'Context is not Mounted',
-                                              );
+                                              Navigator.of(
+                                                // ignore: use_build_context_synchronously
+                                                dialogContext,
+                                              ).pop();
+                                              if (context
+                                                  .mounted) {
+                                                showSnackbar(
+                                                  actionResult:
+                                                      ActionResult()
+                                                          .success,
+                                                  message:
+                                                      'Your bank has been Updated successfully. You can start receiving payments now.',
+                                                  title:
+                                                      "Bank Updated Successfully",
+                                                  context:
+                                                      context,
+                                                );
+                                              } else {
+                                                print(
+                                                  'Context is not Mounted',
+                                                );
+                                              }
                                             }
                                           }
                                         }
-                                      }
-                                    },
-                                    mainActionText:
-                                        returnBankProvider(
-                                              context:
-                                                  context,
-                                              listen: false,
-                                            ).bank ==
-                                            null
-                                        ? "Create Bank"
-                                        : 'Update Bank',
-                                    subTitle:
-                                        returnBankProvider(
-                                              context:
-                                                  context,
-                                              listen: false,
-                                            ).bank ==
-                                            null
-                                        ? "Enter details below and save to Create your Bank."
-                                        : 'Enter details below and save to update your Bank.',
-                                    mainWidget: Form(
-                                      key: formKey,
-                                      child: Column(
-                                        mainAxisSize:
-                                            MainAxisSize
-                                                .min,
-                                        children: [
-                                          MyTextFieldMain(
-                                            isPassword:
-                                                false,
-                                            title:
-                                                'Account Name',
-                                            hintText:
-                                                'Enter Account Name',
-                                            isOptional:
-                                                false,
-                                            isNumber: false,
-                                            controller:
-                                                accountNameController,
-                                            isEmail: false,
-                                            showTitle: true,
-                                            validatorText:
-                                                'Account Name Cannot be empty!',
-                                          ),
-                                          SizedBox(
-                                            height: 15,
-                                          ),
-                                          MyTextFieldMain(
-                                            isPassword:
-                                                false,
-                                            title:
-                                                'Bank Name',
-                                            hintText:
-                                                'Enter Bank Name',
-                                            isOptional:
-                                                false,
-                                            isNumber: false,
-                                            controller:
-                                                bankNameController,
-                                            isEmail: false,
-                                            showTitle: true,
-                                            validatorText:
-                                                'Bank Name Cannot be empty!',
-                                          ),
-                                          SizedBox(
-                                            height: 15,
-                                          ),
-                                          MyTextFieldMain(
-                                            isPassword:
-                                                false,
-                                            title:
-                                                'Account Number',
-                                            hintText:
-                                                'Enter Account No.',
-                                            isOptional:
-                                                false,
-                                            isNumber: true,
-                                            controller:
-                                                accountNumberController,
-                                            isEmail: false,
-                                            showTitle: true,
-                                            validatorText:
-                                                'Account Number Cannot be empty!',
-                                          ),
-                                        ],
+                                      },
+                                      mainActionText:
+                                          returnBankProvider(
+                                                context:
+                                                    context,
+                                                listen:
+                                                    false,
+                                              ).bank ==
+                                              null
+                                          ? "Create Bank"
+                                          : 'Update Bank',
+                                      subTitle:
+                                          returnBankProvider(
+                                                context:
+                                                    context,
+                                                listen:
+                                                    false,
+                                              ).bank ==
+                                              null
+                                          ? "Enter details below and save to Create your Bank."
+                                          : 'Enter details below and save to update your Bank.',
+                                      mainWidget: Form(
+                                        key: formKey,
+                                        child: Column(
+                                          mainAxisSize:
+                                              MainAxisSize
+                                                  .min,
+                                          children: [
+                                            MyTextFieldMain(
+                                              isPassword:
+                                                  false,
+                                              title:
+                                                  'Account Name',
+                                              hintText:
+                                                  'Enter Account Name',
+                                              isOptional:
+                                                  false,
+                                              isNumber:
+                                                  false,
+                                              controller:
+                                                  accountNameController,
+                                              isEmail:
+                                                  false,
+                                              showTitle:
+                                                  true,
+                                              validatorText:
+                                                  'Account Name Cannot be empty!',
+                                            ),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            MyTextFieldMain(
+                                              isPassword:
+                                                  false,
+                                              title:
+                                                  'Bank Name',
+                                              hintText:
+                                                  'Enter Bank Name',
+                                              isOptional:
+                                                  false,
+                                              isNumber:
+                                                  false,
+                                              controller:
+                                                  bankNameController,
+                                              isEmail:
+                                                  false,
+                                              showTitle:
+                                                  true,
+                                              validatorText:
+                                                  'Bank Name Cannot be empty!',
+                                            ),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            MyTextFieldMain(
+                                              isPassword:
+                                                  false,
+                                              title:
+                                                  'Account Number',
+                                              hintText:
+                                                  'Enter Account No.',
+                                              isOptional:
+                                                  false,
+                                              isNumber:
+                                                  true,
+                                              controller:
+                                                  accountNumberController,
+                                              isEmail:
+                                                  false,
+                                              showTitle:
+                                                  true,
+                                              validatorText:
+                                                  'Account Number Cannot be empty!',
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              ).then((_) {
-                                bankNameController.clear();
-                                accountNameController
-                                    .clear();
-                                accountNumberController
-                                    .clear();
-                                if (context.mounted) {
-                                  returnResourceProvider(
-                                    context: context,
-                                    listen: false,
-                                  ).toggleLoading(false);
-                                }
-                              });
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(
-                                      5,
-                                    ),
-                              ),
-                              child: Icon(
-                                size: 18,
-                                Icons.edit_outlined,
+                                    );
+                                  },
+                                ).then((_) {
+                                  bankNameController
+                                      .clear();
+                                  accountNameController
+                                      .clear();
+                                  accountNumberController
+                                      .clear();
+                                  if (context.mounted) {
+                                    returnResourceProvider(
+                                      context: context,
+                                      listen: false,
+                                    ).toggleLoading(false);
+                                  }
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(
+                                        5,
+                                      ),
+                                ),
+                                child: Icon(
+                                  size: 18,
+                                  Icons.edit_outlined,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Divider(),
-                    SizedBox(height: 1),
-                    Column(
-                      children: [
-                        InfoSections(
-                          titleBoxWidth: 90,
-                          mainInfo:
-                              returnBankProvider(
-                                context: context,
-                              ).bank?.accountName ??
-                              'Not Set',
-                          title: 'Account Name',
-                        ),
-                        Divider(
-                          height: 25,
-                          color: Colors.grey.shade200,
-                          // endIndent: 50,
-                          // indent: 50,
-                        ),
-                        InfoSections(
-                          titleBoxWidth: 60,
-                          mainInfo:
-                              returnBankProvider(
-                                context: context,
-                              ).bank?.bankName ??
-                              'Not Set',
-                          title: 'Bank Name',
-                        ),
-                        Divider(
-                          height: 25,
-                          color: Colors.grey.shade200,
-                          // endIndent: 50,
-                          // indent: 50,
-                        ),
-                        InfoSections(
-                          titleBoxWidth: 60,
-                          mainInfo:
-                              returnBankProvider(
-                                context: context,
-                              ).bank?.accountNumber ??
-                              'Not Set',
-                          title: 'Account No.',
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      Divider(),
+                      SizedBox(height: 1),
+                      Column(
+                        children: [
+                          InfoSections(
+                            titleBoxWidth: 90,
+                            mainInfo:
+                                returnBankProvider(
+                                  context: context,
+                                ).bank?.accountName ??
+                                'Not Set',
+                            title: 'Account Name',
+                          ),
+                          Divider(
+                            height: 25,
+                            color: Colors.grey.shade200,
+                            // endIndent: 50,
+                            // indent: 50,
+                          ),
+                          InfoSections(
+                            titleBoxWidth: 60,
+                            mainInfo:
+                                returnBankProvider(
+                                  context: context,
+                                ).bank?.bankName ??
+                                'Not Set',
+                            title: 'Bank Name',
+                          ),
+                          Divider(
+                            height: 25,
+                            color: Colors.grey.shade200,
+                            // endIndent: 50,
+                            // indent: 50,
+                          ),
+                          InfoSections(
+                            titleBoxWidth: 60,
+                            mainInfo:
+                                returnBankProvider(
+                                  context: context,
+                                ).bank?.accountNumber ??
+                                'Not Set',
+                            title: 'Account No.',
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 10),
@@ -893,6 +931,14 @@ class _ProfileState extends State<Profile> {
                                   logoutContext,
                                 ).pop();
                               }
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return BasePage();
+                                  },
+                                ),
+                              );
                             },
                             message:
                                 'Are you sure you want to Logout?',

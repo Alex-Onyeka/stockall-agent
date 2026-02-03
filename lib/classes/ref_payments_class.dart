@@ -1,14 +1,14 @@
 class RefPaymentsClass {
-  final int id;
-  final DateTime createdDate;
+  final int? id;
+  final DateTime? createdDate;
   final String userId;
   final double? amount;
   final double? monthTotal;
   final int? totalStores;
 
   RefPaymentsClass({
-    required this.id,
-    required this.createdDate,
+    this.id,
+    this.createdDate,
     required this.userId,
     this.amount,
     this.monthTotal,
@@ -28,5 +28,14 @@ class RefPaymentsClass {
       monthTotal: (json['month_total'] as num?)?.toDouble(),
       totalStores: json['total_stores'] as int?,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'user_id': userId,
+      'amount': amount,
+      'month_total': monthTotal,
+      'total_stores': totalStores,
+    };
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/components/dialog_template.dart';
 import 'package:stockallagent/main.dart';
-import 'package:stockallagent/pages/profile/delete_account.dart';
+import 'package:stockallagent/pages/4/delete_account.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});

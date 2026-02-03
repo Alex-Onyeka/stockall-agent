@@ -11,6 +11,13 @@ class BankProvider extends ChangeNotifier {
 
   List<BankClass> banks = [];
 
+  void clearBanks() {
+    bank = null;
+    banks.clear();
+    print('Banks Cleared');
+    notifyListeners();
+  }
+
   Future<List<BankClass>> getAllBanks() async {
     try {
       List<Map<String, dynamic>> res = await _client
@@ -19,6 +26,8 @@ class BankProvider extends ChangeNotifier {
 
       if (res.isEmpty) {
         print("No Bank Found");
+        banks = [];
+        notifyListeners();
         return [];
       }
 
@@ -33,6 +42,8 @@ class BankProvider extends ChangeNotifier {
       return tempBank;
     } catch (e) {
       print("❌ Error Getting All Bankk: ${e.toString()}");
+      banks = [];
+      notifyListeners();
       return [];
     }
   }
@@ -42,7 +53,7 @@ class BankProvider extends ChangeNotifier {
       Map<String, dynamic>? res = await _client
           .from(tableName)
           .select()
-          .eq('user_id', AuthService().currentUser!.id)
+          .eq('agent_id', AuthService().currentUser!.id)
           .maybeSingle();
 
       if (res == null) {
@@ -61,6 +72,8 @@ class BankProvider extends ChangeNotifier {
       return tempBank;
     } catch (e) {
       print("❌ Error Getting Bankk: ${e.toString()}");
+      bank = null;
+      notifyListeners();
       return null;
     }
   }
@@ -111,6 +124,17 @@ class BankProvider extends ChangeNotifier {
     } catch (e) {
       print("❌ Error Inserting Bank: ${e.toString()}");
       return 0;
+    }
+  }
+
+  BankClass? getSingleBank(String userId) {
+    try {
+      return banks.firstWhere(
+        (ban) => ban.userId == userId,
+      );
+    } catch (e) {
+      print("Bank Not Found: ${e.toString()}");
+      return null;
     }
   }
 }

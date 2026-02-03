@@ -24,7 +24,7 @@ class BankClass {
       bankName: json['bank_name'] as String,
       accountName: json['account_name'] as String,
       accountNumber: json['account_number'] as String,
-      userId: json['user_id'],
+      userId: json['agent_id'],
     );
   }
 
@@ -33,7 +33,7 @@ class BankClass {
       'bank_name': bankName,
       'account_name': accountName,
       'account_number': accountNumber,
-      'user_id': userId,
+      'agent_id': userId,
     };
   }
 }

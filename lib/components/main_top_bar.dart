@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stockallagent/components/dialog_template.dart';
 import 'package:stockallagent/constants/media_links.dart';
 import 'package:stockallagent/main.dart';
+import 'package:stockallagent/pages/authentication/base_page.dart';
 import 'package:stockallagent/service/auth_service.dart';
 
 class MainTopBar extends StatefulWidget {
@@ -51,16 +52,40 @@ class _MainTopBarState extends State<MainTopBar> {
                           height: 30,
                         ),
                       ),
-                      Text(
-                        style: TextStyle(
-                          fontSize:
-                              theme.mobileTexts.b1.fontSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        returnUserProvider(
-                              context: context,
-                            ).currentUser?.name ??
-                            'User Name',
+                      Column(
+                        spacing: 0,
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            style: TextStyle(
+                              fontSize: theme
+                                  .mobileTexts
+                                  .b1
+                                  .fontSize,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            '${returnUserProvider(context: context).currentUser?.name} ${returnUserProvider(context: context).currentUser?.lastName ?? ''}',
+                          ),
+                          Text(
+                            style: TextStyle(
+                              fontSize: theme
+                                  .mobileTexts
+                                  .b4
+                                  .fontSize,
+                              fontWeight: FontWeight.normal,
+                              color: theme
+                                  .lightModeColor
+                                  .prColor100,
+                            ),
+                            returnAdminProvider(
+                                      context: context,
+                                    ).admin ==
+                                    null
+                                ? 'Agent (${returnUserProvider(context: context, listen: false).currentUser?.role})'
+                                : 'Admin',
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -78,7 +103,7 @@ class _MainTopBarState extends State<MainTopBar> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(40),
                 onTap: () {
-                  var safeContext = context;
+                  // var safeContext = context;
                   showDialog(
                     context: context,
                     builder: (logoutContext) {
@@ -90,13 +115,21 @@ class _MainTopBarState extends State<MainTopBar> {
                             listen: false,
                           ).toggleLoading(true);
                           await AuthService().signOut(
-                            safeContext,
+                            context,
                           );
                           if (logoutContext.mounted) {
                             Navigator.of(
                               logoutContext,
                             ).pop();
                           }
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return BasePage();
+                              },
+                            ),
+                          );
                         },
                         message:
                             'Are you sure you want to Logout?',

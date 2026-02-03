@@ -6,7 +6,7 @@ import 'package:stockallagent/components/textfields/my_text_field.dart';
 import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/constants/media_links.dart';
 import 'package:stockallagent/main.dart';
-import 'package:stockallagent/pages/authentication/base_page.dart';
+import 'package:stockallagent/pages/authentication/validate_user_exists.dart';
 import 'package:stockallagent/service/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -182,7 +182,12 @@ class _LoginPageState extends State<LoginPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return BasePage();
+                                  return ValidateUserExists(
+                                    email: emailC.text
+                                        .trim(),
+                                    password: passwordC.text
+                                        .trim(),
+                                  );
                                 },
                               ),
                             );
@@ -195,7 +200,11 @@ class _LoginPageState extends State<LoginPage> {
                   SecondaryButton(
                     title: 'Go Back',
                     action: () {
-                      Navigator.of(context).pop();
+                      if (Navigator.of(context).canPop()) {
+                        Navigator.of(context).pop();
+                      } else {
+                        widget.goToSignUp!();
+                      }
                     },
                   ),
                   SizedBox(height: 20),

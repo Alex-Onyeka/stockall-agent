@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/shop_class.dart';
 import 'package:stockallagent/main.dart';
-import 'package:stockallagent/pages/dashboard/dashboard.dart';
-import 'package:stockallagent/pages/payments/payments.dart';
-import 'package:stockallagent/pages/profile/profile.dart';
-import 'package:stockallagent/pages/stores/stores.dart';
+import 'package:stockallagent/pages/1/first_page.dart';
+import 'package:stockallagent/pages/4/folder/profile.dart';
+import 'package:stockallagent/pages/4/fourth_page.dart';
+import 'package:stockallagent/pages/3/third_page.dart';
+import 'package:stockallagent/pages/2/second_page.dart';
+import 'package:stockallagent/pages/authentication/auth_landing.dart';
 import 'package:stockallagent/theme/theme_provider.dart';
 
 class Home extends StatefulWidget {
@@ -25,7 +27,15 @@ class _HomeState extends State<Home> {
 
   void profileNavAction() {
     setState(() {
-      currentPage = 3;
+      if (returnAdminProvider(
+            context: context,
+            listen: false,
+          ).admin ==
+          null) {
+        currentPage = 3;
+      } else {
+        currentPage = 4;
+      }
     });
   }
 
@@ -43,24 +53,36 @@ class _HomeState extends State<Home> {
     ).getShops(context);
   }
 
-  // late Future<UserClass?> getUserFuture;
-  // Future<UserClass?> getUser() async {
-  //   return await returnUserProvider(
-  //     context: context,
-  //     listen: false,
-  //   ).getUser();
-  // }
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       returnResourceProvider(
         context: context,
         listen: false,
       ).toggleLoading(false);
     });
+    userFuture = getUserFuture();
     getShopsFuture = getShop();
+  }
+
+  late Future<void> userFuture;
+
+  Future<void> getUserFuture() async {
+    var user = await returnUserProvider(
+      context: context,
+      listen: false,
+    ).getUser();
+    if (user == null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return AuthLanding(isLogin: true);
+          },
+        ),
+      );
+    }
   }
 
   @override
@@ -68,117 +90,186 @@ class _HomeState extends State<Home> {
     var theme = returnTheme(context: context);
     return SafeArea(
       child: FutureBuilder(
-        future: getShopsFuture,
-        builder: (context, shopSnapshot) {
-          if (shopSnapshot.connectionState ==
+        future: userFuture,
+        builder: (context, userSnapshot) {
+          if (userSnapshot.connectionState ==
               ConnectionState.waiting) {
             return Scaffold(
               body: Center(
                 child: CircularProgressIndicator.adaptive(),
               ),
             );
-          } else if (shopSnapshot.hasError) {
-            return Scaffold(
-              body: Center(
-                child: Text('An Error Occured Shops'),
-              ),
-            );
           } else {
-            return Scaffold(
-              body: Builder(
-                builder: (context) {
-                  if (currentPage == 0) {
-                    return Dashboard(
-                      profileNavAction: () {
-                        profileNavAction();
+            return FutureBuilder(
+              future: getShopsFuture,
+              builder: (context, shopSnapshot) {
+                if (shopSnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return Scaffold(
+                    body: Center(
+                      child:
+                          CircularProgressIndicator.adaptive(),
+                    ),
+                  );
+                } else if (shopSnapshot.hasError) {
+                  return Scaffold(
+                    body: Center(
+                      child: Text('An Error Occured Shops'),
+                    ),
+                  );
+                } else {
+                  return Scaffold(
+                    body: Builder(
+                      builder: (context) {
+                        if (currentPage == 0) {
+                          return FirstPage(
+                            profileNavAction: () {
+                              profileNavAction();
+                            },
+                            navigate: () {
+                              navActionMain(1);
+                            },
+                          );
+                        } else if (currentPage == 1) {
+                          return SecondPage(
+                            popPage: () {
+                              popPageAction();
+                            },
+                            profileNavAction: () {
+                              profileNavAction();
+                            },
+                          );
+                        } else if (currentPage == 2) {
+                          return ThirdPage(
+                            popPage: () {
+                              popPageAction();
+                            },
+                            profileNavAction: () {
+                              profileNavAction();
+                            },
+                          );
+                        } else if (currentPage == 3) {
+                          return FourthPage(
+                            popPage: () {
+                              popPageAction();
+                            },
+                            profileNavigationAction: () {
+                              profileNavAction();
+                            },
+                          );
+                        } else {
+                          return Profile(
+                            popPage: () {
+                              popPageAction();
+                            },
+                          );
+                        }
                       },
-                      navigate: () {
-                        navActionMain(1);
-                      },
-                    );
-                  } else if (currentPage == 1) {
-                    return Stores(
-                      popPage: () {
-                        popPageAction();
-                      },
-                      profileNavAction: () {
-                        profileNavAction();
-                      },
-                    );
-                  } else if (currentPage == 2) {
-                    return Payments(
-                      popPage: () {
-                        popPageAction();
-                      },
-                    );
-                  } else {
-                    return Profile(
-                      popPage: () {
-                        popPageAction();
-                      },
-                    );
-                  }
-                },
-              ),
-              bottomNavigationBar: SizedBox(
-                width: double.infinity,
-                height: 70,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    25.0,
-                    10,
-                    25,
-                    10,
-                  ),
-                  child: Row(
-                    spacing: 5,
-                    mainAxisAlignment:
-                        MainAxisAlignment.center,
-                    children: [
-                      NavButtons(
-                        theme: theme,
-                        icon: Icons.home_rounded,
-                        mainIndex: currentPage,
-                        myIndex: 0,
-                        title: 'Home',
-                        navAction: () {
-                          navActionMain(0);
-                        },
+                    ),
+                    bottomNavigationBar: SizedBox(
+                      width: double.infinity,
+                      height: 70,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          25.0,
+                          10,
+                          25,
+                          10,
+                        ),
+                        child: Row(
+                          spacing: 5,
+                          mainAxisAlignment:
+                              MainAxisAlignment.center,
+                          children: [
+                            NavButtons(
+                              theme: theme,
+                              icon: Icons.home_rounded,
+                              mainIndex: currentPage,
+                              myIndex: 0,
+                              title: 'Home',
+                              navAction: () {
+                                navActionMain(0);
+                              },
+                            ),
+                            NavButtons(
+                              theme: theme,
+                              icon: Icons.home_work_rounded,
+                              mainIndex: currentPage,
+                              myIndex: 1,
+                              title: 'Stores',
+                              navAction: () {
+                                navActionMain(1);
+                              },
+                            ),
+                            Builder(
+                              builder: (context) {
+                                if (returnAdminProvider(
+                                      context: context,
+                                    ).admin ==
+                                    null) {
+                                  return NavButtons(
+                                    theme: theme,
+                                    icon: Icons
+                                        .receipt_rounded,
+                                    mainIndex: currentPage,
+                                    myIndex: 2,
+                                    title: 'Payments',
+                                    navAction: () {
+                                      navActionMain(2);
+                                    },
+                                  );
+                                } else {
+                                  return NavButtons(
+                                    theme: theme,
+                                    icon: Icons.people,
+                                    mainIndex: currentPage,
+                                    myIndex: 2,
+                                    title: 'Agents',
+                                    navAction: () {
+                                      navActionMain(2);
+                                    },
+                                  );
+                                }
+                              },
+                            ),
+                            Builder(
+                              builder: (context) {
+                                if (returnAdminProvider(
+                                      context: context,
+                                    ).admin ==
+                                    null) {
+                                  return NavButtons(
+                                    theme: theme,
+                                    icon: Icons.person,
+                                    mainIndex: currentPage,
+                                    myIndex: 3,
+                                    title: 'Profile',
+                                    navAction: () {
+                                      navActionMain(3);
+                                    },
+                                  );
+                                } else {
+                                  return NavButtons(
+                                    theme: theme,
+                                    icon: Icons
+                                        .menu_book_rounded,
+                                    mainIndex: currentPage,
+                                    myIndex: 3,
+                                    title: 'Reports',
+                                    navAction: () {
+                                      navActionMain(3);
+                                    },
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                      NavButtons(
-                        theme: theme,
-                        icon: Icons.home_work_rounded,
-                        mainIndex: currentPage,
-                        myIndex: 1,
-                        title: 'Stores',
-                        navAction: () {
-                          navActionMain(1);
-                        },
-                      ),
-                      NavButtons(
-                        theme: theme,
-                        icon: Icons.receipt_rounded,
-                        mainIndex: currentPage,
-                        myIndex: 2,
-                        title: 'Payments',
-                        navAction: () {
-                          navActionMain(2);
-                        },
-                      ),
-                      NavButtons(
-                        theme: theme,
-                        icon: Icons.person,
-                        mainIndex: currentPage,
-                        myIndex: 3,
-                        title: 'Profile',
-                        navAction: () {
-                          navActionMain(3);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
+                  );
+                }
+              },
             );
           }
         },

@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/main.dart';
-import 'package:stockallagent/pages/dashboard/platforms/dashboard_admin.dart';
-import 'package:stockallagent/pages/dashboard/platforms/dashboard_agent.dart';
+import 'package:stockallagent/pages/3/folders/agents.dart';
+import 'package:stockallagent/pages/3/folders/payments.dart';
 
-class Dashboard extends StatelessWidget {
-  final Function()? navigate;
+class ThirdPage extends StatelessWidget {
+  final Function()? popPage;
   final Function()? profileNavAction;
-  const Dashboard({
+  const ThirdPage({
     super.key,
-    this.navigate,
     this.profileNavAction,
+    this.popPage,
   });
-
   @override
   Widget build(BuildContext context) {
     if (returnAdminProvider(context: context).admin ==
         null) {
-      return DashboardAgent(
-        navigate: navigate,
+      return Payments(
+        popPage: popPage,
         profileNavAction: profileNavAction,
       );
     } else {
-      return DashboardAdmin(
-        navigate: navigate,
+      return Agents(
+        popPage: popPage,
         profileNavAction: profileNavAction,
       );
     }
