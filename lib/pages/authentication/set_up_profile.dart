@@ -9,7 +9,6 @@ import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/constants/media_links.dart';
 import 'package:stockallagent/main.dart';
 import 'package:stockallagent/pages/authentication/base_page.dart';
-import 'package:stockallagent/pages/authentication/sign_up_page.dart';
 import 'package:stockallagent/pages/authentication/welcome_screen.dart';
 import 'package:stockallagent/service/auth_service.dart';
 
@@ -125,41 +124,41 @@ class _SetUpProfileState extends State<SetUpProfile> {
                                   'Phone Number Cannot be Empty!',
                             ),
                             SizedBox(height: 15),
-                            Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              spacing: 5,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b2
-                                        .fontSize,
-                                  ),
-                                  'Select Role:',
-                                ),
-                                Row(
-                                  spacing: 10,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  children:
-                                      returnUserProvider(
-                                            context:
-                                                context,
-                                          ).roles
-                                          .map(
-                                            (role) =>
-                                                RoleSelectionWidget(
-                                                  role:
-                                                      role,
-                                                ),
-                                          )
-                                          .toList(),
-                                ),
-                              ],
-                            ),
+                            // Column(
+                            //   crossAxisAlignment:
+                            //       CrossAxisAlignment.start,
+                            //   spacing: 5,
+                            //   children: [
+                            //     Text(
+                            //       style: TextStyle(
+                            //         fontSize: theme
+                            //             .mobileTexts
+                            //             .b2
+                            //             .fontSize,
+                            //       ),
+                            //       'Select Role:',
+                            //     ),
+                            //     Row(
+                            //       spacing: 10,
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment
+                            //               .spaceBetween,
+                            //       children:
+                            //           returnUserProvider(
+                            //                 context:
+                            //                     context,
+                            //               ).roles
+                            //               .map(
+                            //                 (role) =>
+                            //                     RoleSelectionWidget(
+                            //                       role:
+                            //                           role,
+                            //                     ),
+                            //               )
+                            //               .toList(),
+                            //     ),
+                            //   ],
+                            // ),
                             SizedBox(height: 20),
                           ],
                         ),
@@ -172,52 +171,88 @@ class _SetUpProfileState extends State<SetUpProfile> {
                     action: () async {
                       if (formKey.currentState!
                           .validate()) {
-                        if (returnUserProvider(
+                        // if (returnUserProvider(
+                        //   context: context,
+                        //   listen: false,
+                        // ).selectedRole.isNotEmpty) {
+                        showDialog(
                           context: context,
-                          listen: false,
-                        ).selectedRole.isNotEmpty) {
-                          showDialog(
-                            context: context,
-                            builder: (confirmDialog) {
-                              return DialogTemplate(
-                                action: () async {
-                                  Navigator.of(
-                                    confirmDialog,
-                                  ).pop();
-                                  var user = UserClass(
-                                    password:
-                                        widget.password,
-                                    name: firstNameC.text,
-                                    lastName:
-                                        lastNameC.text,
-                                    email: widget.email,
-                                    phone:
-                                        phoneNumberC.text,
-                                    role:
-                                        returnUserProvider(
-                                          context: context,
-                                          listen: false,
-                                        ).selectedRole,
-                                    userId: AuthService()
-                                        .currentUser!
-                                        .id,
-                                  );
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  var res =
-                                      await returnUserProvider(
-                                        context: context,
-                                        listen: false,
-                                      ).createAgent(user);
+                          builder: (confirmDialog) {
+                            return DialogTemplate(
+                              action: () async {
+                                Navigator.of(
+                                  confirmDialog,
+                                ).pop();
+                                var user = UserClass(
+                                  roleId: 1,
+                                  password: widget.password,
+                                  name: firstNameC.text,
+                                  lastName: lastNameC.text,
+                                  email: widget.email,
+                                  phone: phoneNumberC.text,
+                                  // role:
+                                  //     returnUserProvider(
+                                  //       context: context,
+                                  //       listen: false,
+                                  //     ).selectedRole,
+                                  userId: AuthService()
+                                      .currentUser!
+                                      .id,
+                                );
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                var res =
+                                    await returnUserProvider()
+                                        .createAgent(user);
 
-                                  if (res == 0) {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
+                                if (res == 0) {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  showSnackbar(
+                                    message:
+                                        'An error occured while creating your agent account, please check your internet connection and try again.',
+                                    title:
+                                        'An Error Occured',
+                                    context: context,
+                                    actionResult:
+                                        ActionResult()
+                                            .error,
+                                  );
+                                } else {
+                                  if (context.mounted) {
                                     showSnackbar(
                                       message:
-                                          'An error occured while creating your agent account, please check your internet connection and try again.',
+                                          'Your account has been created successfully. Proceed to your Dashboard to commence your operations',
+                                      title:
+                                          'Account Created Success',
+                                      context: context,
+                                      actionResult:
+                                          ActionResult()
+                                              .success,
+                                    );
+                                    await Future.delayed(
+                                      Duration(seconds: 2),
+                                      () {},
+                                    );
+                                    if (context.mounted) {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return BasePage();
+                                          },
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    showSnackbar(
+                                      message:
+                                          'An error occured while creating your agent account, Refresh this page and try again',
                                       title:
                                           'An Error Occured',
                                       context: context,
@@ -225,70 +260,27 @@ class _SetUpProfileState extends State<SetUpProfile> {
                                           ActionResult()
                                               .error,
                                     );
-                                  } else {
-                                    if (context.mounted) {
-                                      showSnackbar(
-                                        message:
-                                            'Your account has been created successfully. Proceed to your Dashboard to commence your operations',
-                                        title:
-                                            'Account Created Success',
-                                        context: context,
-                                        actionResult:
-                                            ActionResult()
-                                                .success,
-                                      );
-                                      await Future.delayed(
-                                        Duration(
-                                          seconds: 2,
-                                        ),
-                                        () {},
-                                      );
-                                      if (context.mounted) {
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return BasePage();
-                                            },
-                                          ),
-                                        );
-                                      }
-                                    } else {
-                                      showSnackbar(
-                                        message:
-                                            'An error occured while creating your agent account, Refresh this page and try again',
-                                        title:
-                                            'An Error Occured',
-                                        context: context,
-                                        actionResult:
-                                            ActionResult()
-                                                .error,
-                                      );
-                                    }
                                   }
-                                },
-                                cancelActionText: 'Cancel',
-                                mainActionText: 'Proceed',
-                                title:
-                                    'Proceed with Action?',
-                                message:
-                                    'Are you sure you want to proceed with setting up your account?',
-                              );
-                            },
-                          );
-                        } else {
-                          showSnackbar(
-                            message:
-                                'You must select your agent role before you can proceed to finish setting up your agent account.',
-                            title: 'Select a Role',
-                            context: context,
-                            actionResult:
-                                ActionResult().error,
-                          );
-                        }
+                                }
+                              },
+                              cancelActionText: 'Cancel',
+                              mainActionText: 'Proceed',
+                              title: 'Proceed with Action?',
+                              message:
+                                  'Are you sure you want to proceed with setting up your account?',
+                            );
+                          },
+                        );
+                        // } else {
+                        //   showSnackbar(
+                        //     message:
+                        //         'You must select your agent role before you can proceed to finish setting up your agent account.',
+                        //     title: 'Select a Role',
+                        //     context: context,
+                        //     actionResult:
+                        //         ActionResult().error,
+                        //   );
+                        // }
                       }
                     },
                   ),

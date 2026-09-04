@@ -1,83 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/user_class.dart';
-import 'package:stockallagent/main.dart';
+import 'package:stockallagent/providers/bank_provider.dart';
 import 'package:stockallagent/service/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserProvider extends ChangeNotifier {
+  static final UserProvider _instance =
+      UserProvider._internal();
+  factory UserProvider() => _instance;
+  UserProvider._internal();
   final SupabaseClient _client = Supabase.instance.client;
   String tableName = 'agents';
   UserClass? currentUser;
 
   List<UserClass> agents = [];
 
-  final List<String> roles = ['Employed', 'Freelance'];
-
-  String selectedRole = '';
-
-  void selectRole(String newRole) {
-    if (selectedRole == newRole) {
-      selectedRole = '';
-    } else {
-      selectedRole = newRole;
-    }
-    notifyListeners();
-    print('Clicked: $selectedRole');
-  }
-
-  List<UserClass> paidUsers(BuildContext context) {
-    final payments = returnRefPaymentsProvider(
-      context: context,
-      listen: false,
-    ).getThisMonthPayments();
-
-    final paidUserIds = payments
-        .map((p) => p.userId)
-        .toSet();
-
-    return activeUsers(context)
-        .where((user) => paidUserIds.contains(user.userId))
-        .toList();
-  }
-
-  List<UserClass> activeUsers(BuildContext context) {
-    final shops = returnShopProvider(
-      context: context,
-      listen: false,
-    ).getThisMonthSubscribedShops(context);
-
-    final activeUserRefs = shops
-        .map((shop) => shop.refCode)
-        .toSet();
-
-    return agents
-        .where(
-          (user) =>
-              activeUserRefs.contains(user.referralCode),
-        )
-        .toList();
-  }
-
-  bool isAgentPaid(UserClass user, BuildContext context) {
-    return paidUsers(context).contains(user);
-  }
-
-  List<UserClass> unPaidUsers(BuildContext context) {
-    var payments = returnRefPaymentsProvider(
-      context: context,
-      listen: false,
-    ).getThisMonthPayments();
-    final paidUserIds = payments
-        .map((p) => p.userId)
-        .toSet();
-
-    return activeUsers(context)
-        .where((user) => !paidUserIds.contains(user.userId))
-        .toList();
-  }
-
   Future<int> createAgent(UserClass user) async {
-    user.role = selectedRole;
+    // user.role = selectedRole;
     try {
       var res = await _client
           .from(tableName)
@@ -124,6 +63,11 @@ class UserProvider extends ChangeNotifier {
                 use.userId != AuthService().currentUser!.id,
           )
           .toList();
+      agents.sort(
+        ((a, b) => a.name.toLowerCase().compareTo(
+          b.name.toLowerCase(),
+        )),
+      );
       notifyListeners();
       return tempUsers;
     } catch (e) {
@@ -150,6 +94,7 @@ class UserProvider extends ChangeNotifier {
       var tempUser = UserClass.fromJson(res);
       print('✅User Gotten: ${tempUser.name}');
       currentUser = tempUser;
+      await BankProvider().getBank();
       notifyListeners();
       return tempUser;
     } catch (e) {

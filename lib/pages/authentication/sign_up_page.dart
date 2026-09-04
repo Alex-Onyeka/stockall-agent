@@ -3,6 +3,7 @@ import 'package:stockallagent/classes/action_result.dart';
 import 'package:stockallagent/classes/user_class.dart';
 import 'package:stockallagent/components/buttons/primary_button.dart';
 import 'package:stockallagent/components/buttons/secondary_button.dart';
+import 'package:stockallagent/components/main_container.dart';
 import 'package:stockallagent/components/textfields/my_text_field.dart';
 import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/constants/constants_main.dart';
@@ -39,10 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 25.0,
-              ),
+            child: MainContainer(
               child: Column(
                 children: [
                   Expanded(
@@ -167,79 +165,88 @@ class _SignUpPageState extends State<SignUpPage> {
                                   'Confirm Password Field Cannot be Empty!',
                             ),
                             SizedBox(height: 15),
-                            Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              spacing: 5,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b2
-                                        .fontSize,
-                                  ),
-                                  'Select Role:',
-                                ),
-                                Row(
-                                  spacing: 10,
+                            // Column(
+                            //   crossAxisAlignment:
+                            //       CrossAxisAlignment.start,
+                            //   spacing: 5,
+                            //   children: [
+                            //     Text(
+                            //       style: TextStyle(
+                            //         fontSize: theme
+                            //             .mobileTexts
+                            //             .b2
+                            //             .fontSize,
+                            //       ),
+                            //       'Select Role:',
+                            //     ),
+                            //     Row(
+                            //       spacing: 10,
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment
+                            //               .spaceBetween,
+                            //       children:
+                            //           returnUserProvider(
+                            //                 context:
+                            //                     context,
+                            //               ).roles
+                            //               .map(
+                            //                 (role) =>
+                            //                     RoleSelectionWidget(
+                            //                       role:
+                            //                           role,
+                            //                     ),
+                            //               )
+                            //               .toList(),
+                            //     ),
+                            //   ],
+                            // ),
+                            // SizedBox(height: 10),
+                            Material(
+                              type:
+                                  MaterialType.transparency,
+                              child: InkWell(
+                                mouseCursor:
+                                    SystemMouseCursors
+                                        .click,
+                                onTap: widget.goToLogin,
+                                child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment
-                                          .spaceBetween,
-                                  children:
-                                      returnUserProvider(
-                                            context:
-                                                context,
-                                          ).roles
-                                          .map(
-                                            (role) =>
-                                                RoleSelectionWidget(
-                                                  role:
-                                                      role,
-                                                ),
-                                          )
-                                          .toList(),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b2
-                                        .fontSize,
-                                  ),
-                                  'Do You Have An Account?',
-                                ),
-                                InkWell(
-                                  onTap: widget.goToLogin,
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.all(
-                                          5.0,
-                                        ),
-                                    child: Text(
+                                          .center,
+                                  children: [
+                                    Text(
                                       style: TextStyle(
                                         fontSize: theme
                                             .mobileTexts
                                             .b2
                                             .fontSize,
-                                        fontWeight:
-                                            FontWeight.bold,
-                                        color: theme
-                                            .lightModeColor
-                                            .secColor200,
                                       ),
-                                      'LOGIN',
+                                      'Do You Have An Account?',
                                     ),
-                                  ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.all(
+                                            5.0,
+                                          ),
+                                      child: Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b2
+                                              .fontSize,
+                                          fontWeight:
+                                              FontWeight
+                                                  .bold,
+                                          color: theme
+                                              .lightModeColor
+                                              .secColor200,
+                                        ),
+                                        'LOGIN',
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                             SizedBox(height: 20),
                           ],
@@ -282,19 +289,21 @@ class _SignUpPageState extends State<SignUpPage> {
                             actionResult:
                                 ActionResult().error,
                           );
-                        } else if (returnUserProvider(
-                          context: context,
-                          listen: false,
-                        ).selectedRole.isEmpty) {
-                          showSnackbar(
-                            message:
-                                'You must select your agent role before you can proceed to finish setting up your agent account.',
-                            title: 'Select a Role',
-                            context: context,
-                            actionResult:
-                                ActionResult().error,
-                          );
-                        } else {
+                        }
+                        // else if (returnUserProvider(
+                        //   context: context,
+                        //   listen: false,
+                        // ).selectedRole.isEmpty) {
+                        //   showSnackbar(
+                        //     message:
+                        //         'You must select your agent role before you can proceed to finish setting up your agent account.',
+                        //     title: 'Select a Role',
+                        //     context: context,
+                        //     actionResult:
+                        //         ActionResult().error,
+                        //   );
+                        // }
+                        else {
                           setState(() {
                             isLoading = true;
                           });
@@ -343,6 +352,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     builder: (context) {
                                       return ConfirmEmail(
                                         user: UserClass(
+                                          roleId: 1,
                                           userId:
                                               res.user!.id,
                                           password:
@@ -360,13 +370,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                               phoneNumberC
                                                   .text
                                                   .trim(),
-                                          role:
-                                              returnUserProvider(
-                                                context:
-                                                    context,
-                                                listen:
-                                                    false,
-                                              ).selectedRole,
+                                          // role:
+                                          //     returnUserProvider(
+                                          //       context:
+                                          //           context,
+                                          //       listen:
+                                          //           false,
+                                          //     ).selectedRole,
                                         ),
                                       );
                                     },
@@ -401,89 +411,90 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 }
 
-class RoleSelectionWidget extends StatelessWidget {
-  final String role;
-  const RoleSelectionWidget({
-    super.key,
-    required this.role,
-  });
+// class RoleSelectionWidget extends StatelessWidget {
+//   final String role;
+//   const RoleSelectionWidget({
+//     super.key,
+//     required this.role,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    var theme = returnTheme(context: context);
-    return Expanded(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(5),
-        onTap: () {
-          returnUserProvider(
-            context: context,
-            listen: false,
-          ).selectRole(role);
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 5,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              color:
-                  returnUserProvider(
-                        context: context,
-                        listen: false,
-                      ).selectedRole ==
-                      role
-                  ? Colors.grey.shade500
-                  : Colors.grey.shade300,
-            ),
-          ),
-          child: Row(
-            spacing: 5,
-            mainAxisAlignment:
-                MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                style: TextStyle(
-                  fontSize: theme.mobileTexts.b3.fontSize,
-                  fontWeight:
-                      returnUserProvider(
-                            context: context,
-                            listen: false,
-                          ).selectedRole ==
-                          role
-                      ? FontWeight.bold
-                      : FontWeight.normal,
-                ),
-                '$role:',
-              ),
-              Container(
-                padding: EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: theme.lightModeColor.prColor300,
-                  ),
-                ),
-                child: Container(
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color:
-                        returnUserProvider(
-                              context: context,
-                              listen: false,
-                            ).selectedRole ==
-                            role
-                        ? theme.lightModeColor.secColor200
-                        : Colors.transparent,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     var theme = returnTheme(context: context);
+//     return Expanded(
+//       child: InkWell(
+//         mouseCursor: SystemMouseCursors.click,
+//         borderRadius: BorderRadius.circular(5),
+//         onTap: () {
+//           returnUserProvider(
+//             context: context,
+//             listen: false,
+//           ).selectRole(role);
+//         },
+//         child: Container(
+//           padding: EdgeInsets.symmetric(
+//             vertical: 10,
+//             horizontal: 5,
+//           ),
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.circular(5),
+//             border: Border.all(
+//               color:
+//                   returnUserProvider(
+//                         context: context,
+//                         listen: false,
+//                       ).selectedRole ==
+//                       role
+//                   ? Colors.grey.shade500
+//                   : Colors.grey.shade300,
+//             ),
+//           ),
+//           child: Row(
+//             spacing: 5,
+//             mainAxisAlignment:
+//                 MainAxisAlignment.spaceAround,
+//             children: [
+//               Text(
+//                 style: TextStyle(
+//                   fontSize: theme.mobileTexts.b3.fontSize,
+//                   fontWeight:
+//                       returnUserProvider(
+//                             context: context,
+//                             listen: false,
+//                           ).selectedRole ==
+//                           role
+//                       ? FontWeight.bold
+//                       : FontWeight.normal,
+//                 ),
+//                 '$role:',
+//               ),
+//               Container(
+//                 padding: EdgeInsets.all(2),
+//                 decoration: BoxDecoration(
+//                   shape: BoxShape.circle,
+//                   border: Border.all(
+//                     color: theme.lightModeColor.prColor300,
+//                   ),
+//                 ),
+//                 child: Container(
+//                   padding: EdgeInsets.all(5),
+//                   decoration: BoxDecoration(
+//                     shape: BoxShape.circle,
+//                     color:
+//                         returnUserProvider(
+//                               context: context,
+//                               listen: false,
+//                             ).selectedRole ==
+//                             role
+//                         ? theme.lightModeColor.secColor200
+//                         : Colors.transparent,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:stockallagent/classes/report_class.dart';
+import 'package:stockallagent/classes/analysis_report.dart';
 import 'package:stockallagent/components/empty_widget.dart';
 import 'package:stockallagent/components/shop_tile_main.dart';
 import 'package:stockallagent/constants/constants_main.dart';
 import 'package:stockallagent/main.dart';
 
 class ReportDetails extends StatelessWidget {
-  final ReportClass report;
+  final AnalysisReport report;
   const ReportDetails({super.key, required this.report});
 
   @override
@@ -32,6 +32,7 @@ class ReportDetails extends StatelessWidget {
                   Material(
                     type: MaterialType.transparency,
                     child: InkWell(
+                      mouseCursor: SystemMouseCursors.click,
                       onTap: () {
                         Navigator.of(context).pop();
                       },
@@ -55,13 +56,15 @@ class ReportDetails extends StatelessWidget {
                           theme.mobileTexts.b1.fontSize,
                       fontWeight: FontWeight.bold,
                     ),
-                    '${getMonthAndYear(report.date)} Details',
+                    '${getMonthAndYear(report.createdAt)} Details',
                   ),
                   Opacity(
                     opacity: 0,
                     child: Material(
                       type: MaterialType.transparency,
                       child: InkWell(
+                        mouseCursor:
+                            SystemMouseCursors.click,
                         onTap: () {},
                         child: Padding(
                           padding:
@@ -174,31 +177,13 @@ class ReportDetails extends StatelessWidget {
                                               ).hideMoneyDashBoard
                                               ? '********'
                                               : formatMoney(
-                                                  report
-                                                      .totalNet,
+                                                  (report.totalSales ??
+                                                          0)
+                                                      .toDouble(),
                                                 ),
                                         ),
                                       ],
                                     ),
-                                    // InkWell(
-                                    //   onTap: () {
-                                    //     returnResourceProvider(
-                                    //       context: context,
-                                    //       listen: false,
-                                    //     ).toggleHideMoney();
-                                    //   },
-                                    //   child: Icon(
-                                    //     color: Colors.white,
-                                    //     returnResourceProvider(
-                                    //           context:
-                                    //               context,
-                                    //         ).hideMoneyDashBoard
-                                    //         ? Icons
-                                    //               .desktop_access_disabled_rounded
-                                    //         : Icons
-                                    //               .desktop_mac_rounded,
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                                 Divider(height: 30),
@@ -241,8 +226,7 @@ class ReportDetails extends StatelessWidget {
                                                     .white,
                                               ),
                                               formatMoney(
-                                                report
-                                                    .totalRevenue,
+                                                2000,
                                               ),
                                             ),
                                           ],
@@ -289,8 +273,7 @@ class ReportDetails extends StatelessWidget {
                                                         .bold,
                                               ),
                                               formatMoney(
-                                                report
-                                                    .totalRefCut,
+                                                1000,
                                               ),
                                             ),
                                           ],
@@ -339,7 +322,7 @@ class ReportDetails extends StatelessWidget {
                                                     .white,
                                               ),
                                               report
-                                                  .newStores
+                                                  .totalShopsMain
                                                   .toString(),
                                             ),
                                           ],
@@ -386,7 +369,7 @@ class ReportDetails extends StatelessWidget {
                                                         .bold,
                                               ),
                                               report
-                                                  .subscribedStores
+                                                  .totalSubscriptions
                                                   .toString(),
                                             ),
                                           ],
@@ -434,9 +417,7 @@ class ReportDetails extends StatelessWidget {
                                                 color: Colors
                                                     .white,
                                               ),
-                                              report
-                                                  .totalHeadQuarters
-                                                  .toString(),
+                                              1000.toString(),
                                             ),
                                           ],
                                         ),
@@ -481,9 +462,7 @@ class ReportDetails extends StatelessWidget {
                                                 color: Colors
                                                     .white,
                                               ),
-                                              report
-                                                  .totalStores
-                                                  .toString(),
+                                              1000.toString(),
                                             ),
                                           ],
                                         ),
@@ -499,16 +478,15 @@ class ReportDetails extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     Container(
-                      height: report.newStoresId.length < 2
+                      height: (report.totalActive ?? 0) < 2
                           ? MediaQuery.of(
                                   context,
                                 ).size.height -
                                 390
                           : (100 +
                                     (98 *
-                                        (report
-                                            .newStoresId
-                                            .length)))
+                                        (report.totalActive ??
+                                            0)))
                                 .toDouble(),
                       padding: EdgeInsets.symmetric(
                         horizontal: 5,
@@ -548,9 +526,7 @@ class ReportDetails extends StatelessWidget {
                           ),
                           Builder(
                             builder: (context) {
-                              if (report
-                                  .newStoresId
-                                  .isEmpty) {
+                              if (report.totalActive == 0) {
                                 return Expanded(
                                   child: EmptyWidget(
                                     isDashboard: false,
@@ -559,23 +535,23 @@ class ReportDetails extends StatelessWidget {
                               } else {
                                 return Column(
                                   spacing: 0,
-                                  children: report.newStoresId.map((
-                                    sho,
-                                  ) {
-                                    var newSh =
-                                        returnShopProvider(
-                                          context: context,
-                                          listen: false,
-                                        ).shops.firstWhere(
-                                          (sh) =>
-                                              sh.shopId ==
-                                              sho,
+                                  children: report
+                                      .totalActiveList
+                                      .map((sho) {
+                                        var newSh =
+                                            returnShopProvider()
+                                                .shopInfos
+                                                .firstWhere(
+                                                  (sh) =>
+                                                      sh.shopId ==
+                                                      sho,
+                                                );
+                                        return ShopTileMain(
+                                          isReport: true,
+                                          shop: newSh,
                                         );
-                                    return ShopTileMain(
-                                      isReport: true,
-                                      shop: newSh,
-                                    );
-                                  }).toList(),
+                                      })
+                                      .toList(),
                                 );
                               }
                             },

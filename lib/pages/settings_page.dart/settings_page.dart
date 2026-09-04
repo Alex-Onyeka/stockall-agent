@@ -28,6 +28,7 @@ class SettingsPage extends StatelessWidget {
                   Material(
                     type: MaterialType.transparency,
                     child: InkWell(
+                      mouseCursor: SystemMouseCursors.click,
                       onTap: () {
                         Navigator.of(context).pop();
                       },
@@ -58,6 +59,8 @@ class SettingsPage extends StatelessWidget {
                     child: Material(
                       type: MaterialType.transparency,
                       child: InkWell(
+                        mouseCursor:
+                            SystemMouseCursors.click,
                         onTap: () {},
                         child: Padding(
                           padding:
@@ -174,6 +177,7 @@ class SettingsTile extends StatelessWidget {
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
+          mouseCursor: SystemMouseCursors.click,
           onTap: action,
           child: Container(
             decoration: BoxDecoration(

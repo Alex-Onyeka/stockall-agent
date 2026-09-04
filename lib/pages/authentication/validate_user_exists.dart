@@ -29,10 +29,7 @@ class _ValidateUserExistsState
   late Future<UserClass?> userFuture;
 
   Future<UserClass?> getUserFuture() async {
-    return await returnUserProvider(
-      context: context,
-      listen: false,
-    ).getUser();
+    return await returnUserProvider().getUser();
   }
 
   @override

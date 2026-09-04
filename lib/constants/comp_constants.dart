@@ -7,7 +7,7 @@ void showSnackbar({
   required BuildContext context,
   required String actionResult,
 }) {
-  var theme = returnTheme(context: context, listen: false);
+  var theme = returnTheme(context: context);
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       elevation: 0,
@@ -67,6 +67,7 @@ void showSnackbar({
                   child: Material(
                     type: MaterialType.transparency,
                     child: InkWell(
+                      mouseCursor: SystemMouseCursors.click,
                       onTap: () {
                         // ScaffoldMessenger.of(
                         //   context,

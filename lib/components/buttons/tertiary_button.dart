@@ -28,6 +28,7 @@ class TertiaryButton extends StatelessWidget {
           ),
         ),
         child: InkWell(
+          mouseCursor: SystemMouseCursors.click,
           borderRadius: BorderRadius.circular(5),
           onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();

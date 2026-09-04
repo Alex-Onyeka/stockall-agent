@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
+
 String naira = '₦';
 
 double referralCut(String role) {
@@ -68,9 +71,74 @@ String formatDate(DateTime date) {
     'Sun',
   ];
 
-  String dayName = days[date.weekday - 1];
+  final dayName = days[date.weekday - 1];
 
-  return "$dayName, ${date.day}/${date.month}/${date.year}";
+  String suffix;
+
+  if (date.day >= 11 && date.day <= 13) {
+    suffix = 'th';
+  } else {
+    switch (date.day % 10) {
+      case 1:
+        suffix = 'st';
+        break;
+      case 2:
+        suffix = 'nd';
+        break;
+      case 3:
+        suffix = 'rd';
+        break;
+      default:
+        suffix = 'th';
+    }
+  }
+
+  return '$dayName, ${date.day}$suffix ${_monthName(date.month)} ${date.year}';
+}
+
+String formatDateOrDaysAgo(DateTime date) {
+  final difference = DateTime.now().difference(date);
+
+  if (difference.inDays > 30) {
+    return formatDate(date);
+  }
+
+  if (difference.inDays == 0) {
+    return 'Today';
+  }
+
+  if (difference.inDays == 1) {
+    return '1 day ago';
+  }
+
+  return '${difference.inDays} days ago';
+}
+
+String _monthName(int month) {
+  const months = [
+    'Jan',
+    'Feb',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  return months[month - 1];
+}
+
+String formatTime(DateTime date) {
+  final hour = date.hour % 12 == 0 ? 12 : date.hour % 12;
+  final minute = date.minute.toString().padLeft(2, '0');
+  final period = date.hour >= 12 ? 'Pm' : 'Am';
+
+  return '$hour:$minute $period';
 }
 
 String? formatDateShort(DateTime? date) {
@@ -104,8 +172,36 @@ DateTime monthEnd() {
   return DateTime(now.year, now.month + 1, 0, 23, 59, 59);
 }
 
+DateTime dayStart(DateTime day) {
+  return DateTime(day.year, day.month, day.day, 0, 0, 0);
+}
+
+DateTime dayEnd(DateTime day) {
+  return DateTime(
+    day.year,
+    day.month,
+    day.day,
+    23,
+    59,
+    59,
+    999,
+  );
+}
+
 int dateDifference(DateTime date1, DateTime date2) {
   return date2.difference(date1).inDays.abs();
+}
+
+int getMonthDifference(DateTime date1, DateTime date2) {
+  int months =
+      (date2.year - date1.year) * 12 +
+      (date2.month - date1.month);
+
+  if (date2.day < date1.day) {
+    months -= 1;
+  }
+
+  return months.abs();
 }
 
 bool isValidEmail(String email) {
@@ -121,4 +217,43 @@ final double totalAgentTargetStores = 48;
 double getAgentsSalary(int monthsRegistered) {
   var percent = (monthsRegistered / totalAgentTargetStores);
   return (salary * percent);
+}
+
+const double mobileScreenSmall = 520;
+
+const double mobileScreen = 650;
+
+const double tabletScreenSmall = 950;
+
+const double tabletScreen = 1024;
+
+bool isMobileSmall(BuildContext context) {
+  return screenWidth(context) <= mobileScreenSmall;
+}
+
+bool isMobile(BuildContext context) {
+  return screenWidth(context) <= mobileScreen;
+}
+
+bool isTabletSmall(BuildContext context) {
+  return screenWidth(context) <= tabletScreenSmall &&
+      screenWidth(context) > mobileScreen;
+}
+
+bool isTablet(BuildContext context) {
+  return screenWidth(context) <= tabletScreenSmall &&
+      screenWidth(context) > mobileScreen;
+}
+
+double screenWidth(BuildContext context) {
+  return MediaQuery.of(context).size.width;
+}
+
+double screenHeight(BuildContext context) {
+  return MediaQuery.of(context).size.height;
+}
+
+var uuid = Uuid();
+String uuidGen() {
+  return uuid.v4();
 }

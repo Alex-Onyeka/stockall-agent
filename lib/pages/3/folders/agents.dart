@@ -1,14 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:stockallagent/classes/action_result.dart';
-import 'package:stockallagent/classes/ref_payments_class.dart';
-import 'package:stockallagent/classes/user_class.dart';
-import 'package:stockallagent/components/dialog_template.dart';
-import 'package:stockallagent/components/empty_widget.dart';
 import 'package:stockallagent/components/main_top_bar.dart';
-import 'package:stockallagent/constants/comp_constants.dart';
-import 'package:stockallagent/constants/constants_main.dart';
-import 'package:stockallagent/constants/media_links.dart';
 import 'package:stockallagent/main.dart';
 
 class Agents extends StatefulWidget {
@@ -104,102 +95,100 @@ class _AgentsState extends State<Agents> {
             Expanded(
               child: RefreshIndicator.adaptive(
                 onRefresh: () {
-                  return returnUserProvider(
-                    context: context,
-                    listen: false,
-                  ).getAgents();
+                  return returnUserProvider().getAgents();
                 },
                 backgroundColor: Colors.white,
                 color: theme.lightModeColor.prColor250,
                 child: Builder(
                   builder: (context) {
-                    if (currentSelection == 1
-                        ? returnUserProvider(
-                            context: context,
-                          ).activeUsers(context).isEmpty
-                        : currentSelection == 2
-                        ? returnUserProvider(
-                            context: context,
-                          ).paidUsers(context).isEmpty
-                        : currentSelection == 3
-                        ? returnUserProvider(
-                            context: context,
-                          ).unPaidUsers(context).isEmpty
-                        : returnUserProvider(
-                            context: context,
-                          ).agents.isEmpty) {
-                      return ListView(
-                        children: [
-                          SizedBox(
-                            height:
-                                MediaQuery.of(
-                                  context,
-                                ).size.height -
-                                200,
-                            child: EmptyWidget(
-                              isDashboard: false,
-                            ),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return ListView(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 15,
-                        ),
-                        children: currentSelection == 1
-                            ? returnUserProvider(
-                                    context: context,
-                                  )
-                                  .activeUsers(context)
-                                  .map(
-                                    (agent) =>
-                                        AgentTileMain(
-                                          isAll: false,
-                                          agent: agent,
-                                        ),
-                                  )
-                                  .toList()
-                            : currentSelection == 2
-                            ? returnUserProvider(
-                                    context: context,
-                                  )
-                                  .paidUsers(context)
-                                  .map(
-                                    (agent) =>
-                                        AgentTileMain(
-                                          isAll: false,
-                                          agent: agent,
-                                        ),
-                                  )
-                                  .toList()
-                            : currentSelection == 3
-                            ? returnUserProvider(
-                                    context: context,
-                                  )
-                                  .unPaidUsers(context)
-                                  .map(
-                                    (agent) =>
-                                        AgentTileMain(
-                                          isAll: false,
-                                          agent: agent,
-                                        ),
-                                  )
-                                  .toList()
-                            : returnUserProvider(
-                                    context: context,
-                                  ).agents
-                                  .map(
-                                    (agent) =>
-                                        AgentTileMain(
-                                          isAll: true,
-                                          agent: agent,
-                                        ),
-                                  )
-                                  .toList(),
-                      );
-                    }
+                    return Container();
+                    // if (currentSelection == 1
+                    //     ? returnUserProvider(
+                    //         context: context,
+                    //       ).activeUsers(context).isEmpty
+                    //     : currentSelection == 2
+                    //     ? returnUserProvider(
+                    //         context: context,
+                    //       ).paidUsers(context).isEmpty
+                    //     : currentSelection == 3
+                    //     ? returnUserProvider(
+                    //         context: context,
+                    //       ).unPaidUsers(context).isEmpty
+                    //     : returnUserProvider(
+                    //         context: context,
+                    //       ).agents.isEmpty) {
+                    //   return ListView(
+                    //     children: [
+                    //       SizedBox(
+                    //         height:
+                    //             MediaQuery.of(
+                    //               context,
+                    //             ).size.height -
+                    //             200,
+                    //         child: EmptyWidget(
+                    //           isDashboard: false,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   );
+                    // } else {
+                    // return ListView(
+                    //   padding: EdgeInsets.symmetric(
+                    //     horizontal: 20,
+                    //     vertical: 15,
+                    //   ),
+                    //   children: currentSelection == 1
+                    //       ? returnUserProvider(
+                    //               context: context,
+                    //             )
+                    //             .activeUsers(context)
+                    //             .map(
+                    //               (agent) =>
+                    //                   AgentTileMain(
+                    //                     isAll: false,
+                    //                     agent: agent,
+                    //                   ),
+                    //             )
+                    //             .toList()
+                    //       : currentSelection == 2
+                    //       ? returnUserProvider(
+                    //               context: context,
+                    //             )
+                    //             .paidUsers(context)
+                    //             .map(
+                    //               (agent) =>
+                    //                   AgentTileMain(
+                    //                     isAll: false,
+                    //                     agent: agent,
+                    //                   ),
+                    //             )
+                    //             .toList()
+                    //       : currentSelection == 3
+                    //       ? returnUserProvider(
+                    //               context: context,
+                    //             )
+                    //             .unPaidUsers(context)
+                    //             .map(
+                    //               (agent) =>
+                    //                   AgentTileMain(
+                    //                     isAll: false,
+                    //                     agent: agent,
+                    //                   ),
+                    //             )
+                    //             .toList()
+                    //       : returnUserProvider(
+                    //               context: context,
+                    //             ).agents
+                    //             .map(
+                    //               (agent) =>
+                    //                   AgentTileMain(
+                    //                     isAll: true,
+                    //                     agent: agent,
+                    //                   ),
+                    //             )
+                    //             .toList(),
+                    // );
+                    // }
                   },
                 ),
               ),
@@ -211,1007 +200,1008 @@ class _AgentsState extends State<Agents> {
   }
 }
 
-class AgentTileMain extends StatefulWidget {
-  final UserClass agent;
-  final bool isAll;
-  const AgentTileMain({
-    super.key,
-    required this.agent,
-    required this.isAll,
-  });
+// class AgentTileMain extends StatefulWidget {
+//   final UserClass agent;
+//   final bool isAll;
+//   const AgentTileMain({
+//     super.key,
+//     required this.agent,
+//     required this.isAll,
+//   });
 
-  @override
-  State<AgentTileMain> createState() =>
-      _AgentTileMainState();
-}
+//   @override
+//   State<AgentTileMain> createState() =>
+//       _AgentTileMainState();
+// }
 
-class _AgentTileMainState extends State<AgentTileMain> {
-  @override
-  Widget build(BuildContext context) {
-    var theme = returnTheme(context: context);
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5),
-      child: Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5),
-            border: Border(
-              bottom: BorderSide(
-                color: Colors.grey.shade100,
-              ),
-            ),
-          ),
-          child: InkWell(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (dialogContext) {
-                  return StatefulBuilder(
-                    builder: (context, setState) => DialogTemplate(
-                      cancelActionText: 'Close',
-                      action:
-                          returnUserProvider(
-                                context: context,
-                              ).isAgentPaid(
-                                widget.agent,
-                                context,
-                              ) ||
-                              widget.isAll
-                          ? null
-                          : () {
-                              if (returnBankProvider(
-                                    context: context,
-                                    listen: false,
-                                  ).banks
-                                  .where(
-                                    (ban) =>
-                                        ban.userId ==
-                                        widget.agent.userId,
-                                  )
-                                  .isEmpty) {
-                                showDialog(
-                                  context: context,
-                                  builder: (confirmDialog) {
-                                    return DialogTemplate(
-                                      title:
-                                          'Bank Detailts Not Set',
-                                      message:
-                                          'This agents bank details is not set. They need to set their bank details before you can proceed with payment.',
-                                    );
-                                  },
-                                );
-                              } else {
-                                showDialog(
-                                  context: context,
-                                  builder: (confirmDialog) {
-                                    return DialogTemplate(
-                                      action: () async {
-                                        returnResourceProvider(
-                                          context: context,
-                                          listen: false,
-                                        ).toggleLoading(
-                                          true,
-                                        );
-                                        var payment = RefPaymentsClass(
-                                          userId: widget
-                                              .agent
-                                              .userId!,
-                                          amount:
-                                              widget
-                                                      .agent
-                                                      .role ==
-                                                  'Employed'
-                                              ? (returnSubPaymentsProvider(
-                                                      context:
-                                                          context,
-                                                      listen:
-                                                          false,
-                                                    ).getAgentsCutForMonthsPayment(
-                                                      widget
-                                                          .agent
-                                                          .referralCode!,
-                                                      widget
-                                                          .agent
-                                                          .role!,
-                                                      context,
-                                                    ) +
-                                                    getAgentsSalary(
-                                                      returnShopProvider(
-                                                            context: context,
-                                                            listen: false,
-                                                          )
-                                                          .getHeadQuaters()
-                                                          .where(
-                                                            (
-                                                              sh,
-                                                            ) =>
-                                                                sh.refCode ==
-                                                                    widget.agent.referralCode &&
-                                                                (sh.createdAt.isAfter(
-                                                                      monthStart(),
-                                                                    ) ||
-                                                                    sh.createdAt.isAtSameMomentAs(
-                                                                      monthStart(),
-                                                                    )),
-                                                          )
-                                                          .length,
-                                                    ))
-                                              : returnSubPaymentsProvider(
-                                                  context:
-                                                      context,
-                                                  listen:
-                                                      false,
-                                                ).getAgentsCutForMonthsPayment(
-                                                  widget
-                                                      .agent
-                                                      .referralCode!,
-                                                  widget
-                                                      .agent
-                                                      .role!,
-                                                  context,
-                                                ),
-                                          monthTotal:
-                                              returnSubPaymentsProvider(
-                                                context:
-                                                    context,
-                                                listen:
-                                                    false,
-                                              ).getAgentsTotalForMonth(
-                                                widget
-                                                    .agent
-                                                    .referralCode!,
-                                                context,
-                                              ),
-                                          totalStores:
-                                              returnSubPaymentsProvider(
-                                                    context:
-                                                        context,
-                                                    listen:
-                                                        false,
-                                                  )
-                                                  .getAgentsSubPaymentsList(
-                                                    context,
-                                                    widget
-                                                        .agent
-                                                        .referralCode!,
-                                                  )
-                                                  .length,
-                                        );
-                                        await returnRefPaymentsProvider(
-                                          context: context,
-                                          listen: false,
-                                        ).makePayment(
-                                          payment,
-                                        );
-                                        returnResourceProvider(
-                                          // ignore: use_build_context_synchronously
-                                          context: context,
-                                          listen: false,
-                                        ).toggleLoading(
-                                          false,
-                                        );
-                                        Navigator.of(
-                                          // ignore: use_build_context_synchronously
-                                          confirmDialog,
-                                        ).pop();
-                                      },
-                                      title:
-                                          'Are you Sure?',
-                                      message:
-                                          'Are you sure you want to proceed to pay this agent for the month?',
-                                    );
-                                  },
-                                ).then((_) {
-                                  setState(() {});
-                                  returnResourceProvider(
-                                    // ignore: use_build_context_synchronously
-                                    context: context,
-                                    listen: false,
-                                  ).toggleLoading(false);
-                                });
-                              }
-                            },
-                      mainActionText: "Make Payment",
-                      mainWidget: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
-                              borderRadius:
-                                  BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              spacing: 10,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.amber,
-                                  ),
-                                  child: Image.asset(
-                                    profileIcon,
-                                    height: 45,
-                                  ),
-                                ),
-                                Column(
-                                  spacing: 1,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment
-                                          .start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          textAlign:
-                                              TextAlign
-                                                  .right,
-                                          style: TextStyle(
-                                            fontSize: theme
-                                                .mobileTexts
-                                                .b2
-                                                .fontSize,
-                                            fontWeight:
-                                                FontWeight
-                                                    .bold,
-                                          ),
-                                          '${widget.agent.name} | ',
-                                        ),
-                                        Text(
-                                          textAlign:
-                                              TextAlign
-                                                  .right,
-                                          style: TextStyle(
-                                            fontSize: theme
-                                                .mobileTexts
-                                                .b4
-                                                .fontSize,
-                                            fontWeight:
-                                                FontWeight
-                                                    .bold,
-                                            color: Colors
-                                                .grey
-                                                .shade500,
-                                          ),
-                                          ' ${widget.agent.role?.toUpperCase()}',
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      textAlign:
-                                          TextAlign.right,
-                                      style: TextStyle(
-                                        fontSize: theme
-                                            .mobileTexts
-                                            .b3
-                                            .fontSize,
-                                        color: Colors
-                                            .grey
-                                            .shade700,
-                                        fontWeight:
-                                            FontWeight
-                                                .normal,
-                                      ),
-                                      widget.agent.email,
-                                    ),
-                                    SizedBox(height: 1),
-                                    Text(
-                                      textAlign:
-                                          TextAlign.right,
-                                      style: TextStyle(
-                                        fontSize: theme
-                                            .mobileTexts
-                                            .b3
-                                            .fontSize,
-                                        color: Colors
-                                            .grey
-                                            .shade700,
-                                        fontWeight:
-                                            FontWeight
-                                                .normal,
-                                      ),
-                                      widget.agent.phone ??
-                                          'Phone Not Set',
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(
-                                  horizontal: 10.0,
-                                ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  spacing: 10,
-                                  children: [
-                                    Expanded(
-                                      child: AgentProfileInfo(
-                                        title:
-                                            'Total Registered',
-                                        data:
-                                            returnShopProvider(
-                                                  context:
-                                                      context,
-                                                  listen:
-                                                      false,
-                                                )
-                                                .getHeadQuaters()
-                                                .where(
-                                                  (sh) =>
-                                                      sh.refCode ==
-                                                      widget
-                                                          .agent
-                                                          .referralCode,
-                                                )
-                                                .length
-                                                .toStringAsFixed(
-                                                  0,
-                                                ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 25,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade100,
-                                    ),
-                                    Expanded(
-                                      child: AgentProfileInfo(
-                                        title: 'This Month',
-                                        data:
-                                            returnShopProvider(
-                                                  context:
-                                                      context,
-                                                  listen:
-                                                      false,
-                                                )
-                                                .getHeadQuaters()
-                                                .where(
-                                                  (sh) =>
-                                                      sh.refCode ==
-                                                          widget.agent.referralCode &&
-                                                      (sh.createdAt.isAfter(
-                                                            monthStart(),
-                                                          ) ||
-                                                          sh.createdAt.isAtSameMomentAs(
-                                                            monthStart(),
-                                                          )),
-                                                )
-                                                .length
-                                                .toStringAsFixed(
-                                                  0,
-                                                ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Visibility(
-                                  visible:
-                                      widget.agent.role ==
-                                      'Employed',
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .spaceBetween,
-                                        spacing: 10,
-                                        children: [
-                                          Expanded(
-                                            child: AgentProfileInfo(
-                                              title:
-                                                  'Week 1',
-                                              data:
-                                                  returnShopProvider(
-                                                        context:
-                                                            context,
-                                                        listen:
-                                                            false,
-                                                      )
-                                                      .getHeadQuaters()
-                                                      .where(
-                                                        (
-                                                          sh,
-                                                        ) =>
-                                                            sh.refCode ==
-                                                                widget.agent.referralCode &&
-                                                            (sh.createdAt.isAfter(
-                                                                  monthStart(),
-                                                                ) ||
-                                                                sh.createdAt.isAtSameMomentAs(
-                                                                  monthStart(),
-                                                                )) &&
-                                                            (sh.createdAt.isBefore(
-                                                                  secondWeek(),
-                                                                ) ||
-                                                                sh.createdAt.isAtSameMomentAs(
-                                                                  secondWeek(),
-                                                                )),
-                                                      )
-                                                      .length
-                                                      .toStringAsFixed(
-                                                        0,
-                                                      ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 25,
-                                            width: 1,
-                                            color: Colors
-                                                .grey
-                                                .shade100,
-                                          ),
-                                          Expanded(
-                                            child: AgentProfileInfo(
-                                              title:
-                                                  'Week 2',
-                                              data:
-                                                  returnShopProvider(
-                                                        context:
-                                                            context,
-                                                        listen:
-                                                            false,
-                                                      )
-                                                      .getHeadQuaters()
-                                                      .where(
-                                                        (
-                                                          sh,
-                                                        ) =>
-                                                            sh.refCode ==
-                                                                widget.agent.referralCode &&
-                                                            (sh.createdAt.isAfter(
-                                                                  secondWeek(),
-                                                                ) ||
-                                                                sh.createdAt.isAtSameMomentAs(
-                                                                  secondWeek(),
-                                                                )) &&
-                                                            (sh.createdAt.isBefore(
-                                                                  thirdWeek(),
-                                                                ) ||
-                                                                sh.createdAt.isAtSameMomentAs(
-                                                                  thirdWeek(),
-                                                                )),
-                                                      )
-                                                      .length
-                                                      .toStringAsFixed(
-                                                        0,
-                                                      ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .spaceBetween,
-                                        spacing: 10,
-                                        children: [
-                                          Expanded(
-                                            child: AgentProfileInfo(
-                                              title:
-                                                  'Week 3',
-                                              data:
-                                                  returnShopProvider(
-                                                        context:
-                                                            context,
-                                                        listen:
-                                                            false,
-                                                      )
-                                                      .getHeadQuaters()
-                                                      .where(
-                                                        (
-                                                          sh,
-                                                        ) =>
-                                                            sh.refCode ==
-                                                                widget.agent.referralCode &&
-                                                            (sh.createdAt.isAfter(
-                                                                  thirdWeek(),
-                                                                ) ||
-                                                                sh.createdAt.isAtSameMomentAs(
-                                                                  thirdWeek(),
-                                                                )) &&
-                                                            (sh.createdAt.isBefore(
-                                                                  fourthWeek(),
-                                                                ) ||
-                                                                sh.createdAt.isAtSameMomentAs(
-                                                                  fourthWeek(),
-                                                                )),
-                                                      )
-                                                      .length
-                                                      .toStringAsFixed(
-                                                        0,
-                                                      ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 25,
-                                            width: 1,
-                                            color: Colors
-                                                .grey
-                                                .shade100,
-                                          ),
-                                          Expanded(
-                                            child: AgentProfileInfo(
-                                              title:
-                                                  'Week 4',
-                                              data:
-                                                  returnShopProvider(
-                                                        context:
-                                                            context,
-                                                        listen:
-                                                            false,
-                                                      )
-                                                      .getHeadQuaters()
-                                                      .where(
-                                                        (
-                                                          sh,
-                                                        ) =>
-                                                            sh.refCode ==
-                                                                widget.agent.referralCode &&
-                                                            (sh.createdAt.isAfter(
-                                                                  fourthWeek(),
-                                                                ) ||
-                                                                sh.createdAt.isAtSameMomentAs(
-                                                                  fourthWeek(),
-                                                                )) &&
-                                                            (sh.createdAt.isBefore(
-                                                                  monthEnd(),
-                                                                ) ||
-                                                                sh.createdAt.isAtSameMomentAs(
-                                                                  monthEnd(),
-                                                                )),
-                                                      )
-                                                      .length
-                                                      .toStringAsFixed(
-                                                        0,
-                                                      ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  spacing: 10,
-                                  children: [
-                                    Expanded(
-                                      child: AgentProfileInfo(
-                                        title:
-                                            'Total Eligible',
-                                        data:
-                                            returnShopProvider(
-                                                  context:
-                                                      context,
-                                                  listen:
-                                                      false,
-                                                )
-                                                .getHeadQuaters()
-                                                .where(
-                                                  (sh) =>
-                                                      sh.refCode ==
-                                                          widget.agent.referralCode &&
-                                                      dateDifference(
-                                                            sh.createdAt,
-                                                            DateTime.now(),
-                                                          ) <
-                                                          storeEligibilty,
-                                                )
-                                                .length
-                                                .toStringAsFixed(
-                                                  0,
-                                                ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 25,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade100,
-                                    ),
-                                    Expanded(
-                                      child: AgentProfileInfo(
-                                        title:
-                                            'Total Ineligible',
-                                        data:
-                                            returnShopProvider(
-                                                  context:
-                                                      context,
-                                                  listen:
-                                                      false,
-                                                )
-                                                .getHeadQuaters()
-                                                .where(
-                                                  (sh) =>
-                                                      sh.refCode ==
-                                                          widget.agent.referralCode &&
-                                                      dateDifference(
-                                                            sh.createdAt,
-                                                            DateTime.now(),
-                                                          ) >=
-                                                          storeEligibilty,
-                                                )
-                                                .length
-                                                .toStringAsFixed(
-                                                  0,
-                                                ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                AgentProfileInfo(
-                                  title:
-                                      'Month\'s Commission',
-                                  isPaid:
-                                      returnUserProvider(
-                                        context: context,
-                                        listen: false,
-                                      ).isAgentPaid(
-                                        widget.agent,
-                                        context,
-                                      ),
-                                  data: formatMoney(
-                                    returnSubPaymentsProvider(
-                                      context: context,
-                                    ).getAgentsCutForMonthsPayment(
-                                      widget
-                                              .agent
-                                              .referralCode ??
-                                          '',
-                                      widget.agent.role!,
-                                      context,
-                                    ),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible:
-                                      widget.agent.role ==
-                                      'Employed',
-                                  child: AgentProfileInfo(
-                                    title:
-                                        'Month\'s Salary',
-                                    isPaid:
-                                        returnUserProvider(
-                                          context: context,
-                                          listen: false,
-                                        ).isAgentPaid(
-                                          widget.agent,
-                                          context,
-                                        ),
-                                    data: formatMoney(
-                                      getAgentsSalary(
-                                        returnShopProvider(
-                                              context:
-                                                  context,
-                                              listen: false,
-                                            )
-                                            .getHeadQuaters()
-                                            .where(
-                                              (sh) =>
-                                                  sh.refCode ==
-                                                      widget
-                                                          .agent
-                                                          .referralCode &&
-                                                  (sh.createdAt.isAfter(
-                                                        monthStart(),
-                                                      ) ||
-                                                      sh.createdAt.isAtSameMomentAs(
-                                                        monthStart(),
-                                                      )),
-                                            )
-                                            .length,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                AgentProfileInfo(
-                                  title:
-                                      'Month\'s Total ${widget.agent.role == 'Freelance' ? 'Subscription' : 'Payment'}',
-                                  data: formatMoney(
-                                    widget.agent.role ==
-                                            'Freelance'
-                                        ? returnSubPaymentsProvider(
-                                            context:
-                                                context,
-                                          ).getAgentsTotalForMonth(
-                                            widget
-                                                    .agent
-                                                    .referralCode ??
-                                                '',
-                                            context,
-                                          )
-                                        : (returnSubPaymentsProvider(
-                                                context:
-                                                    context,
-                                              ).getAgentsCutForMonthsPayment(
-                                                widget
-                                                        .agent
-                                                        .referralCode ??
-                                                    '',
-                                                widget
-                                                    .agent
-                                                    .role!,
-                                                context,
-                                              ) +
-                                              getAgentsSalary(
-                                                returnShopProvider(
-                                                      context:
-                                                          context,
-                                                      listen:
-                                                          false,
-                                                    )
-                                                    .getHeadQuaters()
-                                                    .where(
-                                                      (
-                                                        sh,
-                                                      ) =>
-                                                          sh.refCode ==
-                                                              widget.agent.referralCode &&
-                                                          (sh.createdAt.isAfter(
-                                                                monthStart(),
-                                                              ) ||
-                                                              sh.createdAt.isAtSameMomentAs(
-                                                                monthStart(),
-                                                              )),
-                                                    )
-                                                    .length,
-                                              )),
-                                  ),
-                                ),
-                                AgentProfileInfo(
-                                  title: 'Bank Name',
-                                  data:
-                                      returnBankProvider(
-                                            context:
-                                                context,
-                                            listen: false,
-                                          )
-                                          .getSingleBank(
-                                            widget
-                                                .agent
-                                                .userId!,
-                                          )
-                                          ?.bankName ??
-                                      'Not Set',
-                                ),
-                                AgentProfileInfo(
-                                  copyAction:
-                                      returnBankProvider(
-                                            context:
-                                                context,
-                                            listen: false,
-                                          ).banks
-                                          .where(
-                                            (ban) =>
-                                                ban.userId ==
-                                                widget
-                                                    .agent
-                                                    .userId,
-                                          )
-                                          .isNotEmpty
-                                      ? () {
-                                          print(
-                                            'Copying shit',
-                                          );
-                                          Clipboard.setData(
-                                            ClipboardData(
-                                              text:
-                                                  returnBankProvider(
-                                                        context:
-                                                            context,
-                                                        listen:
-                                                            false,
-                                                      )
-                                                      .getSingleBank(
-                                                        widget.agent.userId!,
-                                                      )
-                                                      ?.accountNumber ??
-                                                  '',
-                                            ),
-                                          );
-                                          showSnackbar(
-                                            message:
-                                                'Account Number has been copied to clipboard.',
-                                            title:
-                                                'Copied to Clipboard!',
-                                            context:
-                                                context,
-                                            actionResult:
-                                                ActionResult()
-                                                    .success,
-                                          );
-                                        }
-                                      : null,
-                                  title: 'Account Number',
-                                  data:
-                                      returnBankProvider(
-                                            context:
-                                                context,
-                                            listen: false,
-                                          )
-                                          .getSingleBank(
-                                            widget
-                                                .agent
-                                                .userId!,
-                                          )
-                                          ?.accountNumber ??
-                                      'Not Set',
-                                ),
-                                AgentProfileInfo(
-                                  title: 'Account Name',
-                                  data:
-                                      returnBankProvider(
-                                            context:
-                                                context,
-                                            listen: false,
-                                          )
-                                          .getSingleBank(
-                                            widget
-                                                .agent
-                                                .userId!,
-                                          )
-                                          ?.accountName ??
-                                      'Not Set',
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ).then((_) {
-                setState(() {});
-              });
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                vertical: 20,
-                horizontal: 20,
-              ),
-              child: Row(
-                spacing: 10,
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Row(
-                      spacing: 8,
-                      children: [
-                        Icon(
-                          size: 18,
-                          color: Colors.grey,
-                          Icons.person,
-                        ),
-                        Expanded(
-                          child: Text(
-                            style: TextStyle(
-                              fontSize: theme
-                                  .mobileTexts
-                                  .b2
-                                  .fontSize,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            widget.agent.name,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    spacing: 8,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 3,
-                          horizontal: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                        ),
-                        child: Text(
-                          style: TextStyle(
-                            fontSize: 8,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          widget.agent.role
-                                  ?.toUpperCase() ??
-                              'Role Not Set',
-                        ),
-                      ),
-                      Visibility(
-                        visible: !widget.isAll,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 1,
-                            horizontal: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                returnUserProvider(
-                                  context: context,
-                                ).isAgentPaid(
-                                  widget.agent,
-                                  context,
-                                )
-                                ? const Color.fromARGB(
-                                    14,
-                                    76,
-                                    175,
-                                    79,
-                                  )
-                                : const Color.fromARGB(
-                                    10,
-                                    244,
-                                    67,
-                                    54,
-                                  ),
-                            borderRadius:
-                                BorderRadius.circular(2),
-                            border: Border.all(
-                              color:
-                                  returnUserProvider(
-                                    context: context,
-                                  ).isAgentPaid(
-                                    widget.agent,
-                                    context,
-                                  )
-                                  ? Colors.green
-                                  : Colors.red,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              style: TextStyle(
-                                fontSize: theme
-                                    .mobileTexts
-                                    .b4
-                                    .fontSize,
-                              ),
-                              returnUserProvider(
-                                    context: context,
-                                  ).isAgentPaid(
-                                    widget.agent,
-                                    context,
-                                  )
-                                  ? 'Paid'
-                                  : 'Unpaid',
-                            ),
-                          ),
-                        ),
-                      ),
-                      Icon(
-                        size: 14,
-                        color: Colors.grey,
-                        Icons.arrow_forward_ios_rounded,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+// class _AgentTileMainState extends State<AgentTileMain> {
+//   @override
+//   Widget build(BuildContext context) {
+//     var theme = returnTheme(context: context);
+//     return Padding(
+//       padding: EdgeInsets.symmetric(vertical: 5),
+//       child: Material(
+//         type: MaterialType.transparency,
+//         child: Ink(
+//           decoration: BoxDecoration(
+//             color: Colors.white,
+//             borderRadius: BorderRadius.circular(5),
+//             border: Border(
+//               bottom: BorderSide(
+//                 color: Colors.grey.shade100,
+//               ),
+//             ),
+//           ),
+//           child: InkWell(
+//             mouseCursor: SystemMouseCursors.click,
+//             onTap: () {
+//               showDialog(
+//                 context: context,
+//                 builder: (dialogContext) {
+//                   return StatefulBuilder(
+//                     builder: (context, setState) => DialogTemplate(
+//                       cancelActionText: 'Close',
+//                       action:
+//                           returnUserProvider(
+//                                 context: context,
+//                               ).isAgentPaid(
+//                                 widget.agent,
+//                                 context,
+//                               ) ||
+//                               widget.isAll
+//                           ? null
+//                           : () {
+//                               if (returnBankProvider(
+//                                     context: context,
+//                                     listen: false,
+//                                   ).banks
+//                                   .where(
+//                                     (ban) =>
+//                                         ban.userId ==
+//                                         widget.agent.userId,
+//                                   )
+//                                   .isEmpty) {
+//                                 showDialog(
+//                                   context: context,
+//                                   builder: (confirmDialog) {
+//                                     return DialogTemplate(
+//                                       title:
+//                                           'Bank Detailts Not Set',
+//                                       message:
+//                                           'This agents bank details is not set. They need to set their bank details before you can proceed with payment.',
+//                                     );
+//                                   },
+//                                 );
+//                               } else {
+//                                 showDialog(
+//                                   context: context,
+//                                   builder: (confirmDialog) {
+//                                     return DialogTemplate(
+//                                       action: () async {
+//                                         returnResourceProvider(
+//                                           context: context,
+//                                           listen: false,
+//                                         ).toggleLoading(
+//                                           true,
+//                                         );
+//                                         var payment = RefPaymentsClass(
+//                                           userId: widget
+//                                               .agent
+//                                               .userId!,
+//                                           amount:
+//                                               widget
+//                                                       .agent
+//                                                       .role ==
+//                                                   'Employed'
+//                                               ? (returnSubPaymentsProvider(
+//                                                       context:
+//                                                           context,
+//                                                       listen:
+//                                                           false,
+//                                                     ).getAgentsCutForMonthsPayment(
+//                                                       widget
+//                                                           .agent
+//                                                           .referralCode!,
+//                                                       widget
+//                                                           .agent
+//                                                           .role!,
+//                                                       context,
+//                                                     ) +
+//                                                     getAgentsSalary(
+//                                                       returnShopProvider(
+//                                                             context: context,
+//                                                             listen: false,
+//                                                           )
+//                                                           .getHeadQuaters()
+//                                                           .where(
+//                                                             (
+//                                                               sh,
+//                                                             ) =>
+//                                                                 sh.refCode ==
+//                                                                     widget.agent.referralCode &&
+//                                                                 (sh.createdAt.isAfter(
+//                                                                       monthStart(),
+//                                                                     ) ||
+//                                                                     sh.createdAt.isAtSameMomentAs(
+//                                                                       monthStart(),
+//                                                                     )),
+//                                                           )
+//                                                           .length,
+//                                                     ))
+//                                               : returnSubPaymentsProvider(
+//                                                   context:
+//                                                       context,
+//                                                   listen:
+//                                                       false,
+//                                                 ).getAgentsCutForMonthsPayment(
+//                                                   widget
+//                                                       .agent
+//                                                       .referralCode!,
+//                                                   widget
+//                                                       .agent
+//                                                       .role!,
+//                                                   context,
+//                                                 ),
+//                                           monthTotal:
+//                                               returnSubPaymentsProvider(
+//                                                 context:
+//                                                     context,
+//                                                 listen:
+//                                                     false,
+//                                               ).getAgentsTotalForMonth(
+//                                                 widget
+//                                                     .agent
+//                                                     .referralCode!,
+//                                                 context,
+//                                               ),
+//                                           totalStores:
+//                                               returnSubPaymentsProvider(
+//                                                     context:
+//                                                         context,
+//                                                     listen:
+//                                                         false,
+//                                                   )
+//                                                   .getAgentsSubPaymentsList(
+//                                                     context,
+//                                                     widget
+//                                                         .agent
+//                                                         .referralCode!,
+//                                                   )
+//                                                   .length,
+//                                         );
+//                                         await returnRefPaymentsProvider(
+//                                           context: context,
+//                                           listen: false,
+//                                         ).makePayment(
+//                                           payment,
+//                                         );
+//                                         returnResourceProvider(
+//                                           // ignore: use_build_context_synchronously
+//                                           context: context,
+//                                           listen: false,
+//                                         ).toggleLoading(
+//                                           false,
+//                                         );
+//                                         Navigator.of(
+//                                           // ignore: use_build_context_synchronously
+//                                           confirmDialog,
+//                                         ).pop();
+//                                       },
+//                                       title:
+//                                           'Are you Sure?',
+//                                       message:
+//                                           'Are you sure you want to proceed to pay this agent for the month?',
+//                                     );
+//                                   },
+//                                 ).then((_) {
+//                                   setState(() {});
+//                                   returnResourceProvider(
+//                                     // ignore: use_build_context_synchronously
+//                                     context: context,
+//                                     listen: false,
+//                                   ).toggleLoading(false);
+//                                 });
+//                               }
+//                             },
+//                       mainActionText: "Make Payment",
+//                       mainWidget: Column(
+//                         children: [
+//                           Container(
+//                             padding: EdgeInsets.all(15),
+//                             decoration: BoxDecoration(
+//                               color: Colors.grey.shade100,
+//                               borderRadius:
+//                                   BorderRadius.circular(5),
+//                             ),
+//                             child: Row(
+//                               spacing: 10,
+//                               children: [
+//                                 Container(
+//                                   decoration: BoxDecoration(
+//                                     shape: BoxShape.circle,
+//                                     color: Colors.amber,
+//                                   ),
+//                                   child: Image.asset(
+//                                     profileIcon,
+//                                     height: 45,
+//                                   ),
+//                                 ),
+//                                 Column(
+//                                   spacing: 1,
+//                                   crossAxisAlignment:
+//                                       CrossAxisAlignment
+//                                           .start,
+//                                   children: [
+//                                     Row(
+//                                       children: [
+//                                         Text(
+//                                           textAlign:
+//                                               TextAlign
+//                                                   .right,
+//                                           style: TextStyle(
+//                                             fontSize: theme
+//                                                 .mobileTexts
+//                                                 .b2
+//                                                 .fontSize,
+//                                             fontWeight:
+//                                                 FontWeight
+//                                                     .bold,
+//                                           ),
+//                                           '${widget.agent.name} | ',
+//                                         ),
+//                                         Text(
+//                                           textAlign:
+//                                               TextAlign
+//                                                   .right,
+//                                           style: TextStyle(
+//                                             fontSize: theme
+//                                                 .mobileTexts
+//                                                 .b4
+//                                                 .fontSize,
+//                                             fontWeight:
+//                                                 FontWeight
+//                                                     .bold,
+//                                             color: Colors
+//                                                 .grey
+//                                                 .shade500,
+//                                           ),
+//                                           ' ${widget.agent.role?.toUpperCase()}',
+//                                         ),
+//                                       ],
+//                                     ),
+//                                     Text(
+//                                       textAlign:
+//                                           TextAlign.right,
+//                                       style: TextStyle(
+//                                         fontSize: theme
+//                                             .mobileTexts
+//                                             .b3
+//                                             .fontSize,
+//                                         color: Colors
+//                                             .grey
+//                                             .shade700,
+//                                         fontWeight:
+//                                             FontWeight
+//                                                 .normal,
+//                                       ),
+//                                       widget.agent.email,
+//                                     ),
+//                                     SizedBox(height: 1),
+//                                     Text(
+//                                       textAlign:
+//                                           TextAlign.right,
+//                                       style: TextStyle(
+//                                         fontSize: theme
+//                                             .mobileTexts
+//                                             .b3
+//                                             .fontSize,
+//                                         color: Colors
+//                                             .grey
+//                                             .shade700,
+//                                         fontWeight:
+//                                             FontWeight
+//                                                 .normal,
+//                                       ),
+//                                       widget.agent.phone ??
+//                                           'Phone Not Set',
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                           SizedBox(height: 20),
+//                           Padding(
+//                             padding:
+//                                 const EdgeInsets.symmetric(
+//                                   horizontal: 10.0,
+//                                 ),
+//                             child: Column(
+//                               children: [
+//                                 Row(
+//                                   mainAxisAlignment:
+//                                       MainAxisAlignment
+//                                           .spaceBetween,
+//                                   spacing: 10,
+//                                   children: [
+//                                     Expanded(
+//                                       child: AgentProfileInfo(
+//                                         title:
+//                                             'Total Registered',
+//                                         data:
+//                                             returnShopProvider(
+//                                                   context:
+//                                                       context,
+//                                                   listen:
+//                                                       false,
+//                                                 )
+//                                                 .getHeadQuaters()
+//                                                 .where(
+//                                                   (sh) =>
+//                                                       sh.refCode ==
+//                                                       widget
+//                                                           .agent
+//                                                           .referralCode,
+//                                                 )
+//                                                 .length
+//                                                 .toStringAsFixed(
+//                                                   0,
+//                                                 ),
+//                                       ),
+//                                     ),
+//                                     Container(
+//                                       height: 25,
+//                                       width: 1,
+//                                       color: Colors
+//                                           .grey
+//                                           .shade100,
+//                                     ),
+//                                     Expanded(
+//                                       child: AgentProfileInfo(
+//                                         title: 'This Month',
+//                                         data:
+//                                             returnShopProvider(
+//                                                   context:
+//                                                       context,
+//                                                   listen:
+//                                                       false,
+//                                                 )
+//                                                 .getHeadQuaters()
+//                                                 .where(
+//                                                   (sh) =>
+//                                                       sh.refCode ==
+//                                                           widget.agent.referralCode &&
+//                                                       (sh.createdAt.isAfter(
+//                                                             monthStart(),
+//                                                           ) ||
+//                                                           sh.createdAt.isAtSameMomentAs(
+//                                                             monthStart(),
+//                                                           )),
+//                                                 )
+//                                                 .length
+//                                                 .toStringAsFixed(
+//                                                   0,
+//                                                 ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 Visibility(
+//                                   visible:
+//                                       widget.agent.role ==
+//                                       'Employed',
+//                                   child: Column(
+//                                     children: [
+//                                       Row(
+//                                         mainAxisAlignment:
+//                                             MainAxisAlignment
+//                                                 .spaceBetween,
+//                                         spacing: 10,
+//                                         children: [
+//                                           Expanded(
+//                                             child: AgentProfileInfo(
+//                                               title:
+//                                                   'Week 1',
+//                                               data:
+//                                                   returnShopProvider(
+//                                                         context:
+//                                                             context,
+//                                                         listen:
+//                                                             false,
+//                                                       )
+//                                                       .getHeadQuaters()
+//                                                       .where(
+//                                                         (
+//                                                           sh,
+//                                                         ) =>
+//                                                             sh.refCode ==
+//                                                                 widget.agent.referralCode &&
+//                                                             (sh.createdAt.isAfter(
+//                                                                   monthStart(),
+//                                                                 ) ||
+//                                                                 sh.createdAt.isAtSameMomentAs(
+//                                                                   monthStart(),
+//                                                                 )) &&
+//                                                             (sh.createdAt.isBefore(
+//                                                                   secondWeek(),
+//                                                                 ) ||
+//                                                                 sh.createdAt.isAtSameMomentAs(
+//                                                                   secondWeek(),
+//                                                                 )),
+//                                                       )
+//                                                       .length
+//                                                       .toStringAsFixed(
+//                                                         0,
+//                                                       ),
+//                                             ),
+//                                           ),
+//                                           Container(
+//                                             height: 25,
+//                                             width: 1,
+//                                             color: Colors
+//                                                 .grey
+//                                                 .shade100,
+//                                           ),
+//                                           Expanded(
+//                                             child: AgentProfileInfo(
+//                                               title:
+//                                                   'Week 2',
+//                                               data:
+//                                                   returnShopProvider(
+//                                                         context:
+//                                                             context,
+//                                                         listen:
+//                                                             false,
+//                                                       )
+//                                                       .getHeadQuaters()
+//                                                       .where(
+//                                                         (
+//                                                           sh,
+//                                                         ) =>
+//                                                             sh.refCode ==
+//                                                                 widget.agent.referralCode &&
+//                                                             (sh.createdAt.isAfter(
+//                                                                   secondWeek(),
+//                                                                 ) ||
+//                                                                 sh.createdAt.isAtSameMomentAs(
+//                                                                   secondWeek(),
+//                                                                 )) &&
+//                                                             (sh.createdAt.isBefore(
+//                                                                   thirdWeek(),
+//                                                                 ) ||
+//                                                                 sh.createdAt.isAtSameMomentAs(
+//                                                                   thirdWeek(),
+//                                                                 )),
+//                                                       )
+//                                                       .length
+//                                                       .toStringAsFixed(
+//                                                         0,
+//                                                       ),
+//                                             ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                       Row(
+//                                         mainAxisAlignment:
+//                                             MainAxisAlignment
+//                                                 .spaceBetween,
+//                                         spacing: 10,
+//                                         children: [
+//                                           Expanded(
+//                                             child: AgentProfileInfo(
+//                                               title:
+//                                                   'Week 3',
+//                                               data:
+//                                                   returnShopProvider(
+//                                                         context:
+//                                                             context,
+//                                                         listen:
+//                                                             false,
+//                                                       )
+//                                                       .getHeadQuaters()
+//                                                       .where(
+//                                                         (
+//                                                           sh,
+//                                                         ) =>
+//                                                             sh.refCode ==
+//                                                                 widget.agent.referralCode &&
+//                                                             (sh.createdAt.isAfter(
+//                                                                   thirdWeek(),
+//                                                                 ) ||
+//                                                                 sh.createdAt.isAtSameMomentAs(
+//                                                                   thirdWeek(),
+//                                                                 )) &&
+//                                                             (sh.createdAt.isBefore(
+//                                                                   fourthWeek(),
+//                                                                 ) ||
+//                                                                 sh.createdAt.isAtSameMomentAs(
+//                                                                   fourthWeek(),
+//                                                                 )),
+//                                                       )
+//                                                       .length
+//                                                       .toStringAsFixed(
+//                                                         0,
+//                                                       ),
+//                                             ),
+//                                           ),
+//                                           Container(
+//                                             height: 25,
+//                                             width: 1,
+//                                             color: Colors
+//                                                 .grey
+//                                                 .shade100,
+//                                           ),
+//                                           Expanded(
+//                                             child: AgentProfileInfo(
+//                                               title:
+//                                                   'Week 4',
+//                                               data:
+//                                                   returnShopProvider(
+//                                                         context:
+//                                                             context,
+//                                                         listen:
+//                                                             false,
+//                                                       )
+//                                                       .getHeadQuaters()
+//                                                       .where(
+//                                                         (
+//                                                           sh,
+//                                                         ) =>
+//                                                             sh.refCode ==
+//                                                                 widget.agent.referralCode &&
+//                                                             (sh.createdAt.isAfter(
+//                                                                   fourthWeek(),
+//                                                                 ) ||
+//                                                                 sh.createdAt.isAtSameMomentAs(
+//                                                                   fourthWeek(),
+//                                                                 )) &&
+//                                                             (sh.createdAt.isBefore(
+//                                                                   monthEnd(),
+//                                                                 ) ||
+//                                                                 sh.createdAt.isAtSameMomentAs(
+//                                                                   monthEnd(),
+//                                                                 )),
+//                                                       )
+//                                                       .length
+//                                                       .toStringAsFixed(
+//                                                         0,
+//                                                       ),
+//                                             ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ),
+//                                 Row(
+//                                   mainAxisAlignment:
+//                                       MainAxisAlignment
+//                                           .spaceBetween,
+//                                   spacing: 10,
+//                                   children: [
+//                                     Expanded(
+//                                       child: AgentProfileInfo(
+//                                         title:
+//                                             'Total Eligible',
+//                                         data:
+//                                             returnShopProvider(
+//                                                   context:
+//                                                       context,
+//                                                   listen:
+//                                                       false,
+//                                                 )
+//                                                 .getHeadQuaters()
+//                                                 .where(
+//                                                   (sh) =>
+//                                                       sh.refCode ==
+//                                                           widget.agent.referralCode &&
+//                                                       dateDifference(
+//                                                             sh.createdAt,
+//                                                             DateTime.now(),
+//                                                           ) <
+//                                                           storeEligibilty,
+//                                                 )
+//                                                 .length
+//                                                 .toStringAsFixed(
+//                                                   0,
+//                                                 ),
+//                                       ),
+//                                     ),
+//                                     Container(
+//                                       height: 25,
+//                                       width: 1,
+//                                       color: Colors
+//                                           .grey
+//                                           .shade100,
+//                                     ),
+//                                     Expanded(
+//                                       child: AgentProfileInfo(
+//                                         title:
+//                                             'Total Ineligible',
+//                                         data:
+//                                             returnShopProvider(
+//                                                   context:
+//                                                       context,
+//                                                   listen:
+//                                                       false,
+//                                                 )
+//                                                 .getHeadQuaters()
+//                                                 .where(
+//                                                   (sh) =>
+//                                                       sh.refCode ==
+//                                                           widget.agent.referralCode &&
+//                                                       dateDifference(
+//                                                             sh.createdAt,
+//                                                             DateTime.now(),
+//                                                           ) >=
+//                                                           storeEligibilty,
+//                                                 )
+//                                                 .length
+//                                                 .toStringAsFixed(
+//                                                   0,
+//                                                 ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 AgentProfileInfo(
+//                                   title:
+//                                       'Unpaid Commission',
+//                                   isPaid:
+//                                       returnUserProvider(
+//                                         context: context,
+//                                         listen: false,
+//                                       ).isAgentPaid(
+//                                         widget.agent,
+//                                         context,
+//                                       ),
+//                                   data: formatMoney(
+//                                     returnSubPaymentsProvider(
+//                                       context: context,
+//                                     ).getAgentsCutForMonthsPayment(
+//                                       widget
+//                                               .agent
+//                                               .referralCode ??
+//                                           '',
+//                                       widget.agent.role!,
+//                                       context,
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 Visibility(
+//                                   visible:
+//                                       widget.agent.role ==
+//                                       'Employed',
+//                                   child: AgentProfileInfo(
+//                                     title:
+//                                         'Month\'s Salary',
+//                                     isPaid:
+//                                         returnUserProvider(
+//                                           context: context,
+//                                           listen: false,
+//                                         ).isAgentPaid(
+//                                           widget.agent,
+//                                           context,
+//                                         ),
+//                                     data: formatMoney(
+//                                       getAgentsSalary(
+//                                         returnShopProvider(
+//                                               context:
+//                                                   context,
+//                                               listen: false,
+//                                             )
+//                                             .getHeadQuaters()
+//                                             .where(
+//                                               (sh) =>
+//                                                   sh.refCode ==
+//                                                       widget
+//                                                           .agent
+//                                                           .referralCode &&
+//                                                   (sh.createdAt.isAfter(
+//                                                         monthStart(),
+//                                                       ) ||
+//                                                       sh.createdAt.isAtSameMomentAs(
+//                                                         monthStart(),
+//                                                       )),
+//                                             )
+//                                             .length,
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 AgentProfileInfo(
+//                                   title:
+//                                       'Month\'s Total ${widget.agent.role == 'Freelance' ? 'Subscription' : 'Payment'}',
+//                                   data: formatMoney(
+//                                     widget.agent.role ==
+//                                             'Freelance'
+//                                         ? returnSubPaymentsProvider(
+//                                             context:
+//                                                 context,
+//                                           ).getAgentsTotalForMonth(
+//                                             widget
+//                                                     .agent
+//                                                     .referralCode ??
+//                                                 '',
+//                                             context,
+//                                           )
+//                                         : (returnSubPaymentsProvider(
+//                                                 context:
+//                                                     context,
+//                                               ).getAgentsCutForMonthsPayment(
+//                                                 widget
+//                                                         .agent
+//                                                         .referralCode ??
+//                                                     '',
+//                                                 widget
+//                                                     .agent
+//                                                     .role!,
+//                                                 context,
+//                                               ) +
+//                                               getAgentsSalary(
+//                                                 returnShopProvider(
+//                                                       context:
+//                                                           context,
+//                                                       listen:
+//                                                           false,
+//                                                     )
+//                                                     .getHeadQuaters()
+//                                                     .where(
+//                                                       (
+//                                                         sh,
+//                                                       ) =>
+//                                                           sh.refCode ==
+//                                                               widget.agent.referralCode &&
+//                                                           (sh.createdAt.isAfter(
+//                                                                 monthStart(),
+//                                                               ) ||
+//                                                               sh.createdAt.isAtSameMomentAs(
+//                                                                 monthStart(),
+//                                                               )),
+//                                                     )
+//                                                     .length,
+//                                               )),
+//                                   ),
+//                                 ),
+//                                 AgentProfileInfo(
+//                                   title: 'Bank Name',
+//                                   data:
+//                                       returnBankProvider(
+//                                             context:
+//                                                 context,
+//                                             listen: false,
+//                                           )
+//                                           .getSingleBank(
+//                                             widget
+//                                                 .agent
+//                                                 .userId!,
+//                                           )
+//                                           ?.bankName ??
+//                                       'Not Set',
+//                                 ),
+//                                 AgentProfileInfo(
+//                                   copyAction:
+//                                       returnBankProvider(
+//                                             context:
+//                                                 context,
+//                                             listen: false,
+//                                           ).banks
+//                                           .where(
+//                                             (ban) =>
+//                                                 ban.userId ==
+//                                                 widget
+//                                                     .agent
+//                                                     .userId,
+//                                           )
+//                                           .isNotEmpty
+//                                       ? () {
+//                                           print(
+//                                             'Copying shit',
+//                                           );
+//                                           Clipboard.setData(
+//                                             ClipboardData(
+//                                               text:
+//                                                   returnBankProvider(
+//                                                         context:
+//                                                             context,
+//                                                         listen:
+//                                                             false,
+//                                                       )
+//                                                       .getSingleBank(
+//                                                         widget.agent.userId!,
+//                                                       )
+//                                                       ?.accountNumber ??
+//                                                   '',
+//                                             ),
+//                                           );
+//                                           showSnackbar(
+//                                             message:
+//                                                 'Account Number has been copied to clipboard.',
+//                                             title:
+//                                                 'Copied to Clipboard!',
+//                                             context:
+//                                                 context,
+//                                             actionResult:
+//                                                 ActionResult()
+//                                                     .success,
+//                                           );
+//                                         }
+//                                       : null,
+//                                   title: 'Account Number',
+//                                   data:
+//                                       returnBankProvider(
+//                                             context:
+//                                                 context,
+//                                             listen: false,
+//                                           )
+//                                           .getSingleBank(
+//                                             widget
+//                                                 .agent
+//                                                 .userId!,
+//                                           )
+//                                           ?.accountNumber ??
+//                                       'Not Set',
+//                                 ),
+//                                 AgentProfileInfo(
+//                                   title: 'Account Name',
+//                                   data:
+//                                       returnBankProvider(
+//                                             context:
+//                                                 context,
+//                                             listen: false,
+//                                           )
+//                                           .getSingleBank(
+//                                             widget
+//                                                 .agent
+//                                                 .userId!,
+//                                           )
+//                                           ?.accountName ??
+//                                       'Not Set',
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   );
+//                 },
+//               ).then((_) {
+//                 setState(() {});
+//               });
+//             },
+//             child: Container(
+//               padding: EdgeInsets.symmetric(
+//                 vertical: 20,
+//                 horizontal: 20,
+//               ),
+//               child: Row(
+//                 spacing: 10,
+//                 mainAxisAlignment:
+//                     MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Expanded(
+//                     child: Row(
+//                       spacing: 8,
+//                       children: [
+//                         Icon(
+//                           size: 18,
+//                           color: Colors.grey,
+//                           Icons.person,
+//                         ),
+//                         Expanded(
+//                           child: Text(
+//                             style: TextStyle(
+//                               fontSize: theme
+//                                   .mobileTexts
+//                                   .b2
+//                                   .fontSize,
+//                               fontWeight: FontWeight.bold,
+//                             ),
+//                             widget.agent.name,
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   Row(
+//                     spacing: 8,
+//                     children: [
+//                       Container(
+//                         padding: EdgeInsets.symmetric(
+//                           vertical: 3,
+//                           horizontal: 6,
+//                         ),
+//                         decoration: BoxDecoration(
+//                           color: Colors.grey.shade200,
+//                         ),
+//                         child: Text(
+//                           style: TextStyle(
+//                             fontSize: 8,
+//                             fontWeight: FontWeight.bold,
+//                           ),
+//                           widget.agent.role
+//                                   ?.toUpperCase() ??
+//                               'Role Not Set',
+//                         ),
+//                       ),
+//                       Visibility(
+//                         visible: !widget.isAll,
+//                         child: Container(
+//                           padding: EdgeInsets.symmetric(
+//                             vertical: 1,
+//                             horizontal: 5,
+//                           ),
+//                           decoration: BoxDecoration(
+//                             color:
+//                                 returnUserProvider(
+//                                   context: context,
+//                                 ).isAgentPaid(
+//                                   widget.agent,
+//                                   context,
+//                                 )
+//                                 ? const Color.fromARGB(
+//                                     14,
+//                                     76,
+//                                     175,
+//                                     79,
+//                                   )
+//                                 : const Color.fromARGB(
+//                                     10,
+//                                     244,
+//                                     67,
+//                                     54,
+//                                   ),
+//                             borderRadius:
+//                                 BorderRadius.circular(2),
+//                             border: Border.all(
+//                               color:
+//                                   returnUserProvider(
+//                                     context: context,
+//                                   ).isAgentPaid(
+//                                     widget.agent,
+//                                     context,
+//                                   )
+//                                   ? Colors.green
+//                                   : Colors.red,
+//                             ),
+//                           ),
+//                           child: Center(
+//                             child: Text(
+//                               style: TextStyle(
+//                                 fontSize: theme
+//                                     .mobileTexts
+//                                     .b4
+//                                     .fontSize,
+//                               ),
+//                               returnUserProvider(
+//                                     context: context,
+//                                   ).isAgentPaid(
+//                                     widget.agent,
+//                                     context,
+//                                   )
+//                                   ? 'Paid'
+//                                   : 'Unpaid',
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       Icon(
+//                         size: 14,
+//                         color: Colors.grey,
+//                         Icons.arrow_forward_ios_rounded,
+//                       ),
+//                     ],
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class AgentProfileInfo extends StatelessWidget {
   final String title;
@@ -1251,6 +1241,7 @@ class AgentProfileInfo extends StatelessWidget {
           Material(
             type: MaterialType.transparency,
             child: InkWell(
+              mouseCursor: SystemMouseCursors.click,
               onTap: copyAction,
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -1326,6 +1317,7 @@ class TopStoreFilterButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(5),
           ),
           child: InkWell(
+            mouseCursor: SystemMouseCursors.click,
             onTap: action,
             child: Container(
               padding: EdgeInsets.symmetric(

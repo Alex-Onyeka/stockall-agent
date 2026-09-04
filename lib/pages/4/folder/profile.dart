@@ -42,10 +42,7 @@ class _ProfileState extends State<Profile> {
       child: Scaffold(
         body: RefreshIndicator(
           onRefresh: () {
-            return returnUserProvider(
-              context: context,
-              listen: false,
-            ).getUser();
+            return returnUserProvider().getUser();
           },
           backgroundColor: Colors.white,
           color: theme.lightModeColor.prColor250,
@@ -59,6 +56,7 @@ class _ProfileState extends State<Profile> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
+                    mouseCursor: SystemMouseCursors.click,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -133,13 +131,14 @@ class _ProfileState extends State<Profile> {
                         Material(
                           type: MaterialType.transparency,
                           child: InkWell(
+                            mouseCursor:
+                                SystemMouseCursors.click,
                             borderRadius:
                                 BorderRadius.circular(5),
                             onTap: () {
-                              var user = returnUserProvider(
-                                context: context,
-                                listen: false,
-                              ).currentUser!;
+                              var user =
+                                  returnUserProvider()
+                                      .currentUser!;
                               nameController.text =
                                   user.name;
                               phoneController.text =
@@ -156,6 +155,8 @@ class _ProfileState extends State<Profile> {
                                           .currentState!
                                           .validate()) {
                                         var newUser = UserClass(
+                                          roleId:
+                                              user.roleId,
                                           password:
                                               user.password,
                                           name:
@@ -172,31 +173,23 @@ class _ProfileState extends State<Profile> {
                                                   .text
                                                   .trim(),
                                         );
-                                        returnResourceProvider(
-                                          context: context,
-                                          listen: false,
-                                        ).toggleLoading(
-                                          true,
-                                        );
-                                        var res =
-                                            await returnUserProvider(
-                                              context:
-                                                  context,
-                                              listen: false,
-                                            ).updateUser(
-                                              newUser,
+                                        returnResourceProvider()
+                                            .toggleLoading(
+                                              true,
                                             );
+                                        var res =
+                                            await returnUserProvider()
+                                                .updateUser(
+                                                  newUser,
+                                                );
 
                                         if (res == 0 &&
                                             context
                                                 .mounted) {
-                                          returnResourceProvider(
-                                            context:
-                                                context,
-                                            listen: false,
-                                          ).toggleLoading(
-                                            false,
-                                          );
+                                          returnResourceProvider()
+                                              .toggleLoading(
+                                                false,
+                                              );
                                           showSnackbar(
                                             message:
                                                 'An Error occoured while updating your information, please check your internet and try again.',
@@ -211,13 +204,10 @@ class _ProfileState extends State<Profile> {
                                         } else {
                                           if (context
                                               .mounted) {
-                                            returnResourceProvider(
-                                              context:
-                                                  context,
-                                              listen: false,
-                                            ).toggleLoading(
-                                              false,
-                                            );
+                                            returnResourceProvider()
+                                                .toggleLoading(
+                                                  false,
+                                                );
                                             Navigator.of(
                                               dialogContext,
                                             ).pop();
@@ -325,10 +315,8 @@ class _ProfileState extends State<Profile> {
                                 emailController.clear();
                                 lastNameController.clear();
                                 if (context.mounted) {
-                                  returnResourceProvider(
-                                    context: context,
-                                    listen: false,
-                                  ).toggleLoading(false);
+                                  returnResourceProvider()
+                                      .toggleLoading(false);
                                 }
                               });
                             },
@@ -404,11 +392,7 @@ class _ProfileState extends State<Profile> {
                               Clipboard.setData(
                                 ClipboardData(
                                   text:
-                                      returnUserProvider(
-                                            context:
-                                                context,
-                                            listen: false,
-                                          )
+                                      returnUserProvider()
                                           .currentUser
                                           ?.referralCode ??
                                       'User Ref Code',
@@ -518,6 +502,8 @@ class _ProfileState extends State<Profile> {
                           Material(
                             type: MaterialType.transparency,
                             child: InkWell(
+                              mouseCursor:
+                                  SystemMouseCursors.click,
                               borderRadius:
                                   BorderRadius.circular(5),
                               onTap: () {
@@ -525,10 +511,8 @@ class _ProfileState extends State<Profile> {
                                   context: context,
                                   builder: (dialogContext) {
                                     var bank =
-                                        returnBankProvider(
-                                          context: context,
-                                          listen: false,
-                                        ).bank;
+                                        returnBankProvider()
+                                            .bank;
                                     if (bank != null) {
                                       bankNameController
                                               .text =
@@ -542,24 +526,17 @@ class _ProfileState extends State<Profile> {
                                     }
                                     return DialogTemplate(
                                       title:
-                                          returnBankProvider(
-                                                context:
-                                                    context,
-                                                listen:
-                                                    false,
-                                              ).bank ==
+                                          returnBankProvider()
+                                                  .bank ==
                                               null
                                           ? "Create New Bank"
                                           : 'Edit Bank Detials',
                                       action: () async {
                                         var newBank = BankClass(
                                           bankId:
-                                              returnBankProvider(
-                                                context:
-                                                    context,
-                                                listen:
-                                                    false,
-                                              ).bank?.bankId,
+                                              returnBankProvider()
+                                                  .bank
+                                                  ?.bankId,
                                           bankName:
                                               bankNameController
                                                   .text
@@ -579,40 +556,24 @@ class _ProfileState extends State<Profile> {
                                         if (formKey
                                             .currentState!
                                             .validate()) {
-                                          if (returnBankProvider(
-                                                context:
-                                                    context,
-                                                listen:
-                                                    false,
-                                              ).bank ==
+                                          if (returnBankProvider()
+                                                  .bank ==
                                               null) {
-                                            returnResourceProvider(
-                                              context:
-                                                  context,
-                                              listen: false,
-                                            ).toggleLoading(
-                                              true,
-                                            );
-                                            var res =
-                                                await returnBankProvider(
-                                                  context:
-                                                      context,
-                                                  listen:
-                                                      false,
-                                                ).createBank(
+                                            returnResourceProvider()
+                                                .toggleLoading(
+                                                  true,
+                                                );
+                                            var res = await returnBankProvider()
+                                                .createBank(
                                                   newBank,
                                                 );
                                             if (res == 0 &&
                                                 context
                                                     .mounted) {
-                                              returnResourceProvider(
-                                                context:
-                                                    context,
-                                                listen:
+                                              returnResourceProvider()
+                                                  .toggleLoading(
                                                     false,
-                                              ).toggleLoading(
-                                                false,
-                                              );
+                                                  );
                                               showSnackbar(
                                                 actionResult:
                                                     ActionResult()
@@ -649,33 +610,21 @@ class _ProfileState extends State<Profile> {
                                               }
                                             }
                                           } else {
-                                            returnResourceProvider(
-                                              context:
-                                                  context,
-                                              listen: false,
-                                            ).toggleLoading(
-                                              true,
-                                            );
-                                            var res =
-                                                await returnBankProvider(
-                                                  context:
-                                                      context,
-                                                  listen:
-                                                      false,
-                                                ).updateBank(
+                                            returnResourceProvider()
+                                                .toggleLoading(
+                                                  true,
+                                                );
+                                            var res = await returnBankProvider()
+                                                .updateBank(
                                                   newBank,
                                                 );
                                             if (res == 0 &&
                                                 context
                                                     .mounted) {
-                                              returnResourceProvider(
-                                                context:
-                                                    context,
-                                                listen:
+                                              returnResourceProvider()
+                                                  .toggleLoading(
                                                     false,
-                                              ).toggleLoading(
-                                                false,
-                                              );
+                                                  );
                                               showSnackbar(
                                                 actionResult:
                                                     ActionResult()
@@ -715,22 +664,14 @@ class _ProfileState extends State<Profile> {
                                         }
                                       },
                                       mainActionText:
-                                          returnBankProvider(
-                                                context:
-                                                    context,
-                                                listen:
-                                                    false,
-                                              ).bank ==
+                                          returnBankProvider()
+                                                  .bank ==
                                               null
                                           ? "Create Bank"
                                           : 'Update Bank',
                                       subTitle:
-                                          returnBankProvider(
-                                                context:
-                                                    context,
-                                                listen:
-                                                    false,
-                                              ).bank ==
+                                          returnBankProvider()
+                                                  .bank ==
                                               null
                                           ? "Enter details below and save to Create your Bank."
                                           : 'Enter details below and save to update your Bank.',
@@ -820,10 +761,10 @@ class _ProfileState extends State<Profile> {
                                   accountNumberController
                                       .clear();
                                   if (context.mounted) {
-                                    returnResourceProvider(
-                                      context: context,
-                                      listen: false,
-                                    ).toggleLoading(false);
+                                    returnResourceProvider()
+                                        .toggleLoading(
+                                          false,
+                                        );
                                   }
                                 });
                               },
@@ -910,6 +851,7 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   child: InkWell(
+                    mouseCursor: SystemMouseCursors.click,
                     borderRadius: BorderRadius.circular(5),
                     onTap: () {
                       var safeContext = context;
@@ -919,10 +861,8 @@ class _ProfileState extends State<Profile> {
                           return DialogTemplate(
                             title: 'Are you sure?',
                             action: () async {
-                              returnResourceProvider(
-                                context: context,
-                                listen: false,
-                              ).toggleLoading(true);
+                              returnResourceProvider()
+                                  .toggleLoading(true);
                               await AuthService().signOut(
                                 safeContext,
                               );
@@ -1022,6 +962,7 @@ class InfoSections extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
+              mouseCursor: SystemMouseCursors.click,
               onTap: copyAction,
               child: Row(
                 mainAxisSize: MainAxisSize.min,

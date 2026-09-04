@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/action_result.dart';
 import 'package:stockallagent/components/buttons/primary_button.dart';
 import 'package:stockallagent/components/buttons/secondary_button.dart';
+import 'package:stockallagent/components/main_container.dart';
 import 'package:stockallagent/components/textfields/my_text_field.dart';
 import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/constants/media_links.dart';
@@ -31,94 +32,98 @@ class _LoginPageState extends State<LoginPage> {
         onTap: () =>
             FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 25.0,
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 30),
-                            Image.asset(
-                              loginIcon,
-                              height: 100,
+          body: MainContainer(
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 30),
+                          Image.asset(
+                            loginIcon,
+                            height: 100,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            style: TextStyle(
+                              fontSize: theme
+                                  .mobileTexts
+                                  .h3
+                                  .fontSize,
+                              fontWeight: FontWeight.bold,
                             ),
-                            SizedBox(height: 10),
-                            Text(
+                            'Login',
+                          ),
+                          SizedBox(height: 10),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: 250,
+                            ),
+                            child: Text(
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: theme
                                     .mobileTexts
-                                    .h3
+                                    .b2
                                     .fontSize,
-                                fontWeight: FontWeight.bold,
+                                fontWeight:
+                                    FontWeight.normal,
                               ),
-                              'Login',
+                              'Enter your details below to Log Into your Agent Account',
                             ),
-                            SizedBox(height: 10),
-                            ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxWidth: 250,
-                              ),
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: theme
-                                      .mobileTexts
-                                      .b2
-                                      .fontSize,
-                                  fontWeight:
-                                      FontWeight.normal,
-                                ),
-                                'Enter your details below to Log Into your Agent Account',
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            MyTextFieldMain(
-                              isPassword: false,
-                              controller: emailC,
-                              isEmail: true,
-                              showTitle: false,
-                              isNumber: false,
-                              isOptional: false,
-                              hintText: 'Enter Email',
-                              validatorText:
-                                  'Email Field Cannot be Empty!',
-                            ),
-                            SizedBox(height: 15),
-                            MyTextFieldMain(
-                              isPassword: true,
-                              controller: passwordC,
-                              isEmail: false,
-                              showTitle: false,
-                              isNumber: false,
-                              isOptional: false,
-                              hintText: 'Password',
-                              validatorText:
-                                  'Password Field Cannot be Empty!',
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b2
-                                        .fontSize,
+                          ),
+                          SizedBox(height: 20),
+                          MyTextFieldMain(
+                            isPassword: false,
+                            controller: emailC,
+                            isEmail: true,
+                            showTitle: false,
+                            isNumber: false,
+                            isOptional: false,
+                            hintText: 'Enter Email',
+                            validatorText:
+                                'Email Field Cannot be Empty!',
+                          ),
+                          SizedBox(height: 15),
+                          MyTextFieldMain(
+                            onSubmit: (value) {
+                              submitAction();
+                            },
+                            isPassword: true,
+                            controller: passwordC,
+                            isEmail: false,
+                            showTitle: false,
+                            isNumber: false,
+                            isOptional: false,
+                            hintText: 'Password',
+                            validatorText:
+                                'Password Field Cannot be Empty!',
+                          ),
+                          SizedBox(height: 10),
+                          Material(
+                            type: MaterialType.transparency,
+                            child: InkWell(
+                              mouseCursor:
+                                  SystemMouseCursors.click,
+                              onTap: widget.goToSignUp,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .center,
+                                children: [
+                                  Text(
+                                    style: TextStyle(
+                                      fontSize: theme
+                                          .mobileTexts
+                                          .b2
+                                          .fontSize,
+                                    ),
+                                    'Don\'t You Have An Account?',
                                   ),
-                                  'Don\'t You Have An Account?',
-                                ),
-                                InkWell(
-                                  onTap: widget.goToSignUp,
-                                  child: Padding(
+                                  Padding(
                                     padding:
                                         const EdgeInsets.all(
                                           5.0,
@@ -135,85 +140,85 @@ class _LoginPageState extends State<LoginPage> {
                                             .lightModeColor
                                             .secColor200,
                                       ),
-                                      'Create Account',
+                                      'Create Account'
+                                          .toUpperCase(),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                            SizedBox(height: 20),
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: 20),
+                        ],
                       ),
                     ),
                   ),
-                  PrimaryButton(
-                    isLoading: isLoading,
-                    title: 'Login',
-                    action: () async {
-                      if (formKey.currentState!
-                          .validate()) {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        var res = await AuthService()
-                            .signIn(
-                              emailC.text,
-                              passwordC.text,
-                            );
-                        if (res == 0) {
-                          setState(() {
-                            isLoading = false;
-                          });
-                          showSnackbar(
-                            actionResult:
-                                ActionResult().error,
-                            title: 'An Error Occoured',
-                            message:
-                                'Please check your email and Password, or your internet Connection and try again.',
-                            context: context,
-                          );
-                        } else {
-                          setState(() {
-                            isLoading = false;
-                          });
-                          if (context.mounted) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ValidateUserExists(
-                                    email: emailC.text
-                                        .trim(),
-                                    password: passwordC.text
-                                        .trim(),
-                                  );
-                                },
-                              ),
-                            );
-                          }
-                        }
-                      }
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  SecondaryButton(
-                    title: 'Go Back',
-                    action: () {
-                      if (Navigator.of(context).canPop()) {
-                        Navigator.of(context).pop();
-                      } else {
-                        widget.goToSignUp!();
-                      }
-                    },
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
+                ),
+                PrimaryButton(
+                  isLoading: isLoading,
+                  title: 'Login',
+                  action: () async {
+                    submitAction();
+                  },
+                ),
+                SizedBox(height: 10),
+                SecondaryButton(
+                  title: 'Go Back',
+                  action: () {
+                    if (Navigator.of(context).canPop()) {
+                      Navigator.of(context).pop();
+                    } else {
+                      widget.goToSignUp!();
+                    }
+                  },
+                ),
+                SizedBox(height: 20),
+              ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void submitAction() async {
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      var res = await AuthService().signIn(
+        emailC.text,
+        passwordC.text,
+      );
+      if (res == 0) {
+        setState(() {
+          isLoading = false;
+        });
+        showSnackbar(
+          actionResult: ActionResult().error,
+          title: 'An Error Occoured',
+          message:
+              'Please check your email and Password, or your internet Connection and try again.',
+          context: context,
+        );
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        if (context.mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return ValidateUserExists(
+                  email: emailC.text.trim(),
+                  password: passwordC.text.trim(),
+                );
+              },
+            ),
+          );
+        }
+      }
+    }
   }
 }

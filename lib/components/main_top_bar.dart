@@ -7,7 +7,12 @@ import 'package:stockallagent/service/auth_service.dart';
 
 class MainTopBar extends StatefulWidget {
   final Function()? profileNavAction;
-  const MainTopBar({super.key, this.profileNavAction});
+  final Widget? lastWidget;
+  const MainTopBar({
+    super.key,
+    this.profileNavAction,
+    this.lastWidget,
+  });
 
   @override
   State<MainTopBar> createState() => _MainTopBarState();
@@ -33,6 +38,7 @@ class _MainTopBarState extends State<MainTopBar> {
             child: Ink(
               color: Colors.white,
               child: InkWell(
+                mouseCursor: SystemMouseCursors.click,
                 onTap: widget.profileNavAction,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -78,12 +84,13 @@ class _MainTopBarState extends State<MainTopBar> {
                                   .lightModeColor
                                   .prColor100,
                             ),
-                            returnAdminProvider(
-                                      context: context,
-                                    ).admin ==
-                                    null
-                                ? 'Agent (${returnUserProvider(context: context, listen: false).currentUser?.role})'
-                                : 'Admin',
+                            // returnAdminProvider(
+                            //           context: context,
+                            //         ).admin ==
+                            //         null
+                            //     ? 'Agent (${returnUserProvider(context: context, listen: false).currentUser?.role})'
+                            //     :
+                            'Agent',
                           ),
                         ],
                       ),
@@ -93,60 +100,100 @@ class _MainTopBarState extends State<MainTopBar> {
               ),
             ),
           ),
-          Material(
-            color: Colors.transparent,
-            child: Ink(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey.shade100,
-              ),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(40),
-                onTap: () {
-                  // var safeContext = context;
-                  showDialog(
-                    context: context,
-                    builder: (logoutContext) {
-                      return DialogTemplate(
-                        title: 'Are you sure?',
-                        action: () async {
-                          returnResourceProvider(
-                            context: context,
-                            listen: false,
-                          ).toggleLoading(true);
-                          await AuthService().signOut(
-                            context,
-                          );
-                          if (logoutContext.mounted) {
-                            Navigator.of(
-                              logoutContext,
-                            ).pop();
-                          }
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return BasePage();
-                              },
-                            ),
-                          );
-                        },
-                        message:
-                            'Are you sure you want to Logout?',
-                      );
+          Row(
+            spacing: 5,
+            children: [
+              Material(
+                color: Colors.transparent,
+                child: Ink(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.grey.shade100,
+                  ),
+                  child: InkWell(
+                    mouseCursor: SystemMouseCursors.click,
+                    borderRadius: BorderRadius.circular(40),
+                    onTap: () {
+                      returnShopProvider().getShops();
                     },
-                  );
-                },
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: Icon(
-                    size: 20,
-                    color: Colors.red,
-                    Icons.logout_rounded,
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Icon(
+                        size: 20,
+                        color: Colors.grey,
+                        Icons.refresh,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+              Builder(
+                builder: (context) {
+                  if (widget.lastWidget != null) {
+                    return widget.lastWidget ?? Container();
+                  } else {
+                    return Material(
+                      color: Colors.transparent,
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey.shade100,
+                        ),
+                        child: InkWell(
+                          mouseCursor:
+                              SystemMouseCursors.click,
+                          borderRadius:
+                              BorderRadius.circular(40),
+                          onTap: () {
+                            // var safeContext = context;
+                            showDialog(
+                              context: context,
+                              builder: (logoutContext) {
+                                return DialogTemplate(
+                                  title: 'Are you sure?',
+                                  action: () async {
+                                    returnResourceProvider()
+                                        .toggleLoading(
+                                          true,
+                                        );
+                                    await AuthService()
+                                        .signOut(context);
+                                    if (logoutContext
+                                        .mounted) {
+                                      Navigator.of(
+                                        logoutContext,
+                                      ).pop();
+                                    }
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return BasePage();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  message:
+                                      'Are you sure you want to Logout?',
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Icon(
+                              size: 20,
+                              color: Colors.red,
+                              Icons.logout_rounded,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
           ),
         ],
       ),

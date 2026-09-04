@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/components/buttons/primary_button.dart';
 import 'package:stockallagent/components/buttons/tertiary_button.dart';
+import 'package:stockallagent/components/main_container.dart';
 import 'package:stockallagent/constants/media_links.dart';
 import 'package:stockallagent/main.dart';
 import 'package:stockallagent/pages/authentication/auth_landing.dart';
@@ -13,10 +14,7 @@ class WelcomeScreen extends StatelessWidget {
     var theme = returnTheme(context: context);
     return Scaffold(
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20.0,
-          ),
+        child: MainContainer(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

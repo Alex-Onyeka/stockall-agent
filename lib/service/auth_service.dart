@@ -60,6 +60,7 @@ class AuthService {
 
       // Build user row
       final userRow = UserClass(
+        roleId: 1,
         userId: userId,
         createdAt: user.createdAt,
         name: user.name,
@@ -67,7 +68,7 @@ class AuthService {
         email: newEmail ?? user.email,
         phone: user.phone,
         password: user.password,
-        role: user.role,
+        // role: user.role,
       );
       print(userRow);
       print('Finished Mapping User Class');
@@ -135,14 +136,8 @@ class AuthService {
   Future<void> signOut(BuildContext context) async {
     await _client.auth.signOut();
     if (context.mounted) {
-      returnUserProvider(
-        context: context,
-        listen: false,
-      ).currentUser = null;
-      returnShopProvider(
-        context: context,
-        listen: false,
-      ).shops.clear();
+      returnUserProvider().currentUser = null;
+      returnShopProvider().shopInfos.clear();
     } else {
       print('Context not Mounted');
     }
@@ -162,64 +157,6 @@ class AuthService {
     }
   }
 
-  // Future<String> changePasswordAndUpdateLocal({
-  //   required String newPassword,
-  //   required BuildContext context,
-  // }) async {
-  //   try {
-  //     final response = await _client.auth.updateUser(
-  //       UserAttributes(password: newPassword),
-  //     );
-
-  //     final user = response.user;
-  //     if (user == null) {
-  //       throw Exception(
-  //         "Password update failed: No user returned.",
-  //       );
-  //     }
-
-  //     print(
-  //       "🔐 Password successfully updated in Supabase Auth for ${user.email}",
-  //     );
-
-  //     print("Updating user with ID: ${user.id}");
-
-  //     // ✅ Step 2: Update password in your 'users' table
-  //     final updateResponse = await _client
-  //         .from('users')
-  //         .update({'password': newPassword})
-  //         .eq('user_id', user.id)
-  //         .select()
-  //         .maybeSingle();
-
-  //     // 4. Store the user in local DB
-  //     print("context.mounted = ${context.mounted}");
-  //     if (context.mounted) {
-  //       print("✅ Inserting Users into the Local");
-  //       await returnUserProvider(
-  //         context,
-  //         listen: false,
-  //       ).getUser(context);
-  //       return 'Success';
-  //     } else {
-  //       print(
-  //         "⚠️ Context no longer mounted, skipping local insert",
-  //       );
-  //     }
-
-  //     print(
-  //       "✅ Password updated in 'users' table: $updateResponse",
-  //     );
-  //     return 'Success';
-  //   } on AuthException catch (e) {
-  //     print('Error Changing Password: $e');
-  //     return e.statusCode!;
-  //   } catch (e) {
-  //     print(e);
-  //     return e.toString();
-  //   }
-  // }
-
   User? get currentUser => _client.auth.currentUser;
 
   Future<int> deleteUserAccount(
@@ -233,27 +170,37 @@ class AuthService {
         print("No user is currently signed in.");
         return 0;
       }
-
-      final response = await _client.functions.invoke(
-        'delete-user',
-        body: {'userId': user.id},
-      );
-
-      if (response.status == 200) {
-        print(
-          "User deleted successfully: ${response.data}",
-        );
-        await returnUserProvider(
-          context: context,
-          listen: false,
-        ).deleteUser();
+      var tempUser = await _client
+          .from('users')
+          .select()
+          .eq('user_id', user.id)
+          .maybeSingle();
+      if (tempUser != null) {
+        await _client
+            .from('agents')
+            .delete()
+            .eq('uuid', user.id);
         await signOut(context);
         return 1;
       } else {
-        print(
-          "Error Deleting User Account: ${response.data}",
+        final response = await _client.functions.invoke(
+          'delete-user',
+          body: {'userId': user.id},
         );
-        return 0;
+
+        if (response.status == 200) {
+          print(
+            "User deleted successfully: ${response.data}",
+          );
+          await returnUserProvider().deleteUser();
+          await signOut(context);
+          return 1;
+        } else {
+          print(
+            "Error Deleting User Account: ${response.data}",
+          );
+          return 0;
+        }
       }
     } catch (e) {
       print("Error Deleting User Account: ${e.toString()}");

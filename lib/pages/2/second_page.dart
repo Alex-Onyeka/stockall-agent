@@ -46,37 +46,37 @@ class TopStoreFilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = returnTheme(context: context);
-    return Expanded(
-      child: Material(
-        type: MaterialType.transparency,
-        child: Ink(
-          decoration: BoxDecoration(
-            color: mainIndex == myIndex
-                ? theme.lightModeColor.prColor300
-                : null,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: InkWell(
-            onTap: action,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                vertical: 7,
-                horizontal: 5,
-              ),
+    return Material(
+      type: MaterialType.transparency,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: mainIndex == myIndex
+              ? theme.lightModeColor.prColor300
+              : null,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: InkWell(
+          mouseCursor: SystemMouseCursors.click,
+          onTap: action,
+          child: Container(
+            width: 150,
+            padding: EdgeInsets.symmetric(
+              vertical: 7,
+              horizontal: 5,
+            ),
 
-              child: Center(
-                child: Text(
-                  style: TextStyle(
-                    fontSize: theme.mobileTexts.b4.fontSize,
-                    fontWeight: mainIndex == myIndex
-                        ? FontWeight.bold
-                        : null,
-                    color: mainIndex == myIndex
-                        ? Colors.white
-                        : theme.lightModeColor.prColor300,
-                  ),
-                  title,
+            child: Center(
+              child: Text(
+                style: TextStyle(
+                  fontSize: theme.mobileTexts.b4.fontSize,
+                  fontWeight: mainIndex == myIndex
+                      ? FontWeight.bold
+                      : null,
+                  color: mainIndex == myIndex
+                      ? Colors.white
+                      : theme.lightModeColor.prColor300,
                 ),
+                title,
               ),
             ),
           ),

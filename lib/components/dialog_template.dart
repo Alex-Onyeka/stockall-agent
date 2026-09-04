@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/components/buttons/primary_button.dart';
 import 'package:stockallagent/components/buttons/secondary_button.dart';
+import 'package:stockallagent/constants/constants_main.dart';
 import 'package:stockallagent/main.dart';
 
 class DialogTemplate extends StatelessWidget {
@@ -29,8 +30,8 @@ class DialogTemplate extends StatelessWidget {
     return StatefulBuilder(
       builder: (context, setState) => AlertDialog(
         constraints: BoxConstraints(
-          maxWidth: 500,
-          maxHeight: 600,
+          minWidth: 800,
+          maxHeight: screenHeight(context) - 100,
         ),
         insetPadding: EdgeInsets.all(20),
         contentPadding: EdgeInsets.all(0),
@@ -39,7 +40,7 @@ class DialogTemplate extends StatelessWidget {
             vertical: 20,
             horizontal: 20,
           ),
-          width: 500,
+          constraints: BoxConstraints(minWidth: 600),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(5),
@@ -55,7 +56,7 @@ class DialogTemplate extends StatelessWidget {
                       SizedBox(height: 10),
                       ConstrainedBox(
                         constraints: BoxConstraints(
-                          maxWidth: 200,
+                          maxWidth: 300,
                         ),
                         child: Text(
                           textAlign: TextAlign.center,
@@ -80,7 +81,7 @@ class DialogTemplate extends StatelessWidget {
                       SizedBox(height: 5),
                       ConstrainedBox(
                         constraints: BoxConstraints(
-                          maxWidth: 200,
+                          maxWidth: 300,
                         ),
                         child: Text(
                           textAlign: TextAlign.center,

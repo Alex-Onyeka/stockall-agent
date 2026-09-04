@@ -7,7 +7,8 @@ class UserClass {
   String email;
   String? phone;
   String? referralCode;
-  String? role;
+  // String? role;
+  int roleId;
 
   UserClass({
     this.userId,
@@ -18,7 +19,8 @@ class UserClass {
     required this.email,
     this.phone,
     this.referralCode,
-    this.role,
+    // this.role,
+    required this.roleId,
   });
 
   factory UserClass.fromJson(Map<String, dynamic> json) {
@@ -33,27 +35,46 @@ class UserClass {
       phone: json['phone'],
       password: json['password'] ?? '',
       referralCode: json['ref_code'] as String?,
-      role: json['role'] as String?,
+      // role: json['role'] as String?,
+      roleId: json['role_id'] as int,
     );
   }
 
-  Map<String, dynamic> toJson({bool includeUserId = true}) {
-    final map = {
+  Map<String, dynamic> toJson() {
+    return {
       'first_name': name,
       'last_name': lastName,
       'email': email,
       'phone': phone,
       'password': password,
-      'role': role,
+      // 'role': role,
+      'role_id': roleId,
     };
+  }
 
-    if (includeUserId && userId != null) {
-      map['uuid'] = userId;
-    }
-    if (createdAt != null) {
-      map['created_at'] = createdAt!.toIso8601String();
-    }
-
-    return map;
+  UserClass copyWith({
+    String? userId,
+    DateTime? createdAt,
+    String? name,
+    String? lastName,
+    String? email,
+    String? phone,
+    String? password,
+    String? role,
+    int? roleId,
+    String? referralCode,
+  }) {
+    return UserClass(
+      password: password ?? this.password,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      roleId: roleId ?? this.roleId,
+      createdAt: createdAt ?? this.createdAt,
+      lastName: lastName ?? this.lastName,
+      phone: phone ?? this.phone,
+      referralCode: referralCode ?? this.referralCode,
+      // role: role ?? this.role,
+      userId: userId ?? this.userId,
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stockallagent/components/buttons/secondary_button.dart';
 import 'package:stockallagent/pages/authentication/welcome_screen.dart';
 import 'package:stockallagent/pages/home/home.dart';
 import 'package:stockallagent/service/auth_service.dart';
@@ -22,7 +23,29 @@ class BasePage extends StatelessWidget {
         } else if (stream.hasError) {
           return Scaffold(
             body: Center(
-              child: Text('Stream Error Occured.'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 5,
+                children: [
+                  Text('Stream Error Occured.'),
+                  SecondaryButton(
+                    title: 'Logout',
+                    action: () async {
+                      await AuthService().signOut(context);
+                      if (context.mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return WelcomeScreen();
+                            },
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         } else {

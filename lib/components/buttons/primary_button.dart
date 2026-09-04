@@ -24,6 +24,7 @@ class PrimaryButton extends StatelessWidget {
           color: theme.lightModeColor.prColor300,
         ),
         child: InkWell(
+          mouseCursor: SystemMouseCursors.click,
           borderRadius: BorderRadius.circular(5),
           onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();

@@ -22,6 +22,7 @@ class SecondaryButton extends StatelessWidget {
           color: Colors.grey.shade200,
         ),
         child: InkWell(
+          mouseCursor: SystemMouseCursors.click,
           borderRadius: BorderRadius.circular(5),
           onTap: action,
           child: Container(

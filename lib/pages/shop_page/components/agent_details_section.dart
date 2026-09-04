@@ -1,0 +1,148 @@
+import 'package:flutter/material.dart';
+import 'package:stockallagent/classes/shop_info.dart';
+import 'package:stockallagent/components/dialog_template.dart';
+import 'package:stockallagent/main.dart';
+import 'package:stockallagent/pages/shop_page/components/shop_details_tab_widget.dart';
+
+class AgentDetailsSection extends StatelessWidget {
+  const AgentDetailsSection({
+    super.key,
+    required this.shop,
+  });
+
+  final ShopInfo shop;
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = returnTheme();
+    return Column(
+      spacing: 10,
+      children: [
+        Row(
+          spacing: 10,
+          children: [
+            Expanded(
+              child: ShopDetailsTabWidget(
+                body:
+                    '${shop.agentFirstName} ${shop.agentLastName}',
+                title: 'Name',
+              ),
+            ),
+            Expanded(
+              child: ShopDetailsTabWidget(
+                body: "${shop.agentPhone}",
+                title: 'Phone',
+              ),
+            ),
+          ],
+        ),
+        Row(
+          spacing: 10,
+          children: [
+            Expanded(
+              child: ShopDetailsTabWidget(
+                body: '${shop.agentEmail}',
+                title: 'Email',
+              ),
+            ),
+            Expanded(
+              child: ShopDetailsTabWidget(
+                body: returnShopProvider().shopInfos
+                    .where(
+                      (item) =>
+                          item.agentUuid == shop.agentUuid,
+                    )
+                    .length
+                    .toString(),
+                title: 'Total Shops',
+              ),
+            ),
+          ],
+        ),
+        Material(
+          color: Colors.transparent,
+          child: Ink(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              border: Border.all(color: Colors.redAccent),
+              color: const Color.fromARGB(20, 244, 67, 54),
+            ),
+            child: InkWell(
+              onTap: () {
+                if (!returnShopProvider().isLoading) {
+                  showDialog(
+                    context: context,
+                    builder: (firstContext) {
+                      return DialogTemplate(
+                        title: 'Remove Agent',
+                        action: () async {
+                          Navigator.of(firstContext).pop();
+                          await returnShopProvider()
+                              .setAgent(
+                                agentUuid:
+                                    shop.agentAndShopUuid!,
+                                isDelete: true,
+                                shopId: shop.shopId.toInt(),
+                              );
+                        },
+                        message:
+                            'You are about to Remove this Agent From this Business. All Comments Created Will be deleted. Are you sure you want to proceed?',
+                      );
+                    },
+                  );
+                }
+              },
+              mouseCursor: SystemMouseCursors.click,
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 300),
+                padding: EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 10,
+                ),
+
+                child: Builder(
+                  builder: (context) {
+                    if (returnShopProvider().isLoading) {
+                      return Center(
+                        child: SizedBox(
+                          height: 23,
+                          width: 23,
+                          child: CircularProgressIndicator(
+                            color: Colors.amber,
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.center,
+                        spacing: 4,
+                        children: [
+                          Text(
+                            style: TextStyle(
+                              fontSize: theme
+                                  .mobileTexts
+                                  .b3
+                                  .fontSize,
+                            ),
+                            'Remove Agent',
+                          ),
+                          Icon(
+                            size: 20,
+                            color: Colors.red,
+                            Icons.clear,
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

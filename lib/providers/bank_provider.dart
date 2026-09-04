@@ -4,6 +4,10 @@ import 'package:stockallagent/service/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BankProvider extends ChangeNotifier {
+  static final BankProvider _instance =
+      BankProvider._internal();
+  factory BankProvider() => _instance;
+  BankProvider._internal();
   final SupabaseClient _client = Supabase.instance.client;
   final String tableName = 'bank_details';
 
@@ -11,12 +15,12 @@ class BankProvider extends ChangeNotifier {
 
   List<BankClass> banks = [];
 
-  void clearBanks() {
-    bank = null;
-    banks.clear();
-    print('Banks Cleared');
-    notifyListeners();
-  }
+  // void clearBanks() {
+  //   bank = null;
+  //   banks.clear();
+  //   print('Banks Cleared');
+  //   notifyListeners();
+  // }
 
   Future<List<BankClass>> getAllBanks() async {
     try {

@@ -27,6 +27,14 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
     });
   }
 
+  int filterIndex = 0;
+
+  void setFilterIndex(int index) {
+    setState(() {
+      filterIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = returnTheme(context: context);
@@ -40,64 +48,216 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           children: [
             MainTopBar(
               profileNavAction: widget.profileNavAction,
+              lastWidget: Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: PopupMenuButton(
+                    offset: Offset(-20, 30),
+                    color: Colors.white,
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          onTap: () {
+                            setFilterIndex(0);
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(
+                                  horizontal: 10.0,
+                                ),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .spaceBetween,
+                              children: [
+                                Text(
+                                  style: TextStyle(
+                                    fontSize: theme
+                                        .mobileTexts
+                                        .b3
+                                        .fontSize,
+                                    fontWeight:
+                                        filterIndex == 0
+                                        ? FontWeight.bold
+                                        : null,
+                                  ),
+                                  'Filter By Subscription',
+                                ),
+                                Visibility(
+                                  visible: filterIndex == 0,
+                                  child: Icon(
+                                    size: 17,
+                                    color: Colors
+                                        .grey
+                                        .shade700,
+                                    Icons.check,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          onTap: () {
+                            setFilterIndex(1);
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(
+                                  horizontal: 10.0,
+                                ),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .spaceBetween,
+                              children: [
+                                Text(
+                                  style: TextStyle(
+                                    fontSize: theme
+                                        .mobileTexts
+                                        .b3
+                                        .fontSize,
+                                    fontWeight:
+                                        filterIndex == 1
+                                        ? FontWeight.bold
+                                        : null,
+                                  ),
+                                  'Filter By Active/Inactive',
+                                ),
+                                Visibility(
+                                  visible: filterIndex == 1,
+                                  child: Icon(
+                                    size: 17,
+                                    color: Colors
+                                        .grey
+                                        .shade700,
+                                    Icons.check,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          onTap: () {
+                            setFilterIndex(1);
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(
+                                  horizontal: 10.0,
+                                ),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .spaceBetween,
+                              children: [
+                                Text(
+                                  style: TextStyle(
+                                    fontSize: theme
+                                        .mobileTexts
+                                        .b3
+                                        .fontSize,
+                                    fontWeight:
+                                        filterIndex == 1
+                                        ? FontWeight.bold
+                                        : null,
+                                  ),
+                                  'Filter By Assigned Agent',
+                                ),
+                                Visibility(
+                                  visible: filterIndex == 1,
+                                  child: Icon(
+                                    size: 17,
+                                    color: Colors
+                                        .grey
+                                        .shade700,
+                                    Icons.check,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ];
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      child: Icon(Icons.more_vert_rounded),
+                    ),
+                  ),
+                ),
+              ),
             ),
             SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20.0,
               ),
-              child: Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color.fromARGB(
-                    41,
-                    17,
-                    82,
-                    134,
-                  ),
-                ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    TopStoreFilterButton(
-                      mainIndex: currentSelection,
-                      myIndex: 0,
-                      title: 'All',
-                      action: () {
-                        switchSelection(0);
-                      },
-                    ),
-                    TopStoreFilterButton(
-                      mainIndex: currentSelection,
-                      myIndex: 1,
-                      title: 'Head',
-                      action: () {
-                        switchSelection(1);
-                      },
-                    ),
-                    TopStoreFilterButton(
-                      mainIndex: currentSelection,
-                      myIndex: 2,
-                      title: 'Paid',
-                      action: () {
-                        switchSelection(2);
-                      },
-                    ),
-                    TopStoreFilterButton(
-                      mainIndex: currentSelection,
-                      myIndex: 3,
-                      title: 'Unpaid',
-                      action: () {
-                        switchSelection(3);
-                      },
-                    ),
-                    TopStoreFilterButton(
-                      mainIndex: currentSelection,
-                      myIndex: 4,
-                      title: 'New',
-                      action: () {
-                        switchSelection(4);
-                      },
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          10,
+                        ),
+                        color: const Color.fromARGB(
+                          41,
+                          17,
+                          82,
+                          134,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.center,
+                        children: [
+                          TopStoreFilterButton(
+                            mainIndex: currentSelection,
+                            myIndex: 0,
+                            title: 'All',
+                            action: () {
+                              switchSelection(0);
+                            },
+                          ),
+                          TopStoreFilterButton(
+                            mainIndex: currentSelection,
+                            myIndex: 1,
+                            title: 'Head',
+                            action: () {
+                              switchSelection(1);
+                            },
+                          ),
+                          TopStoreFilterButton(
+                            mainIndex: currentSelection,
+                            myIndex: 2,
+                            title: 'Paid',
+                            action: () {
+                              switchSelection(2);
+                            },
+                          ),
+                          TopStoreFilterButton(
+                            mainIndex: currentSelection,
+                            myIndex: 3,
+                            title: 'Unpaid',
+                            action: () {
+                              switchSelection(3);
+                            },
+                          ),
+                          TopStoreFilterButton(
+                            mainIndex: currentSelection,
+                            myIndex: 4,
+                            title: 'New',
+                            action: () {
+                              switchSelection(4);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -107,10 +267,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
             Expanded(
               child: RefreshIndicator.adaptive(
                 onRefresh: () {
-                  return returnShopProvider(
-                    context: context,
-                    listen: false,
-                  ).getShops(context);
+                  return returnShopProvider().getShops();
                 },
                 backgroundColor: Colors.white,
                 color: theme.lightModeColor.prColor250,
@@ -119,23 +276,17 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                     if (currentSelection == 1
                         ? returnShopProvider(
                             context: context,
-                          ).getHeadQuaters().isEmpty
+                          ).shopInfos.isEmpty
                         : currentSelection == 2
                         ? returnShopProvider(
                                 context: context,
                               )
-                              .getTotalSubscribedShops(
-                                context,
-                              )
+                              .getTotalSubscribedShops()
                               .isEmpty
                         : currentSelection == 3
                         ? returnShopProvider(
-                                context: context,
-                              )
-                              .getTotalUnsubscribedShops(
-                                context,
-                              )
-                              .isEmpty
+                            context: context,
+                          ).getTotalFreeShops().isEmpty
                         : currentSelection == 4
                         ? returnShopProvider(
                                 context: context,
@@ -144,7 +295,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                               .isEmpty
                         : returnShopProvider(
                             context: context,
-                          ).shops.isEmpty) {
+                          ).shopInfos.isEmpty) {
                       return ListView(
                         children: [
                           SizedBox(
@@ -168,23 +319,8 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                         children: currentSelection == 1
                             ? returnShopProvider(
                                     context: context,
-                                  )
-                                  .getHeadQuaters()
-                                  .where(
-                                    (sh) =>
-                                        returnSubscriptionProvider(
-                                              context:
-                                                  context,
-                                            ).subscriptions
-                                            .map(
-                                              (sub) => sub
-                                                  .userId,
-                                            )
-                                            .toList()
-                                            .contains(
-                                              sh.userId,
-                                            ),
-                                  )
+                                  ).shopInfos
+                                  .where((sh) => true)
                                   .map(
                                     (shop) => ShopTileMain(
                                       shop: shop,
@@ -195,9 +331,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                             ? returnShopProvider(
                                     context: context,
                                   )
-                                  .getTotalSubscribedShops(
-                                    context,
-                                  )
+                                  .getTotalSubscribedShops()
                                   .map(
                                     (shop) => ShopTileMain(
                                       shop: shop,
@@ -208,9 +342,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                             ? returnShopProvider(
                                     context: context,
                                   )
-                                  .getTotalUnsubscribedShops(
-                                    context,
-                                  )
+                                  .getTotalFreeShops()
                                   .map(
                                     (shop) => ShopTileMain(
                                       shop: shop,
@@ -230,22 +362,8 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                                   .toList()
                             : returnShopProvider(
                                     context: context,
-                                  ).shops
-                                  .where(
-                                    (sh) =>
-                                        returnSubscriptionProvider(
-                                              context:
-                                                  context,
-                                            ).subscriptions
-                                            .map(
-                                              (sub) => sub
-                                                  .userId,
-                                            )
-                                            .toList()
-                                            .contains(
-                                              sh.userId,
-                                            ),
-                                  )
+                                  ).shopInfos
+                                  .where((sh) => true)
                                   .map(
                                     (shop) => ShopTileMain(
                                       shop: shop,

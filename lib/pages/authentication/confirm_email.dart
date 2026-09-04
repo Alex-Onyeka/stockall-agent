@@ -211,6 +211,9 @@ class ConfirmEmailState extends State<ConfirmEmail> {
                                   'Remaining Time: ',
                                 ),
                                 InkWell(
+                                  mouseCursor:
+                                      SystemMouseCursors
+                                          .click,
                                   onTap: () async {
                                     if (time > 0) {
                                       {}

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stockallagent/classes/report_class.dart';
+import 'package:stockallagent/classes/analysis_report.dart';
 import 'package:stockallagent/components/main_top_bar.dart';
 import 'package:stockallagent/constants/constants_main.dart';
 import 'package:stockallagent/main.dart';
@@ -75,11 +75,7 @@ class _ReportsState extends State<Reports> {
                           ),
                         ),
                         Text(
-                          formatMoney(
-                            returnReportProvider(
-                              context: context,
-                            ).getTotalRevenue(),
-                          ),
+                          formatMoney(1000),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: theme
@@ -107,11 +103,7 @@ class _ReportsState extends State<Reports> {
                           ),
                         ),
                         Text(
-                          formatMoney(
-                            returnReportProvider(
-                              context: context,
-                            ).getTotalNetRevenue(),
-                          ),
+                          formatMoney(1000),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: theme
@@ -131,10 +123,8 @@ class _ReportsState extends State<Reports> {
             Expanded(
               child: RefreshIndicator.adaptive(
                 onRefresh: () {
-                  return returnReportProvider(
-                    context: context,
-                    listen: false,
-                  ).getReports();
+                  return returnReportProvider()
+                      .getReports();
                 },
                 backgroundColor: Colors.white,
                 color: theme.lightModeColor.prColor250,
@@ -163,7 +153,7 @@ class _ReportsState extends State<Reports> {
 }
 
 class ReportTileMain extends StatelessWidget {
-  final ReportClass report;
+  final AnalysisReport report;
   const ReportTileMain({super.key, required this.report});
 
   @override
@@ -184,6 +174,7 @@ class ReportTileMain extends StatelessWidget {
             ),
           ),
           child: InkWell(
+            mouseCursor: SystemMouseCursors.click,
             borderRadius: BorderRadius.circular(5),
             onTap: () {
               Navigator.push(
@@ -223,7 +214,9 @@ class ReportTileMain extends StatelessWidget {
                                   .fontSize,
                               fontWeight: FontWeight.bold,
                             ),
-                            getMonthAndYear(report.date),
+                            getMonthAndYear(
+                              report.createdAt,
+                            ),
                           ),
                         ),
                       ],
@@ -237,7 +230,10 @@ class ReportTileMain extends StatelessWidget {
                           fontSize:
                               theme.mobileTexts.b4.fontSize,
                         ),
-                        formatMoney(report.totalRevenue),
+                        formatMoney(
+                          (report.totalActive ?? 0)
+                              .toDouble(),
+                        ),
                       ),
                       Icon(
                         size: 14,

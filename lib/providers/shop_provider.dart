@@ -1,330 +1,331 @@
-import 'package:flutter/material.dart';
-import 'package:stockallagent/classes/admin_class.dart';
-import 'package:stockallagent/classes/shop_class.dart';
-import 'package:stockallagent/classes/user_class.dart';
-import 'package:stockallagent/constants/constants_main.dart';
-import 'package:stockallagent/main.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+// import 'package:flutter/material.dart';
+// import 'package:stockallagent/classes/admin_class.dart';
+// import 'package:stockallagent/classes/shop_class.dart';
+// import 'package:stockallagent/classes/user_class.dart';
+// import 'package:stockallagent/constants/constants_main.dart';
+// import 'package:stockallagent/main.dart';
+// import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ShopProvider extends ChangeNotifier {
-  final SupabaseClient _client = Supabase.instance.client;
-  final String tableName = 'shops';
+// class ShopProvider extends ChangeNotifier {
+//   static final ShopProvider _instance =
+//       ShopProvider._internal();
+//   factory ShopProvider() => _instance;
+//   ShopProvider._internal();
+//   final SupabaseClient _client = Supabase.instance.client;
+//   final String tableName = 'shops';
 
-  List<ShopClass> shops = [];
+//   List<ShopClass> shops = [];
 
-  Future<List<ShopClass>> getShops(
-    BuildContext context,
-  ) async {
-    UserClass? user = await returnUserProvider(
-      context: context,
-      listen: false,
-    ).getUser();
-    if (user == null) {
-      print('User not Found');
-      return [];
-    } else {
-      if (!context.mounted) {
-        print("Context is Not mounted");
-        return [];
-      }
-      AdminClass? admin = await returnAdminProvider(
-        context: context,
-        listen: false,
-      ).getAdmin();
-      print("Admin Name: ${admin?.name}");
+//   Future<List<ShopClass>> getShops(
+//     BuildContext context,
+//   ) async {
+//     UserClass? user = await returnUserProvider(
+//       context: context,
+//       listen: false,
+//     ).getUser();
+//     if (user == null) {
+//       print('User not Found');
+//       return [];
+//     } else {
+//       if (!context.mounted) {
+//         print("Context is Not mounted");
+//         return [];
+//       }
+//       AdminClass? admin = await returnAdminProvider(
+//         context: context,
+//         listen: false,
+//       ).getAdmin();
+//       print("Admin Name: ${admin?.name}");
 
-      if (admin == null) {
-        print('📍📍User is Not an Admin');
-        try {
-          var res = await _client
-              .from(tableName)
-              .select()
-              .eq(
-                'ref_code',
-                user.referralCode!.toLowerCase(),
-              );
+//       if (admin == null) {
+//         print('📍📍User is Not an Admin');
+//         try {
+//           var res = await _client
+//               .from(tableName)
+//               .select()
+//               .eq(
+//                 'ref_code',
+//                 user.referralCode!.toLowerCase(),
+//               );
 
-          if (res.isEmpty) {
-            print('No Shops Gotten');
-            shops = [];
-            returnSubscriptionProvider(
-              context: context,
-              listen: false,
-            ).clearSubscriptions();
-            returnBankProvider(
-              context: context,
-              listen: false,
-            ).clearBanks();
-            returnRefPaymentsProvider(
-              context: context,
-              listen: false,
-            ).clearPayments();
-            returnSubPaymentsProvider(
-              context: context,
-              listen: false,
-            ).clearSubPayments();
-            notifyListeners();
-            return [];
-          }
+//           if (res.isEmpty) {
+//             print('No Shops Gotten');
+//             shops = [];
+//             returnSubscriptionProvider(
+//               context: context,
+//               listen: false,
+//             ).clearSubscriptions();
+//             // returnBankProvider(
+//             //   context: context,
+//             //   listen: false,
+//             // ).clearBanks();
+//             returnRefPaymentsProvider(
+//               context: context,
+//               listen: false,
+//             ).clearPayments();
+//             returnSubPaymentsProvider(
+//               context: context,
+//               listen: false,
+//             ).clearSubPayments();
+//             notifyListeners();
+//             return [];
+//           }
 
-          shops = res
-              .map((shop) => ShopClass.fromJson(shop))
-              .toList();
+//           shops = res
+//               .map((shop) => ShopClass.fromJson(shop))
+//               .toList();
 
-          print("✅ Shops Gotten Success: ${shops.length}");
-          if (context.mounted) {
-            await returnSubscriptionProvider(
-              context: context,
-              listen: false,
-            ).getSubscription(context: context);
-            if (context.mounted) {
-              await returnBankProvider(
-                context: context,
-                listen: false,
-              ).getBank();
-            }
-            if (context.mounted) {
-              await returnRefPaymentsProvider(
-                context: context,
-                listen: false,
-              ).getPayments();
-            }
-            if (context.mounted) {
-              await returnSubPaymentsProvider(
-                context: context,
-                listen: false,
-              ).getSubPayments();
-            }
-          }
-          shops.sort((a, b) => a.name.compareTo(b.name));
-          notifyListeners();
-          return shops;
-        } catch (e) {
-          print('❌ Error Getting Shops: ${e.toString()}');
-          shops = [];
-          notifyListeners();
-          return [];
-        }
-      } else {
-        print('❤❤User is an Admin');
-        try {
-          List<Map<String, dynamic>> res = await _client
-              .from(tableName)
-              .select();
+//           print("✅ Shops Gotten Success: ${shops.length}");
+//           if (context.mounted) {
+//             await returnSubscriptionProvider(
+//               context: context,
+//               listen: false,
+//             ).getSubscription(context: context);
+//             // if (context.mounted) {
+//             //   await returnBankProvider(
+//             //     context: context,
+//             //     listen: false,
+//             //   ).getBank();
+//             // }
+//             if (context.mounted) {
+//               await returnRefPaymentsProvider(
+//                 context: context,
+//                 listen: false,
+//               ).getPayments();
+//             }
+//             if (context.mounted) {
+//               await returnSubPaymentsProvider(
+//                 context: context,
+//                 listen: false,
+//               ).getSubPayments();
+//             }
+//           }
+//           shops.sort((a, b) => a.name.compareTo(b.name));
+//           notifyListeners();
+//           return shops;
+//         } catch (e) {
+//           print('❌ Error Getting Shops: ${e.toString()}');
+//           shops = [];
+//           notifyListeners();
+//           return [];
+//         }
+//       } else {
+//         print('❤❤User is an Admin');
+//         try {
+//           List<Map<String, dynamic>> res = await _client
+//               .from(tableName)
+//               .select();
 
-          shops = res
-              .map((sh) => ShopClass.fromJson(sh))
-              .toList();
-          shops.sort((a, b) => a.name.compareTo(b.name));
+//           shops = res
+//               .map((sh) => ShopClass.fromJson(sh))
+//               .toList();
+//           shops.sort((a, b) => a.name.compareTo(b.name));
 
-          if (shops.isEmpty) {
-            print("No Shops Found");
-            shops = [];
-            notifyListeners();
-            return [];
-          }
+//           if (shops.isEmpty) {
+//             print("No Shops Found");
+//             shops = [];
+//             notifyListeners();
+//             return [];
+//           }
 
-          if (context.mounted) {
-            await returnUserProvider(
-              context: context,
-              listen: false,
-            ).getAgents();
-            if (context.mounted) {
-              returnSubscriptionProvider(
-                context: context,
-                listen: false,
-              ).getAllSubscriptions(context: context);
-            }
-            if (context.mounted) {
-              await returnBankProvider(
-                context: context,
-                listen: false,
-              ).getAllBanks();
-            }
-            if (context.mounted) {
-              await returnRefPaymentsProvider(
-                context: context,
-                listen: false,
-              ).getAllPayments();
-            }
-            if (context.mounted) {
-              await returnSubPaymentsProvider(
-                context: context,
-                listen: false,
-              ).getSubPayments();
-            }
-            if (context.mounted) {
-              await returnReportProvider(
-                context: context,
-                listen: false,
-              ).getReports();
-            }
-          }
-          print(
-            "✅ All Shops Gotten Success: ${shops.length}",
-          );
-          return shops;
-        } catch (e) {
-          print(
-            "❌ Error Getting all Shops: ${e.toString()}",
-          );
-          shops = [];
-          notifyListeners();
-          return [];
-        }
-      }
-    }
-  }
+//           if (context.mounted) {
+//             await returnUserProvider(
+//               context: context,
+//               listen: false,
+//             ).getAgents();
+//             if (context.mounted) {
+//               returnSubscriptionProvider(
+//                 context: context,
+//                 listen: false,
+//               ).getAllSubscriptions(context: context);
+//             }
+//             if (context.mounted) {
+//               await returnBankProvider(
+//                 context: context,
+//                 listen: false,
+//               ).getAllBanks();
+//             }
+//             if (context.mounted) {
+//               await returnRefPaymentsProvider(
+//                 context: context,
+//                 listen: false,
+//               ).getAllPayments();
+//             }
+//             if (context.mounted) {
+//               await returnSubPaymentsProvider(
+//                 context: context,
+//                 listen: false,
+//               ).getSubPayments();
+//             }
+//             if (context.mounted) {
+//               await returnReportProvider().getReports();
+//             }
+//           }
+//           print(
+//             "✅ All Shops Gotten Success: ${shops.length}",
+//           );
+//           return shops;
+//         } catch (e) {
+//           print(
+//             "❌ Error Getting all Shops: ${e.toString()}",
+//           );
+//           shops = [];
+//           notifyListeners();
+//           return [];
+//         }
+//       }
+//     }
+//   }
 
-  List<ShopClass> getHeadQuaters() {
-    return shops.where((sh) => sh.isHeadQuaters).toList();
-  }
+//   List<ShopClass> getHeadQuaters() {
+//     return shops.where((sh) => sh.isHeadQuaters).toList();
+//   }
 
-  List<ShopClass> getBranches() {
-    return shops.where((sh) => !sh.isHeadQuaters).toList();
-  }
+//   List<ShopClass> getBranches() {
+//     return shops.where((sh) => !sh.isHeadQuaters).toList();
+//   }
 
-  List<ShopClass> getThisMonthRegisteredStores() {
-    var tempSh = getHeadQuaters()
-        .where(
-          (sh) =>
-              sh.createdAt.isAfter(monthStart()) ||
-              sh.createdAt.isAtSameMomentAs(monthStart()),
-        )
-        .toList();
-    tempSh.sort(
-      (a, b) => b.createdAt.compareTo(a.createdAt),
-    );
-    return tempSh;
-  }
+//   List<ShopClass> getThisMonthRegisteredStores() {
+//     var tempSh = getHeadQuaters()
+//         .where(
+//           (sh) =>
+//               sh.createdAt.isAfter(monthStart()) ||
+//               sh.createdAt.isAtSameMomentAs(monthStart()),
+//         )
+//         .toList();
+//     tempSh.sort(
+//       (a, b) => b.createdAt.compareTo(a.createdAt),
+//     );
+//     return tempSh;
+//   }
 
-  List<ShopClass> getThisMonthSubscribedShops(
-    BuildContext context,
-  ) {
-    var payments =
-        returnSubscriptionProvider(
-              context: context,
-              listen: false,
-            ).subscriptions
-            .where(
-              (pay) =>
-                  pay.lastPayment != null &&
-                  !pay.lastPayment!.isBefore(
-                    monthStart().subtract(
-                      Duration(microseconds: 1),
-                    ),
-                  ) &&
-                  pay.plan != 0 &&
-                  // pay.amount != 0 &&
-                  pay.amount != null,
-            )
-            .toList();
+//   List<ShopClass> getThisMonthSubscribedShops(
+//     BuildContext context,
+//   ) {
+//     var payments =
+//         returnSubscriptionProvider(
+//               context: context,
+//               listen: false,
+//             ).subscriptions
+//             .where(
+//               (pay) =>
+//                   pay.lastPayment != null &&
+//                   !pay.lastPayment!.isBefore(
+//                     monthStart().subtract(
+//                       Duration(microseconds: 1),
+//                     ),
+//                   ) &&
+//                   pay.plan != 0 &&
+//                   // pay.amount != 0 &&
+//                   pay.amount != null,
+//             )
+//             .toList();
 
-    payments.sort(
-      (a, b) => b.lastPayment!.compareTo(a.lastPayment!),
-    );
+//     payments.sort(
+//       (a, b) => b.lastPayment!.compareTo(a.lastPayment!),
+//     );
 
-    final Map<String, ShopClass> shopByUserId = {
-      for (var sh in getHeadQuaters()) sh.userId: sh,
-    };
+//     final Map<String, ShopClass> shopByUserId = {
+//       for (var sh in getHeadQuaters()) sh.userId: sh,
+//     };
 
-    List<ShopClass> sortedShops = [];
-    for (var pay in payments) {
-      final shop = shopByUserId[pay.userId];
-      if (shop != null && !sortedShops.contains(shop)) {
-        sortedShops.add(shop);
-      }
-    }
+//     List<ShopClass> sortedShops = [];
+//     for (var pay in payments) {
+//       final shop = shopByUserId[pay.userId];
+//       if (shop != null && !sortedShops.contains(shop)) {
+//         sortedShops.add(shop);
+//       }
+//     }
 
-    return sortedShops;
-  }
+//     return sortedShops;
+//   }
 
-  // List<ShopClass> getTotalTrialShops(BuildContext context) {
-  //   var payments =
-  //       returnSubscriptionProvider(
-  //             context: context,
-  //             listen: false,
-  //           ).subscriptions
-  //           .where(
-  //             (pay) => pay.plan != 0 && pay.amount == null,
-  //           )
-  //           .toList();
+//   // List<ShopClass> getTotalTrialShops(BuildContext context) {
+//   //   var payments =
+//   //       returnSubscriptionProvider(
+//   //             context: context,
+//   //             listen: false,
+//   //           ).subscriptions
+//   //           .where(
+//   //             (pay) => pay.plan != 0 && pay.amount == null,
+//   //           )
+//   //           .toList();
 
-  //   payments.sort(
-  //     (a, b) => b.lastPayment!.compareTo(a.lastPayment!),
-  //   );
+//   //   payments.sort(
+//   //     (a, b) => b.lastPayment!.compareTo(a.lastPayment!),
+//   //   );
 
-  //   final Map<String, ShopClass> shopByUserId = {
-  //     for (var sh in getHeadQuaters()) sh.userId: sh,
-  //   };
+//   //   final Map<String, ShopClass> shopByUserId = {
+//   //     for (var sh in getHeadQuaters()) sh.userId: sh,
+//   //   };
 
-  //   List<ShopClass> sortedShops = [];
-  //   for (var pay in payments) {
-  //     final shop = shopByUserId[pay.userId];
-  //     if (shop != null && !sortedShops.contains(shop)) {
-  //       sortedShops.add(shop);
-  //     }
-  //   }
+//   //   List<ShopClass> sortedShops = [];
+//   //   for (var pay in payments) {
+//   //     final shop = shopByUserId[pay.userId];
+//   //     if (shop != null && !sortedShops.contains(shop)) {
+//   //       sortedShops.add(shop);
+//   //     }
+//   //   }
 
-  //   return sortedShops;
-  // }
+//   //   return sortedShops;
+//   // }
 
-  List<ShopClass> getTotalSubscribedShops(
-    BuildContext context,
-  ) {
-    var payments =
-        returnSubscriptionProvider(
-              context: context,
-              listen: false,
-            ).subscriptions
-            .where(
-              (pay) => pay.plan != 0 && pay.amount != null,
-            )
-            .toList();
+//   List<ShopClass> getTotalSubscribedShops(
+//     BuildContext context,
+//   ) {
+//     var payments =
+//         returnSubscriptionProvider(
+//               context: context,
+//               listen: false,
+//             ).subscriptions
+//             .where(
+//               (pay) => pay.plan != 0 && pay.amount != null,
+//             )
+//             .toList();
 
-    payments.sort(
-      (a, b) => b.lastPayment!.compareTo(a.lastPayment!),
-    );
+//     payments.sort(
+//       (a, b) => b.lastPayment!.compareTo(a.lastPayment!),
+//     );
 
-    final Map<String, ShopClass> shopByUserId = {
-      for (var sh in getHeadQuaters()) sh.userId: sh,
-    };
+//     final Map<String, ShopClass> shopByUserId = {
+//       for (var sh in getHeadQuaters()) sh.userId: sh,
+//     };
 
-    List<ShopClass> sortedShops = [];
-    for (var pay in payments) {
-      final shop = shopByUserId[pay.userId];
-      if (shop != null && !sortedShops.contains(shop)) {
-        sortedShops.add(shop);
-      }
-    }
+//     List<ShopClass> sortedShops = [];
+//     for (var pay in payments) {
+//       final shop = shopByUserId[pay.userId];
+//       if (shop != null && !sortedShops.contains(shop)) {
+//         sortedShops.add(shop);
+//       }
+//     }
 
-    return sortedShops;
-  }
+//     return sortedShops;
+//   }
 
-  List<ShopClass> getTotalUnsubscribedShops(
-    BuildContext context,
-  ) {
-    var payments = returnSubscriptionProvider(
-      context: context,
-      listen: false,
-    ).subscriptions.where((pay) => pay.plan == 0).toList();
+//   List<ShopClass> getTotalUnsubscribedShops(
+//     BuildContext context,
+//   ) {
+//     var payments = returnSubscriptionProvider(
+//       context: context,
+//       listen: false,
+//     ).subscriptions.where((pay) => pay.plan == 0).toList();
 
-    payments.sort(
-      (a, b) => b.lastPayment!.compareTo(a.lastPayment!),
-    );
+//     payments.sort(
+//       (a, b) => b.lastPayment!.compareTo(a.lastPayment!),
+//     );
 
-    final Map<String, ShopClass> shopByUserId = {
-      for (var sh in getHeadQuaters()) sh.userId: sh,
-    };
+//     final Map<String, ShopClass> shopByUserId = {
+//       for (var sh in getHeadQuaters()) sh.userId: sh,
+//     };
 
-    List<ShopClass> sortedShops = [];
-    for (var pay in payments) {
-      final shop = shopByUserId[pay.userId];
-      if (shop != null && !sortedShops.contains(shop)) {
-        sortedShops.add(shop);
-      }
-    }
+//     List<ShopClass> sortedShops = [];
+//     for (var pay in payments) {
+//       final shop = shopByUserId[pay.userId];
+//       if (shop != null && !sortedShops.contains(shop)) {
+//         sortedShops.add(shop);
+//       }
+//     }
 
-    return sortedShops;
-  }
-}
+//     return sortedShops;
+//   }
+// }

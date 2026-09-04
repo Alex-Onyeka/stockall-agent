@@ -12,6 +12,8 @@ class MyTextFieldMain extends StatefulWidget {
   final String hintText;
   final bool isOptional;
   final bool isPassword;
+  final Function(String value)? onSubmit;
+  final int? lines;
 
   const MyTextFieldMain({
     super.key,
@@ -24,6 +26,8 @@ class MyTextFieldMain extends StatefulWidget {
     required this.hintText,
     this.title,
     required this.isPassword,
+    this.onSubmit,
+    this.lines,
   });
 
   @override
@@ -57,6 +61,8 @@ class _MyTextFieldMainState extends State<MyTextFieldMain> {
           ),
         ),
         TextFormField(
+          maxLines: widget.lines,
+          onFieldSubmitted: widget.onSubmit,
           obscureText: widget.isPassword ? hideText : false,
           keyboardType: widget.isNumber
               ? TextInputType.number
@@ -77,6 +83,7 @@ class _MyTextFieldMainState extends State<MyTextFieldMain> {
           decoration: InputDecoration(
             suffixIcon: widget.isPassword
                 ? InkWell(
+                    mouseCursor: SystemMouseCursors.click,
                     onTap: () {
                       setState(() {
                         hideText = !hideText;

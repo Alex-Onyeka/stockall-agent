@@ -99,10 +99,7 @@ class _SecondPageAgentState extends State<SecondPageAgent> {
             Expanded(
               child: RefreshIndicator.adaptive(
                 onRefresh: () {
-                  return returnShopProvider(
-                    context: context,
-                    listen: false,
-                  ).getShops(context);
+                  return returnShopProvider().getShops();
                 },
                 backgroundColor: Colors.white,
                 color: theme.lightModeColor.prColor250,
@@ -112,18 +109,12 @@ class _SecondPageAgentState extends State<SecondPageAgent> {
                         ? returnShopProvider(
                                 context: context,
                               )
-                              .getTotalSubscribedShops(
-                                context,
-                              )
+                              .getTotalSubscribedShops()
                               .isEmpty
                         : currentSelection == 2
                         ? returnShopProvider(
-                                context: context,
-                              )
-                              .getTotalUnsubscribedShops(
-                                context,
-                              )
-                              .isEmpty
+                            context: context,
+                          ).getTotalFreeShops().isEmpty
                         : currentSelection == 3
                         ? returnShopProvider(
                                 context: context,
@@ -132,7 +123,7 @@ class _SecondPageAgentState extends State<SecondPageAgent> {
                               .isEmpty
                         : returnShopProvider(
                             context: context,
-                          ).getHeadQuaters().isEmpty) {
+                          ).shopInfos.isEmpty) {
                       return ListView(
                         children: [
                           SizedBox(
@@ -157,9 +148,7 @@ class _SecondPageAgentState extends State<SecondPageAgent> {
                             ? returnShopProvider(
                                     context: context,
                                   )
-                                  .getTotalSubscribedShops(
-                                    context,
-                                  )
+                                  .getTotalSubscribedShops()
                                   .map(
                                     (shop) => ShopTileMain(
                                       shop: shop,
@@ -170,9 +159,7 @@ class _SecondPageAgentState extends State<SecondPageAgent> {
                             ? returnShopProvider(
                                     context: context,
                                   )
-                                  .getTotalUnsubscribedShops(
-                                    context,
-                                  )
+                                  .getTotalFreeShops()
                                   .map(
                                     (shop) => ShopTileMain(
                                       shop: shop,
@@ -193,23 +180,8 @@ class _SecondPageAgentState extends State<SecondPageAgent> {
                                   .toList()
                             : returnShopProvider(
                                     context: context,
-                                  )
-                                  .getHeadQuaters()
-                                  .where(
-                                    (sh) =>
-                                        returnSubscriptionProvider(
-                                              context:
-                                                  context,
-                                            ).subscriptions
-                                            .map(
-                                              (sub) => sub
-                                                  .userId,
-                                            )
-                                            .toList()
-                                            .contains(
-                                              sh.userId,
-                                            ),
-                                  )
+                                  ).shopInfos
+                                  .where((sh) => true)
                                   .map(
                                     (shop) => ShopTileMain(
                                       shop: shop,

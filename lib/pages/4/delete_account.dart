@@ -108,10 +108,9 @@ class _DeleteAccountState extends State<DeleteAccount> {
                         if (formKey.currentState!
                             .validate()) {
                           if (passwordC.text ==
-                              returnUserProvider(
-                                context: context,
-                                listen: false,
-                              ).currentUser?.password) {
+                              returnUserProvider()
+                                  .currentUser
+                                  ?.password) {
                             setState(() {
                               isLoading = true;
                             });

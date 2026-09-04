@@ -34,10 +34,7 @@ class PinCodeWidget extends StatefulWidget {
 class _PinCodeWidgetState extends State<PinCodeWidget> {
   @override
   Widget build(BuildContext context) {
-    var theme = returnTheme(
-      context: context,
-      listen: false,
-    );
+    var theme = returnTheme();
     return PinCodeTextField(
       beforeTextPaste: (text) => true,
       autoDisposeControllers: false,

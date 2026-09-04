@@ -5,12 +5,9 @@ import 'package:stockallagent/pages/authentication/base_page.dart';
 import 'package:stockallagent/pages/4/delete_account.dart';
 import 'package:stockallagent/providers/admin_provider.dart';
 import 'package:stockallagent/providers/bank_provider.dart';
-import 'package:stockallagent/providers/payments_provider.dart';
-import 'package:stockallagent/providers/report_provider.dart';
-import 'package:stockallagent/providers/sub_payments_provider.dart';
-import 'package:stockallagent/providers/subscription_provider.dart';
+import 'package:stockallagent/providers/analysis_report_provider.dart';
+import 'package:stockallagent/providers/shop_info_provider.dart';
 import 'package:stockallagent/providers/resource_provider.dart';
-import 'package:stockallagent/providers/shop_provider.dart';
 import 'package:stockallagent/providers/user_provider.dart';
 import 'package:stockallagent/theme/theme_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -51,22 +48,13 @@ void main() async {
           create: (context) => UserProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => ShopProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => SubscriptionProvider(),
+          create: (context) => ShopInfoProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => BankProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => RefPaymentsProvider(),
-        ),
-        ChangeNotifierProvider(
           create: (context) => AdminProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => SubPaymentsProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => ReportProvider(),
@@ -78,94 +66,61 @@ void main() async {
 }
 
 ReportProvider returnReportProvider({
-  required BuildContext context,
-  bool listen = true,
+  BuildContext? context,
 }) {
-  return Provider.of<ReportProvider>(
-    context,
-    listen: listen,
-  );
+  if (context != null) {
+    return Provider.of<ReportProvider>(context);
+  } else {
+    return ReportProvider();
+  }
 }
 
-ThemeProvider returnTheme({
-  required BuildContext context,
-  bool listen = true,
-}) {
-  return Provider.of<ThemeProvider>(
-    context,
-    listen: listen,
-  );
+ThemeProvider returnTheme({BuildContext? context}) {
+  if (context == null) {
+    return ThemeProvider();
+  }
+  return Provider.of<ThemeProvider>(context);
 }
 
 ResourceProvider returnResourceProvider({
-  required BuildContext context,
-  bool listen = true,
+  BuildContext? context,
 }) {
-  return Provider.of<ResourceProvider>(
-    context,
-    listen: listen,
-  );
+  if (context == null) {
+    return ResourceProvider();
+  }
+  return Provider.of<ResourceProvider>(context);
 }
 
-UserProvider returnUserProvider({
-  required BuildContext context,
-  bool listen = true,
-}) {
-  return Provider.of<UserProvider>(context, listen: listen);
+UserProvider returnUserProvider({BuildContext? context}) {
+  if (context == null) {
+    return UserProvider();
+  }
+  return Provider.of<UserProvider>(context);
 }
 
-ShopProvider returnShopProvider({
-  required BuildContext context,
-  bool listen = true,
+ShopInfoProvider returnShopProvider({
+  BuildContext? context,
 }) {
-  return Provider.of<ShopProvider>(context, listen: listen);
+  if (context == null) {
+    return ShopInfoProvider();
+  }
+  return Provider.of<ShopInfoProvider>(context);
 }
 
-SubscriptionProvider returnSubscriptionProvider({
-  required BuildContext context,
-  bool listen = true,
-}) {
-  return Provider.of<SubscriptionProvider>(
-    context,
-    listen: listen,
-  );
+BankProvider returnBankProvider({BuildContext? context}) {
+  if (context == null) {
+    return BankProvider();
+  } else {
+    return Provider.of<BankProvider>(context);
+  }
 }
 
-BankProvider returnBankProvider({
-  required BuildContext context,
-  bool listen = true,
-}) {
-  return Provider.of<BankProvider>(context, listen: listen);
-}
-
-RefPaymentsProvider returnRefPaymentsProvider({
-  required BuildContext context,
-  bool listen = true,
-}) {
-  return Provider.of<RefPaymentsProvider>(
-    context,
-    listen: listen,
-  );
-}
-
-AdminProvider returnAdminProvider({
-  required BuildContext context,
-  bool listen = true,
-}) {
-  return Provider.of<AdminProvider>(
-    context,
-    listen: listen,
-  );
-}
-
-SubPaymentsProvider returnSubPaymentsProvider({
-  required BuildContext context,
-  bool listen = true,
-}) {
-  return Provider.of<SubPaymentsProvider>(
-    context,
-    listen: listen,
-  );
+AdminProvider returnAdminProvider({BuildContext? context}) {
+  if (context == null) {
+    return AdminProvider();
+  } else {
+    return Provider.of<AdminProvider>(context);
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -184,10 +139,8 @@ class MyApp extends StatelessWidget {
           248,
         ),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: returnTheme(
-            context: context,
-            listen: false,
-          ).lightModeColor.prColor300,
+          seedColor:
+              returnTheme().lightModeColor.prColor300,
         ),
       ),
       initialRoute: '/',

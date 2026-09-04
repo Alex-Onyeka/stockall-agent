@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/ref_payments_class.dart';
 import 'package:stockallagent/components/dialog_template.dart';
-import 'package:stockallagent/components/empty_widget.dart';
 import 'package:stockallagent/components/main_top_bar.dart';
 import 'package:stockallagent/constants/constants_main.dart';
 import 'package:stockallagent/main.dart';
@@ -21,6 +20,7 @@ class Payments extends StatefulWidget {
 
 class _PaymentsState extends State<Payments> {
   int currentSelection = 0;
+  Future<void> onRefresh() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +73,7 @@ class _PaymentsState extends State<Payments> {
                             ),
                           ),
                           Text(
-                            formatMoney(
-                              returnRefPaymentsProvider(
-                                context: context,
-                              ).getTotalPayments(),
-                            ),
+                            formatMoney(2000),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: theme
@@ -112,52 +108,48 @@ class _PaymentsState extends State<Payments> {
             ),
             Expanded(
               child: RefreshIndicator.adaptive(
-                onRefresh: () {
-                  return returnRefPaymentsProvider(
-                    context: context,
-                    listen: false,
-                  ).getPayments();
-                },
+                onRefresh: onRefresh,
                 backgroundColor: Colors.white,
                 color: theme.lightModeColor.prColor250,
                 child: Builder(
                   builder: (context) {
-                    if (returnRefPaymentsProvider(
-                      context: context,
-                    ).payments.isNotEmpty) {
-                      return ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          20,
-                          10,
-                          20,
-                          15,
-                        ),
-                        children:
-                            returnRefPaymentsProvider(
-                                  context: context,
-                                ).payments
-                                .map(
-                                  (pay) =>
-                                      PaymentTile(pay: pay),
-                                )
-                                .toList(),
-                      );
-                    } else {
-                      return ListView(
-                        children: [
-                          SizedBox(
-                            height:
-                                MediaQuery.of(
-                                  context,
-                                ).size.height -
-                                200,
-                            child: EmptyWidget(
-                              isDashboard: false,
-                            ),
-                          ),
-                        ],
-                      );
-                    }
+                    // if (returnRefPaymentsProvider(
+                    //   context: context,
+                    // ).payments.isNotEmpty) {
+                    //   return ListView(
+                    //     padding: EdgeInsets.fromLTRB(
+                    //       20,
+                    //       10,
+                    //       20,
+                    //       15,
+                    //     ),
+                    //     children:
+                    //         returnRefPaymentsProvider(
+                    //               context: context,
+                    //             ).payments
+                    //             .map(
+                    //               (pay) =>
+                    //                   PaymentTile(pay: pay),
+                    //             )
+                    //             .toList(),
+                    //   );
+                    // } else {
+                    //   return ListView(
+                    //     children: [
+                    //       SizedBox(
+                    //         height:
+                    //             MediaQuery.of(
+                    //               context,
+                    //             ).size.height -
+                    //             200,
+                    //         child: EmptyWidget(
+                    //           isDashboard: false,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   );
+                    // }
+                    return Container();
                   },
                 ),
               ),
@@ -192,6 +184,7 @@ class PaymentTile extends StatelessWidget {
             color: Colors.white,
           ),
           child: InkWell(
+            mouseCursor: SystemMouseCursors.click,
             onTap: () {
               showDialog(
                 context: context,
@@ -427,7 +420,8 @@ class PaymentDetails extends StatelessWidget {
                   fontSize: theme.mobileTexts.b2.fontSize,
                   fontWeight: FontWeight.bold,
                 ),
-                '${referralCut(returnUserProvider(context: context, listen: false).currentUser!.role!) * 100}%',
+                // '${referralCut(returnUserProvider(context: context, listen: false).currentUser!.role!) * 100}%',
+                'Beans',
               ),
             ],
           ),

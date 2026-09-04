@@ -38,10 +38,7 @@ class _DashboardAgentState extends State<DashboardAgent> {
               ),
               child: RefreshIndicator.adaptive(
                 onRefresh: () {
-                  return returnShopProvider(
-                    context: context,
-                    listen: false,
-                  ).getShops(context);
+                  return returnShopProvider().getShops();
                 },
                 backgroundColor: Colors.white,
                 color: theme.lightModeColor.prColor250,
@@ -117,76 +114,17 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                             color: Colors
                                                 .white,
                                           ),
-                                          returnResourceProvider(
-                                                context:
-                                                    context,
-                                              ).hideMoneyDashBoard
-                                              ? '********'
-                                              : formatMoney(
-                                                  returnUserProvider(
-                                                                context: context,
-                                                                listen: false,
-                                                              ).currentUser?.role ==
-                                                          'Freelance'
-                                                      ? returnSubscriptionProvider(
-                                                          context: context,
-                                                        ).getCut(
-                                                          context,
-                                                          returnUserProvider(
-                                                            context: context,
-                                                          ).currentUser!.userId!,
-                                                          returnUserProvider(
-                                                            context: context,
-                                                          ).currentUser!.role!,
-                                                        )
-                                                      : ((returnSubPaymentsProvider(
-                                                              context: context,
-                                                            ).getAgentsCutForMonthsPayment(
-                                                              returnUserProvider(
-                                                                    context: context,
-                                                                    listen: false,
-                                                                  ).currentUser?.referralCode ??
-                                                                  '',
-                                                              returnUserProvider(
-                                                                context: context,
-                                                                listen: false,
-                                                              ).currentUser!.role!,
-                                                              context,
-                                                            ) +
-                                                            getAgentsSalary(
-                                                              returnShopProvider(
-                                                                    context: context,
-                                                                    listen: false,
-                                                                  )
-                                                                  .getHeadQuaters()
-                                                                  .where(
-                                                                    (
-                                                                      sh,
-                                                                    ) =>
-                                                                        sh.refCode ==
-                                                                            returnUserProvider(
-                                                                                  context: context,
-                                                                                  listen: false,
-                                                                                ).currentUser?.referralCode &&
-                                                                        (sh.createdAt.isAfter(
-                                                                              monthStart(),
-                                                                            ) ||
-                                                                            sh.createdAt.isAtSameMomentAs(
-                                                                              monthStart(),
-                                                                            )),
-                                                                  )
-                                                                  .length,
-                                                            ))),
-                                                ),
+                                          '',
                                         ),
                                       ],
                                     ),
                                     InkWell(
+                                      mouseCursor:
+                                          SystemMouseCursors
+                                              .click,
                                       onTap: () {
-                                        returnResourceProvider(
-                                          context: context,
-                                          listen: false,
-                                        ).toggleHideMoney();
+                                        returnResourceProvider()
+                                            .toggleHideMoney();
                                       },
                                       child: Icon(
                                         color: Colors.white,
@@ -249,7 +187,7 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                                   : returnShopProvider(
                                                       context:
                                                           context,
-                                                    ).getThisMonthSubscribedShops(context).length.toString(),
+                                                    ).getThisMonthSubscribedShops().length.toString(),
                                             ),
                                           ],
                                         ),
@@ -299,12 +237,7 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                                         context,
                                                   ).hideMoneyDashBoard
                                                   ? '***'
-                                                  : formatMoney(
-                                                      returnSubscriptionProvider(
-                                                        context:
-                                                            context,
-                                                      ).totalMoney(),
-                                                    ),
+                                                  : formatMoney(1000),
                                             ),
                                           ],
                                         ),
@@ -359,7 +292,7 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                                   : returnShopProvider(
                                                       context:
                                                           context,
-                                                    ).getHeadQuaters().length.toString(),
+                                                    ).shopInfos.length.toString(),
                                             ),
                                           ],
                                         ),
@@ -501,6 +434,9 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                 ),
                               ),
                               InkWell(
+                                mouseCursor:
+                                    SystemMouseCursors
+                                        .click,
                                 onTap: widget.navigate,
                                 child: Padding(
                                   padding:

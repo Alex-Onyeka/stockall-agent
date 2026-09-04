@@ -4,6 +4,10 @@ import 'package:stockallagent/service/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AdminProvider extends ChangeNotifier {
+  static final AdminProvider _instance =
+      AdminProvider._internal();
+  factory AdminProvider() => _instance;
+  AdminProvider._internal();
   final SupabaseClient _client = Supabase.instance.client;
   final String tableName = 'admins';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stockallagent/classes/shop_class.dart';
+import 'package:stockallagent/classes/shop_info.dart';
 import 'package:stockallagent/main.dart';
 import 'package:stockallagent/pages/1/first_page.dart';
 import 'package:stockallagent/pages/4/folder/profile.dart';
@@ -27,11 +27,7 @@ class _HomeState extends State<Home> {
 
   void profileNavAction() {
     setState(() {
-      if (returnAdminProvider(
-            context: context,
-            listen: false,
-          ).admin ==
-          null) {
+      if (returnAdminProvider().admin == null) {
         currentPage = 3;
       } else {
         currentPage = 4;
@@ -45,22 +41,16 @@ class _HomeState extends State<Home> {
     });
   }
 
-  late Future<List<ShopClass>> getShopsFuture;
-  Future<List<ShopClass>> getShop() async {
-    return await returnShopProvider(
-      context: context,
-      listen: false,
-    ).getShops(context);
+  late Future<List<ShopInfo>> getShopsFuture;
+  Future<List<ShopInfo>> getShop() async {
+    return await returnShopProvider().getShops();
   }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      returnResourceProvider(
-        context: context,
-        listen: false,
-      ).toggleLoading(false);
+      returnResourceProvider().toggleLoading(false);
     });
     userFuture = getUserFuture();
     getShopsFuture = getShop();
@@ -69,10 +59,7 @@ class _HomeState extends State<Home> {
   late Future<void> userFuture;
 
   Future<void> getUserFuture() async {
-    var user = await returnUserProvider(
-      context: context,
-      listen: false,
-    ).getUser();
+    var user = await returnUserProvider().getUser();
     if (user == null) {
       Navigator.pushReplacement(
         context,
@@ -302,6 +289,7 @@ class NavButtons extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+          mouseCursor: SystemMouseCursors.click,
           onTap: navAction,
           child: SizedBox(
             child: Column(
