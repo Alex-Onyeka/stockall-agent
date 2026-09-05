@@ -110,7 +110,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -158,7 +158,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -210,7 +210,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                                     .white,
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -263,7 +263,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -313,7 +313,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -365,7 +365,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                                     .white,
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -420,7 +420,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -470,7 +470,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -520,7 +520,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -577,7 +577,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -627,7 +627,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -677,7 +677,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -795,7 +795,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                             ],
                           ),
                           Divider(
-                            height: 10,
+                            height: 1,
                             color: Colors.white38,
                           ),
                           Builder(
@@ -1004,7 +1004,7 @@ ClipRRect(
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -1056,7 +1056,7 @@ ClipRRect(
                                                     .white,
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -1106,7 +1106,7 @@ ClipRRect(
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -1161,7 +1161,7 @@ ClipRRect(
                                                     .white,
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -1214,7 +1214,7 @@ ClipRRect(
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -1267,7 +1267,7 @@ ClipRRect(
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight

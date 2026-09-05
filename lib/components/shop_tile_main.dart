@@ -88,7 +88,7 @@ class ShopTileMain extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: theme
                                       .mobileTexts
-                                      .b2
+                                      .b3
                                       .fontSize,
                                   fontWeight:
                                       FontWeight.bold,
@@ -105,7 +105,7 @@ class ShopTileMain extends StatelessWidget {
                           ],
                         ),
                         Divider(
-                          height: 20,
+                          height: 15,
                           color: Colors.grey.shade100,
                         ),
                         Row(
@@ -133,9 +133,12 @@ class ShopTileMain extends StatelessWidget {
                                         .mobileTexts
                                         .b4
                                         .fontSize,
-                                    color: Colors
-                                        .grey
-                                        .shade800,
+                                    color:
+                                        shop
+                                            .expiredColor() ??
+                                        Colors
+                                            .grey
+                                            .shade800,
                                     fontWeight:
                                         FontWeight.bold,
                                   ),
@@ -150,7 +153,8 @@ class ShopTileMain extends StatelessWidget {
                                   ((shop.remainingDays ??
                                           0) <
                                       30) &&
-                                  shop.currentPlan != 0,
+                                  shop.subscriptionNextPayment !=
+                                      null,
                               child: Row(
                                 spacing: 4,
                                 children: [
@@ -163,7 +167,11 @@ class ShopTileMain extends StatelessWidget {
                                       fontWeight:
                                           FontWeight.normal,
                                     ),
-                                    'Expires In:',
+                                    (shop.remainingDays ??
+                                                0) <
+                                            0
+                                        ? 'Expired'
+                                        : 'Expires In:',
                                   ),
                                   Text(
                                     style: TextStyle(

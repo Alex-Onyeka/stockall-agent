@@ -280,7 +280,7 @@ class ShopInfo {
 
     if (absoluteDays <= 30) {
       return '${isNegative ? '-' : ''}$absoluteDays '
-          '${absoluteDays == 1 ? 'day' : 'days'}';
+          '${absoluteDays == 1 ? 'day' : 'days'}${isNegative ? ' ago' : ''}';
     }
 
     final months = absoluteDays ~/ 30;
@@ -295,13 +295,17 @@ class ShopInfo {
     }
 
     return '$monthString, '
-        '$remainingDayss ${remainingDayss == 1 ? 'day' : 'days'}';
+        '$remainingDayss ${remainingDayss == 1 ? 'day' : 'days'}${isNegative ? ' ago' : ''}';
   }
 
   List<Comment> getComments() {
     List<Comment> temp = agentComments ?? [];
     temp.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     return temp;
+  }
+
+  Color? expiredColor() {
+    return isExpired ? Colors.red : null;
   }
 
   Color activeColor() {
