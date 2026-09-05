@@ -19,258 +19,237 @@ class ShopPage extends StatelessWidget {
       context: context,
     ).shopInfos.firstWhere((item) => item.shopId == shopId);
     var theme = returnTheme();
-    if (returnAdminProvider(context: context).admin ==
-        null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            style: TextStyle(
-              fontSize: theme.mobileTexts.b2.fontSize,
-              fontWeight: FontWeight.bold,
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(
+        255,
+        255,
+        255,
+        255,
+      ),
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 15,
+              horizontal: 15,
             ),
-            'Shop Details',
-          ),
-        ),
-      );
-    } else {
-      return Scaffold(
-        backgroundColor: const Color.fromARGB(
-          255,
-          255,
-          255,
-          255,
-        ),
-        body: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                vertical: 15,
-                horizontal: 15,
+            decoration: BoxDecoration(
+              color: theme.lightModeColor.prColor300,
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(20),
               ),
-              decoration: BoxDecoration(
-                color: theme.lightModeColor.prColor300,
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(20),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      mouseCursor: SystemMouseCursors.click,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(
+                        color: Colors.grey.shade200,
+                        size: 20,
+                        Icons.arrow_back_ios_new_rounded,
+                      ),
+                    ),
+                    Text(
+                      style: TextStyle(
+                        fontSize:
+                            theme.mobileTexts.b2.fontSize,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      'Shop Details',
+                    ),
+                    Opacity(
+                      opacity: 0,
+                      child: IconButton(
                         mouseCursor:
                             SystemMouseCursors.click,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: () {},
                         icon: Icon(
-                          color: Colors.grey.shade200,
+                          color: Colors.white,
                           size: 20,
                           Icons.arrow_back_ios_new_rounded,
                         ),
                       ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: const Color.fromARGB(
+                    80,
+                    158,
+                    158,
+                    158,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    10,
+                    10,
+                    10,
+                    10,
+                  ),
+                  child: Column(
+                    spacing: 5,
+                    children: [
+                      Icon(
+                        size: 25,
+                        color: Colors.amber,
+                        Icons.home_work_outlined,
+                      ),
                       Text(
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize:
-                              theme.mobileTexts.b2.fontSize,
+                              theme.mobileTexts.h4.fontSize,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                        'Shop Details',
+                        shop.shopName.toUpperCase(),
                       ),
-                      Opacity(
-                        opacity: 0,
-                        child: IconButton(
-                          mouseCursor:
-                              SystemMouseCursors.click,
-                          onPressed: () {},
-                          icon: Icon(
-                            color: Colors.white,
-                            size: 20,
-                            Icons
-                                .arrow_back_ios_new_rounded,
+                      Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.center,
+                        spacing: 5,
+                        children: [
+                          Text(
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: theme
+                                  .mobileTexts
+                                  .b5
+                                  .fontSize,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey.shade400,
+                            ),
+                            "STATUS:",
                           ),
-                        ),
+                          Text(
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: theme
+                                  .mobileTexts
+                                  .b5
+                                  .fontSize,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey.shade400,
+                            ),
+                            shop.activeText(),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: shop.activeColor(),
+                            ),
+                            padding: EdgeInsets.all(4),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.center,
+                        spacing: 5,
+                        children: [
+                          Text(
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: theme
+                                  .mobileTexts
+                                  .b5
+                                  .fontSize,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey.shade400,
+                            ),
+                            "Last Seen:".toUpperCase(),
+                          ),
+                          Text(
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: theme
+                                  .mobileTexts
+                                  .b5
+                                  .fontSize,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey.shade400,
+                            ),
+                            shop.getLastSeen(),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Divider(
-                    color: const Color.fromARGB(
-                      80,
-                      158,
-                      158,
-                      158,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      10,
-                      10,
-                      10,
-                      10,
-                    ),
-                    child: Column(
-                      spacing: 5,
-                      children: [
-                        Icon(
-                          size: 25,
-                          color: Colors.amber,
-                          Icons.home_work_outlined,
-                        ),
-                        Text(
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: theme
-                                .mobileTexts
-                                .h4
-                                .fontSize,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          shop.shopName.toUpperCase(),
-                        ),
-                        Row(
-                          mainAxisAlignment:
-                              MainAxisAlignment.center,
-                          spacing: 5,
-                          children: [
-                            Text(
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: theme
-                                    .mobileTexts
-                                    .b5
-                                    .fontSize,
-                                fontWeight:
-                                    FontWeight.normal,
-                                color: Colors.grey.shade400,
-                              ),
-                              "STATUS:",
-                            ),
-                            Text(
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: theme
-                                    .mobileTexts
-                                    .b5
-                                    .fontSize,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade400,
-                              ),
-                              shop.activeText(),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: shop.activeColor(),
-                              ),
-                              padding: EdgeInsets.all(4),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment:
-                              MainAxisAlignment.center,
-                          spacing: 5,
-                          children: [
-                            Text(
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: theme
-                                    .mobileTexts
-                                    .b5
-                                    .fontSize,
-                                fontWeight:
-                                    FontWeight.normal,
-                                color: Colors.grey.shade400,
-                              ),
-                              "Last Seen:".toUpperCase(),
-                            ),
-                            Text(
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: theme
-                                    .mobileTexts
-                                    .b5
-                                    .fontSize,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade400,
-                              ),
-                              shop.getLastSeen(),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  15.0,
-                  15,
-                  15,
-                  50,
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    spacing: 10,
-                    children: [
-                      Builder(
-                        builder: (context) {
-                          if (shop.agentEmail != null) {
-                            return ShopDetailsMainSection(
-                              title: 'Agent Details',
-                              shop: shop,
-                              widgett: AgentDetailsSection(
-                                shop: shop,
-                              ),
-                            );
-                          } else {
-                            return EmptyAgentWidget(
-                              shop: shop,
-                              theme: theme,
-                            );
-                          }
-                        },
-                      ),
-                      ShopDetailsMainSection(
-                        title: 'Shop Details',
-                        shop: shop,
-                        widgett: ShopDetailsSection(
-                          shop: shop,
-                        ),
-                      ),
-                      ShopDetailsMainSection(
-                        title: 'Subscription Details',
-                        shop: shop,
-                        widgett: SubscriptionDetailsSection(
-                          shop: shop,
-                        ),
-                      ),
-                      Visibility(
-                        visible: shop.agentEmail != null,
-                        child: ShopDetailsMainSection(
-                          title: 'Comments',
-                          shop: shop,
-                          widgett: CommentsListWidget(
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                15.0,
+                15,
+                15,
+                50,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  spacing: 10,
+                  children: [
+                    Builder(
+                      builder: (context) {
+                        if (shop.agentEmail != null) {
+                          return ShopDetailsMainSection(
+                            title: 'Agent Details',
                             shop: shop,
-                          ),
+                            widgett: AgentDetailsSection(
+                              shop: shop,
+                            ),
+                          );
+                        } else {
+                          return EmptyAgentWidget(
+                            shop: shop,
+                            theme: theme,
+                          );
+                        }
+                      },
+                    ),
+                    ShopDetailsMainSection(
+                      title: 'Shop Details',
+                      shop: shop,
+                      widgett: ShopDetailsSection(
+                        shop: shop,
+                      ),
+                    ),
+                    ShopDetailsMainSection(
+                      title: 'Subscription Details',
+                      shop: shop,
+                      widgett: SubscriptionDetailsSection(
+                        shop: shop,
+                      ),
+                    ),
+                    Visibility(
+                      visible: shop.agentEmail != null,
+                      child: ShopDetailsMainSection(
+                        title: 'Comments',
+                        shop: shop,
+                        widgett: CommentsListWidget(
+                          shop: shop,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
 }
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/action_result.dart';
 import 'package:stockallagent/classes/user_class.dart';
 import 'package:stockallagent/components/buttons/primary_button.dart';
+import 'package:stockallagent/components/main_container.dart';
 import 'package:stockallagent/components/pin_code_widget.dart';
 import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/constants/media_links.dart';
@@ -77,222 +78,212 @@ class ConfirmEmailState extends State<ConfirmEmail> {
             FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           backgroundColor: Colors.white,
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 25.0,
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 30),
-                            Image.asset(
-                              verifyAccountIcon,
-                              height: 180,
+          body: MainContainer(
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 30),
+                          Image.asset(
+                            verifyAccountIcon,
+                            height: 180,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            style: TextStyle(
+                              fontSize: theme
+                                  .mobileTexts
+                                  .h3
+                                  .fontSize,
+                              fontWeight: FontWeight.bold,
                             ),
-                            SizedBox(height: 10),
-                            Text(
+                            'OTP Sent to your Email',
+                          ),
+                          SizedBox(height: 10),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: 250,
+                            ),
+                            child: Text(
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: theme
                                     .mobileTexts
-                                    .h3
+                                    .b2
                                     .fontSize,
-                                fontWeight: FontWeight.bold,
+                                fontWeight:
+                                    FontWeight.normal,
                               ),
-                              'OTP Sent to your Email',
+                              'A confirmation OTP has been sent to your email: ${widget.user.email}, enter the PIN below to verify your account.',
                             ),
-                            SizedBox(height: 10),
-                            ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxWidth: 250,
-                              ),
-                              child: Text(
-                                textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 20),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: 280,
+                            ),
+                            child: PinCodeWidget(
+                              controller: pinC,
+                              length: 6,
+                              hideText: false,
+                              action: () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                var res =
+                                    await AuthService()
+                                        .verifyOtp(
+                                          user: widget.user,
+                                          userId: widget
+                                              .user
+                                              .userId!,
+                                          otp: pinC.text,
+                                        );
+                                if (res == 0 &&
+                                    context.mounted) {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  showSnackbar(
+                                    actionResult:
+                                        ActionResult()
+                                            .error,
+                                    title:
+                                        'An Error Occoured',
+                                    message:
+                                        'It seems the OTP is Expired. Please request for a new PIN, or check your internet Connection and try again.',
+                                    context: context,
+                                  );
+                                  pinC.clear();
+                                } else {
+                                  if (context.mounted) {
+                                    showSnackbar(
+                                      actionResult:
+                                          ActionResult()
+                                              .success,
+                                      title:
+                                          'Account Verified Success!',
+                                      message:
+                                          'Congratulations, Your Account has been verified successfully',
+                                      context: context,
+                                    );
+                                    await Future.delayed(
+                                      Duration(seconds: 2),
+                                      () {},
+                                    );
+                                    if (context.mounted) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return Home();
+                                          },
+                                        ),
+                                      );
+                                    }
+                                  }
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.center,
+                            children: [
+                              Text(
                                 style: TextStyle(
                                   fontSize: theme
                                       .mobileTexts
                                       .b2
                                       .fontSize,
-                                  fontWeight:
-                                      FontWeight.normal,
                                 ),
-                                'A confirmation OTP has been sent to your email: ${widget.user.email}, enter the PIN below to verify your account.',
+                                'Remaining Time: ',
                               ),
-                            ),
-                            SizedBox(height: 20),
-                            ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxWidth: 280,
-                              ),
-                              child: PinCodeWidget(
-                                controller: pinC,
-                                length: 6,
-                                hideText: false,
-                                action: () async {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  var res =
-                                      await AuthService()
-                                          .verifyOtp(
-                                            user:
-                                                widget.user,
-                                            userId: widget
-                                                .user
-                                                .userId!,
-                                            otp: pinC.text,
-                                          );
-                                  if (res == 0 &&
-                                      context.mounted) {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    showSnackbar(
-                                      actionResult:
-                                          ActionResult()
-                                              .error,
-                                      title:
-                                          'An Error Occoured',
-                                      message:
-                                          'It seems the OTP is Expired. Please request for a new PIN, or check your internet Connection and try again.',
-                                      context: context,
-                                    );
-                                    pinC.clear();
+                              InkWell(
+                                mouseCursor:
+                                    SystemMouseCursors
+                                        .click,
+                                onTap: () async {
+                                  if (time > 0) {
+                                    {}
                                   } else {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    await AuthService()
+                                        .resendVerificationLink(
+                                          widget.user.email,
+                                        );
+                                    setState(() {
+                                      time = 120;
+                                    });
+                                    startCountDownTimer();
                                     if (context.mounted) {
                                       showSnackbar(
                                         actionResult:
                                             ActionResult()
                                                 .success,
                                         title:
-                                            'Account Verified Success!',
+                                            'PIN Sent Success',
                                         message:
-                                            'Congratulations, Your Account has been verified successfully',
+                                            'Another OTP has been sent to your email, please proceed to verify your account.',
                                         context: context,
                                       );
-                                      await Future.delayed(
-                                        Duration(
-                                          seconds: 2,
-                                        ),
-                                        () {},
-                                      );
-                                      if (context.mounted) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return Home();
-                                            },
-                                          ),
-                                        );
-                                      }
                                     }
+                                    setState(() {
+                                      isLoading = false;
+                                    });
                                   }
                                 },
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b2
-                                        .fontSize,
-                                  ),
-                                  'Remaining Time: ',
-                                ),
-                                InkWell(
-                                  mouseCursor:
-                                      SystemMouseCursors
-                                          .click,
-                                  onTap: () async {
-                                    if (time > 0) {
-                                      {}
-                                    } else {
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-                                      await AuthService()
-                                          .resendVerificationLink(
-                                            widget
-                                                .user
-                                                .email,
-                                          );
-                                      setState(() {
-                                        time = 120;
-                                      });
-                                      startCountDownTimer();
-                                      if (context.mounted) {
-                                        showSnackbar(
-                                          actionResult:
-                                              ActionResult()
-                                                  .success,
-                                          title:
-                                              'PIN Sent Success',
-                                          message:
-                                              'Another OTP has been sent to your email, please proceed to verify your account.',
-                                          context: context,
-                                        );
-                                      }
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                    }
-                                  },
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.all(
-                                          5.0,
-                                        ),
-                                    child: Text(
-                                      style: TextStyle(
-                                        fontSize: theme
-                                            .mobileTexts
-                                            .b1
-                                            .fontSize,
-                                        fontWeight:
-                                            FontWeight.bold,
-                                        color: time > 0
-                                            ? theme
-                                                  .lightModeColor
-                                                  .secColor200
-                                            : theme
-                                                  .lightModeColor
-                                                  .secColor100,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.all(
+                                        5.0,
                                       ),
-                                      time > 0
-                                          ? formatTime(time)
-                                          : 'Resend PIN',
+                                  child: Text(
+                                    style: TextStyle(
+                                      fontSize: theme
+                                          .mobileTexts
+                                          .b1
+                                          .fontSize,
+                                      fontWeight:
+                                          FontWeight.bold,
+                                      color: time > 0
+                                          ? theme
+                                                .lightModeColor
+                                                .secColor200
+                                          : theme
+                                                .lightModeColor
+                                                .secColor100,
                                     ),
+                                    time > 0
+                                        ? formatTime(time)
+                                        : 'Resend PIN',
                                   ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                        ],
                       ),
                     ),
                   ),
-                  PrimaryButton(
-                    isLoading: isLoading,
-                    title: 'Cancel',
-                    action: () async {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
+                ),
+                PrimaryButton(
+                  isLoading: isLoading,
+                  title: 'Cancel',
+                  action: () async {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                SizedBox(height: 20),
+              ],
             ),
           ),
         ),
