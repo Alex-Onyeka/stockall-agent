@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/shop_info.dart';
 import 'package:stockallagent/components/dialog_template.dart';
 import 'package:stockallagent/main.dart';
+import 'package:stockallagent/pages/2/second_page.dart';
 import 'package:stockallagent/pages/shop_page/components/shop_details_tab_widget.dart';
 
 class AgentDetailsSection extends StatelessWidget {
@@ -47,6 +48,18 @@ class AgentDetailsSection extends StatelessWidget {
             ),
             Expanded(
               child: ShopDetailsTabWidget(
+                action: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return SecondPage(
+                          agentUuid: shop.agentUuid,
+                        );
+                      },
+                    ),
+                  );
+                },
                 body: returnShopProvider().shopInfos
                     .where(
                       (item) =>

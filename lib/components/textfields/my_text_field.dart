@@ -13,7 +13,9 @@ class MyTextFieldMain extends StatefulWidget {
   final bool isOptional;
   final bool isPassword;
   final Function(String value)? onSubmit;
+  final Function(String value)? onChange;
   final int? lines;
+  final bool? autoFocus;
 
   const MyTextFieldMain({
     super.key,
@@ -27,7 +29,9 @@ class MyTextFieldMain extends StatefulWidget {
     this.title,
     required this.isPassword,
     this.onSubmit,
+    this.onChange,
     this.lines,
+    this.autoFocus,
   });
 
   @override
@@ -61,6 +65,8 @@ class _MyTextFieldMainState extends State<MyTextFieldMain> {
           ),
         ),
         TextFormField(
+          autofocus: widget.autoFocus ?? false,
+          onChanged: widget.onChange,
           maxLines: widget.lines,
           onFieldSubmitted: widget.onSubmit,
           obscureText: widget.isPassword ? hideText : false,

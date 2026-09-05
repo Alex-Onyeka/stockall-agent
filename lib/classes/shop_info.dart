@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/constants/constants_main.dart';
+import 'package:stockallagent/constants/dates.dart';
 
 class ShopInfo {
   final double shopId;
@@ -227,6 +228,50 @@ class ShopInfo {
     );
   }
 
+  bool createdToday() {
+    return isToday(shopCreatedAt);
+  }
+
+  bool createdYesterday() {
+    return isYesterday(shopCreatedAt);
+  }
+
+  bool createdThisWeek() {
+    return isThisWeek(shopCreatedAt);
+  }
+
+  bool createdLastWeek() {
+    return isLastWeek(shopCreatedAt);
+  }
+
+  bool createdThisMonth() {
+    return isThisMonth(shopCreatedAt);
+  }
+
+  bool createdLastMonth() {
+    return isLastMonth(shopCreatedAt);
+  }
+
+  bool createdThisYear() {
+    return isThisYear(shopCreatedAt);
+  }
+
+  bool createdLastYear() {
+    return isLastYear(shopCreatedAt);
+  }
+
+  int currentPlanValue() {
+    if (isTrial) {
+      return 1;
+    } else if (isFree()) {
+      return 2;
+    } else if (isExpired) {
+      return 3;
+    } else {
+      return ((currentPlan ?? 0) + 3).toInt();
+    }
+  }
+
   String currentPlanName() {
     if (isExpired) {
       return 'Expired';
@@ -328,6 +373,35 @@ class ShopInfo {
     return lastActivity != null
         ? formatDateOrDaysAgo(lastActivity!)
         : 'Not Set';
+  }
+
+  DateTime getLastActivity() {
+    return lastActivity ??
+        DateTime.now().subtract(Duration(days: 90));
+  }
+
+  DateTime getExpiryDate() {
+    return subscriptionNextPayment ??
+        DateTime.now().subtract(Duration(days: 90));
+  }
+
+  bool isSubscribed() {
+    return !isTrial &&
+        !isExpired &&
+        currentPlan != 0 &&
+        subscriptionNextPayment != null;
+  }
+
+  bool isFree() {
+    return !isTrial && !isExpired && currentPlan == 0;
+  }
+
+  bool getIsExpired() {
+    return isExpired == true;
+  }
+
+  bool getIsTrial() {
+    return isTrial == true;
   }
 }
 

@@ -2,29 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:stockallagent/main.dart';
 import 'package:stockallagent/pages/2/platforms/second_page_admin.dart';
 import 'package:stockallagent/pages/2/platforms/second_page_agent.dart';
+import 'package:stockallagent/pages/2/platforms/second_page_alt.dart';
 
 class SecondPage extends StatelessWidget {
   final Function()? popPage;
   final Function()? profileNavAction;
+  final String? agentUuid;
   const SecondPage({
     super.key,
     this.profileNavAction,
     this.popPage,
+    this.agentUuid,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (returnAdminProvider(context: context).admin ==
-        null) {
-      return SecondPageAgent(
-        popPage: popPage,
-        profileNavAction: profileNavAction,
-      );
+    if (agentUuid != null) {
+      return SecondPageAlt(agentUuid: agentUuid);
     } else {
-      return SecondPageAdmin(
-        popPage: popPage,
-        profileNavAction: profileNavAction,
-      );
+      if (returnAdminProvider(context: context).admin ==
+          null) {
+        return SecondPageAgent(
+          popPage: popPage,
+          profileNavAction: profileNavAction,
+        );
+      } else {
+        return SecondPageAdmin(
+          popPage: popPage,
+          profileNavAction: profileNavAction,
+        );
+      }
     }
   }
 }
@@ -59,7 +66,7 @@ class TopStoreFilterButton extends StatelessWidget {
           mouseCursor: SystemMouseCursors.click,
           onTap: action,
           child: Container(
-            width: 150,
+            width: 110,
             padding: EdgeInsets.symmetric(
               vertical: 7,
               horizontal: 5,

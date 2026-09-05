@@ -97,21 +97,30 @@ String formatDate(DateTime date) {
 }
 
 String formatDateOrDaysAgo(DateTime date) {
-  final difference = DateTime.now().difference(date);
+  final now = DateTime.now();
 
-  if (difference.inDays > 30) {
+  final today = DateTime(now.year, now.month, now.day);
+  final activityDate = DateTime(
+    date.year,
+    date.month,
+    date.day,
+  );
+
+  final daysAgo = today.difference(activityDate).inDays;
+
+  if (daysAgo > 30) {
     return formatDate(date);
   }
 
-  if (difference.inDays == 0) {
+  if (daysAgo == 0) {
     return 'Today';
   }
 
-  if (difference.inDays == 1) {
-    return '1 day ago';
+  if (daysAgo == 1) {
+    return 'Yesterday';
   }
 
-  return '${difference.inDays} days ago';
+  return '$daysAgo days ago';
 }
 
 String _monthName(int month) {

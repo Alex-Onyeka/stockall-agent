@@ -8,10 +8,12 @@ import 'package:stockallagent/service/auth_service.dart';
 class MainTopBar extends StatefulWidget {
   final Function()? profileNavAction;
   final Widget? lastWidget;
+  final String? agentUuid;
   const MainTopBar({
     super.key,
     this.profileNavAction,
     this.lastWidget,
+    this.agentUuid,
   });
 
   @override
@@ -33,72 +35,101 @@ class _MainTopBarState extends State<MainTopBar> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         spacing: 10,
         children: [
-          Material(
-            type: MaterialType.transparency,
-            child: Ink(
-              color: Colors.white,
-              child: InkWell(
-                mouseCursor: SystemMouseCursors.click,
-                onTap: widget.profileNavAction,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: 10,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.amber,
+          Builder(
+            builder: (context) {
+              if (widget.agentUuid != null) {
+                return IconButton(
+                  onPressed: () {
+                    if (Navigator.canPop(context)) {
+                      Navigator.of(context).pop();
+                    } else {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return BasePage();
+                          },
                         ),
-                        child: Image.asset(
-                          profileIcon,
-                          height: 30,
+                      );
+                    }
+                  },
+                  icon: Icon(
+                    size: 20,
+                    Icons.arrow_back_ios_new_rounded,
+                  ),
+                );
+              } else {
+                return Material(
+                  type: MaterialType.transparency,
+                  child: Ink(
+                    color: Colors.white,
+                    child: InkWell(
+                      mouseCursor: SystemMouseCursors.click,
+                      onTap: widget.profileNavAction,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          spacing: 10,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.amber,
+                              ),
+                              child: Image.asset(
+                                profileIcon,
+                                height: 30,
+                              ),
+                            ),
+                            Column(
+                              spacing: 0,
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  style: TextStyle(
+                                    fontSize: theme
+                                        .mobileTexts
+                                        .b1
+                                        .fontSize,
+                                    fontWeight:
+                                        FontWeight.bold,
+                                  ),
+                                  '${returnUserProvider(context: context).currentUser?.name} ${returnUserProvider(context: context).currentUser?.lastName ?? ''}',
+                                ),
+                                Text(
+                                  style: TextStyle(
+                                    fontSize: theme
+                                        .mobileTexts
+                                        .b4
+                                        .fontSize,
+                                    fontWeight:
+                                        FontWeight.normal,
+                                    color: theme
+                                        .lightModeColor
+                                        .prColor100,
+                                  ),
+                                  // returnAdminProvider(
+                                  //           context: context,
+                                  //         ).admin ==
+                                  //         null
+                                  //     ? 'Agent (${returnUserProvider(context: context, listen: false).currentUser?.role})'
+                                  //     :
+                                  'Agent',
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      Column(
-                        spacing: 0,
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            style: TextStyle(
-                              fontSize: theme
-                                  .mobileTexts
-                                  .b1
-                                  .fontSize,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            '${returnUserProvider(context: context).currentUser?.name} ${returnUserProvider(context: context).currentUser?.lastName ?? ''}',
-                          ),
-                          Text(
-                            style: TextStyle(
-                              fontSize: theme
-                                  .mobileTexts
-                                  .b4
-                                  .fontSize,
-                              fontWeight: FontWeight.normal,
-                              color: theme
-                                  .lightModeColor
-                                  .prColor100,
-                            ),
-                            // returnAdminProvider(
-                            //           context: context,
-                            //         ).admin ==
-                            //         null
-                            //     ? 'Agent (${returnUserProvider(context: context, listen: false).currentUser?.role})'
-                            //     :
-                            'Agent',
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
+                );
+              }
+            },
           ),
           Row(
             spacing: 5,

@@ -103,6 +103,27 @@ class ShopDetailsSection extends StatelessWidget {
             ),
           ],
         ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 10,
+          children: [
+            Expanded(
+              child: ShopDetailsTabWidget(
+                body: formatDate(shop.shopCreatedAt),
+                title: 'Created Date',
+              ),
+            ),
+            Expanded(
+              child: Opacity(
+                opacity: 0,
+                child: ShopDetailsTabWidget(
+                  body: formatNumber(shop.totalStaffs ?? 0),
+                  title: 'Staffs',
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

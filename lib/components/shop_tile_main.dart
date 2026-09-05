@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/shop_info.dart';
+import 'package:stockallagent/constants/constants_main.dart';
 import 'package:stockallagent/main.dart';
 import 'package:stockallagent/pages/shop_page/shop_page.dart';
 
 class ShopTileMain extends StatelessWidget {
   final ShopInfo shop;
   final bool? isReport;
+  final int? sortInt;
   const ShopTileMain({
     super.key,
     required this.shop,
     this.isReport,
+    this.sortInt,
   });
 
   @override
@@ -84,16 +87,114 @@ class ShopTileMain extends StatelessWidget {
                           spacing: 5,
                           children: [
                             Expanded(
-                              child: Text(
-                                style: TextStyle(
-                                  fontSize: theme
-                                      .mobileTexts
-                                      .b3
-                                      .fontSize,
-                                  fontWeight:
-                                      FontWeight.bold,
-                                ),
-                                shop.shopName.toUpperCase(),
+                              child: Column(
+                                spacing: 3,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment
+                                        .start,
+                                children: [
+                                  Text(
+                                    style: TextStyle(
+                                      fontSize: theme
+                                          .mobileTexts
+                                          .b3
+                                          .fontSize,
+                                      fontWeight:
+                                          FontWeight.bold,
+                                    ),
+                                    shop.shopName
+                                        .toUpperCase(),
+                                  ),
+                                  Row(
+                                    spacing: 8,
+                                    children: [
+                                      Row(
+                                        spacing: 5,
+                                        children: [
+                                          Text(
+                                            style: TextStyle(
+                                              fontSize: theme
+                                                  .mobileTexts
+                                                  .b4
+                                                  .fontSize,
+                                              fontWeight:
+                                                  FontWeight
+                                                      .normal,
+                                              color: Colors
+                                                  .grey,
+                                            ),
+                                            'Owner:',
+                                          ),
+                                          Text(
+                                            style: TextStyle(
+                                              fontSize: theme
+                                                  .mobileTexts
+                                                  .b5
+                                                  .fontSize,
+                                              fontWeight:
+                                                  FontWeight
+                                                      .bold,
+                                              color: Colors
+                                                  .grey,
+                                            ),
+                                            (shop.userName ??
+                                                    'Not Set')
+                                                .toUpperCase(),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b5
+                                              .fontSize,
+                                          fontWeight:
+                                              FontWeight
+                                                  .bold,
+                                          color:
+                                              Colors.grey,
+                                        ),
+                                        '|',
+                                      ),
+                                      Row(
+                                        spacing: 5,
+                                        children: [
+                                          Text(
+                                            style: TextStyle(
+                                              fontSize: theme
+                                                  .mobileTexts
+                                                  .b4
+                                                  .fontSize,
+                                              fontWeight:
+                                                  FontWeight
+                                                      .normal,
+                                              color: Colors
+                                                  .grey,
+                                            ),
+                                            'Agent:',
+                                          ),
+                                          Text(
+                                            style: TextStyle(
+                                              fontSize: theme
+                                                  .mobileTexts
+                                                  .b5
+                                                  .fontSize,
+                                              fontWeight:
+                                                  FontWeight
+                                                      .bold,
+                                              color: Colors
+                                                  .grey,
+                                            ),
+                                            (shop.agentLastName ??
+                                                    'Not Set')
+                                                .toUpperCase(),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                             Icon(
@@ -148,48 +249,167 @@ class ShopTileMain extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Visibility(
-                              visible:
-                                  ((shop.remainingDays ??
-                                          0) <
-                                      30) &&
-                                  shop.subscriptionNextPayment !=
-                                      null,
-                              child: Row(
-                                spacing: 4,
-                                children: [
-                                  Text(
-                                    style: TextStyle(
-                                      fontSize: theme
-                                          .mobileTexts
-                                          .b4
-                                          .fontSize,
-                                      fontWeight:
-                                          FontWeight.normal,
-                                    ),
-                                    (shop.remainingDays ??
-                                                0) <
-                                            0
-                                        ? 'Expired'
-                                        : 'Expires In:',
-                                  ),
-                                  Text(
-                                    style: TextStyle(
-                                      fontSize: theme
-                                          .mobileTexts
-                                          .b4
-                                          .fontSize,
-                                      color: Colors
-                                          .grey
-                                          .shade900,
-                                      fontWeight:
-                                          FontWeight.bold,
-                                    ),
+                            Builder(
+                              builder: (context) {
+                                if (sortInt == null ||
+                                    sortInt == 4) {
+                                  return Visibility(
+                                    visible:
+                                        shop.subscriptionNextPayment !=
+                                        null,
+                                    child: Row(
+                                      spacing: 4,
+                                      children: [
+                                        Text(
+                                          style: TextStyle(
+                                            fontSize: theme
+                                                .mobileTexts
+                                                .b4
+                                                .fontSize,
+                                            fontWeight:
+                                                FontWeight
+                                                    .normal,
+                                          ),
+                                          (shop.remainingDays ??
+                                                      0) <
+                                                  0
+                                              ? 'Expired:'
+                                              : 'Expires In:',
+                                        ),
+                                        Text(
+                                          style: TextStyle(
+                                            fontSize: theme
+                                                .mobileTexts
+                                                .b4
+                                                .fontSize,
+                                            color: Colors
+                                                .grey
+                                                .shade900,
+                                            fontWeight:
+                                                FontWeight
+                                                    .bold,
+                                          ),
 
-                                    shop.getRemainingDays(),
-                                  ),
-                                ],
-                              ),
+                                          shop.getRemainingDays(),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                } else if (sortInt == 2) {
+                                  return Row(
+                                    spacing: 4,
+                                    children: [
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          fontWeight:
+                                              FontWeight
+                                                  .normal,
+                                        ),
+                                        'Created At:',
+                                      ),
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          color: Colors
+                                              .grey
+                                              .shade900,
+                                          fontWeight:
+                                              FontWeight
+                                                  .bold,
+                                        ),
+
+                                        formatDate(
+                                          shop.shopCreatedAt,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                } else if (sortInt == 3) {
+                                  return Row(
+                                    spacing: 4,
+                                    children: [
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          fontWeight:
+                                              FontWeight
+                                                  .normal,
+                                        ),
+                                        'Created At:',
+                                      ),
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          color: Colors
+                                              .grey
+                                              .shade900,
+                                          fontWeight:
+                                              FontWeight
+                                                  .bold,
+                                        ),
+
+                                        shop.getLastSeen(),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return Visibility(
+                                    visible:
+                                        shop.subscriptionNextPayment !=
+                                        null,
+                                    child: Row(
+                                      spacing: 4,
+                                      children: [
+                                        Text(
+                                          style: TextStyle(
+                                            fontSize: theme
+                                                .mobileTexts
+                                                .b4
+                                                .fontSize,
+                                            fontWeight:
+                                                FontWeight
+                                                    .normal,
+                                          ),
+                                          (shop.remainingDays ??
+                                                      0) <
+                                                  0
+                                              ? 'Expired:'
+                                              : 'Expires In:',
+                                        ),
+                                        Text(
+                                          style: TextStyle(
+                                            fontSize: theme
+                                                .mobileTexts
+                                                .b4
+                                                .fontSize,
+                                            color: Colors
+                                                .grey
+                                                .shade900,
+                                            fontWeight:
+                                                FontWeight
+                                                    .bold,
+                                          ),
+
+                                          shop.getRemainingDays(),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              },
                             ),
                           ],
                         ),
