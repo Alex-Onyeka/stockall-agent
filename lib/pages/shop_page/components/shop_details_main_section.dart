@@ -31,7 +31,7 @@ class _ShopDetailsMainSectionState
         borderRadius: BorderRadius.circular(3),
         boxShadow: [
           BoxShadow(
-            color: const Color.fromARGB(12, 0, 0, 0),
+            color: const Color.fromARGB(15, 0, 0, 0),
             blurRadius: 10,
           ),
         ],
@@ -48,10 +48,10 @@ class _ShopDetailsMainSectionState
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(
-                15.0,
-                15,
-                15,
-                15,
+                20,
+                20,
+                20,
+                20,
               ),
               child: Row(
                 spacing: 10,
@@ -62,7 +62,7 @@ class _ShopDetailsMainSectionState
                     style: TextStyle(
                       fontSize:
                           theme.mobileTexts.b2.fontSize,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     ),
                     '${isOpen ? 'Hide' : 'Show'} ${widget.title}',
                   ),

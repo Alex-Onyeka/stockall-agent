@@ -36,9 +36,9 @@ class ShopPage extends StatelessWidget {
       return Scaffold(
         backgroundColor: const Color.fromARGB(
           255,
-          250,
-          250,
-          250,
+          255,
+          255,
+          255,
         ),
         body: Column(
           children: [
@@ -66,8 +66,8 @@ class ShopPage extends StatelessWidget {
                           Navigator.of(context).pop();
                         },
                         icon: Icon(
-                          color: Colors.white,
-                          size: 25,
+                          color: Colors.grey.shade200,
+                          size: 20,
                           Icons.arrow_back_ios_new_rounded,
                         ),
                       ),
@@ -88,7 +88,7 @@ class ShopPage extends StatelessWidget {
                           onPressed: () {},
                           icon: Icon(
                             color: Colors.white,
-                            size: 25,
+                            size: 20,
                             Icons
                                 .arrow_back_ios_new_rounded,
                           ),
@@ -107,7 +107,7 @@ class ShopPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
                       10,
-                      20,
+                      10,
                       10,
                       10,
                     ),
@@ -141,7 +141,7 @@ class ShopPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: theme
                                     .mobileTexts
-                                    .b4
+                                    .b5
                                     .fontSize,
                                 fontWeight:
                                     FontWeight.normal,
@@ -154,7 +154,7 @@ class ShopPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: theme
                                     .mobileTexts
-                                    .b4
+                                    .b5
                                     .fontSize,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey.shade400,
@@ -180,7 +180,7 @@ class ShopPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: theme
                                     .mobileTexts
-                                    .b4
+                                    .b5
                                     .fontSize,
                                 fontWeight:
                                     FontWeight.normal,
@@ -193,7 +193,7 @@ class ShopPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: theme
                                     .mobileTexts
-                                    .b4
+                                    .b5
                                     .fontSize,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey.shade400,

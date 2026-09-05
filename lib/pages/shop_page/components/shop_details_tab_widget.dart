@@ -14,7 +14,7 @@ class ShopDetailsTabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = returnTheme();
     return Container(
-      height: 80,
+      height: 70,
       padding: EdgeInsets.symmetric(
         vertical: 8,
         horizontal: 8,
@@ -24,36 +24,38 @@ class ShopDetailsTabWidget extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade300),
         color: Colors.grey.shade100,
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          spacing: 3,
-          children: [
-            Text(
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: theme.mobileTexts.b4.fontSize,
-                fontWeight: FontWeight.bold,
-                color: Colors.amber,
-              ),
-              title.toUpperCase(),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize:
-                          theme.mobileTexts.b2.fontSize,
-                      color: Colors.grey.shade700,
-                    ),
-                    body,
-                  ),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            spacing: 3,
+            children: [
+              Text(
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: theme.mobileTexts.b5.fontSize,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey.shade400,
                 ),
-              ],
-            ),
-          ],
+                title.toUpperCase(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize:
+                            theme.mobileTexts.b3.fontSize,
+                        color: Colors.grey.shade700,
+                      ),
+                      body,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

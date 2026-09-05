@@ -131,7 +131,7 @@ class ShopTileMain extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: theme
                                         .mobileTexts
-                                        .b4
+                                        .b5
                                         .fontSize,
                                     color:
                                         shop
