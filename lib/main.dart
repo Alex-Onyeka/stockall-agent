@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:stockallagent/classes/user_class.dart';
 import 'package:stockallagent/pages/authentication/base_page.dart';
 import 'package:stockallagent/pages/4/delete_account.dart';
 import 'package:stockallagent/providers/admin_provider.dart';
@@ -121,6 +122,19 @@ AdminProvider returnAdminProvider({BuildContext? context}) {
   } else {
     return Provider.of<AdminProvider>(context);
   }
+}
+
+int? admin(BuildContext context) {
+  return returnAdminProvider(context: context).admin?.level;
+}
+
+bool topAdmin() {
+  return returnAdminProvider().admin?.level == 1 ||
+      returnAdminProvider().admin?.level == 2;
+}
+
+UserClass currentUser() {
+  return returnUserProvider().currentUser!;
 }
 
 class MyApp extends StatelessWidget {

@@ -32,10 +32,7 @@ class ShopInfoProvider extends ChangeNotifier {
           var res = await _client
               .from(tableName)
               .select()
-              .eq(
-                'ref_code',
-                user.referralCode!.toLowerCase(),
-              );
+              .eq('agent_uuid', user.userId!);
 
           if (res.isEmpty) {
             print('No Shops Gotten');
@@ -52,7 +49,9 @@ class ShopInfoProvider extends ChangeNotifier {
             "✅ Shops Gotten Success: ${shopInfos.length}",
           );
           shopInfos.sort(
-            (a, b) => a.shopName.compareTo(b.shopName),
+            (a, b) => a.shopName.toLowerCase().compareTo(
+              b.shopName.toLowerCase(),
+            ),
           );
           notifyListeners();
           return shopInfos;

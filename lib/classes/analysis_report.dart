@@ -127,4 +127,10 @@ class AnalysisReport {
       uuid: json['uuid'].toString(),
     );
   }
+
+  double getTotalShops() {
+    return ((totalShopsBranches ?? 0) +
+            (totalShopsMain ?? 0))
+        .toDouble();
+  }
 }

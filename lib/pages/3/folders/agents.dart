@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:stockallagent/classes/user_class.dart';
+import 'package:stockallagent/components/empty_widget.dart';
 import 'package:stockallagent/components/main_top_bar.dart';
 import 'package:stockallagent/main.dart';
+import 'package:stockallagent/pages/agent_page/agent_page.dart';
+import 'package:stockallagent/theme/theme_provider.dart';
 
 class Agents extends StatefulWidget {
   final Function()? popPage;
@@ -16,7 +20,7 @@ class Agents extends StatefulWidget {
 }
 
 class _AgentsState extends State<Agents> {
-  int currentSelection = 0;
+  int currentSelection = 1;
   void switchSelection(int index) {
     setState(() {
       currentSelection = index;
@@ -24,7 +28,21 @@ class _AgentsState extends State<Agents> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      returnUserProvider().getAgents();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    List<UserClass> agents =
+        returnUserProvider(context: context).agents
+            .where(
+              (item) => item.roleId == currentSelection,
+            )
+            .toList();
     var theme = returnTheme(context: context);
     return PopScope(
       canPop: false,
@@ -57,16 +75,8 @@ class _AgentsState extends State<Agents> {
                   children: [
                     TopStoreFilterButton(
                       mainIndex: currentSelection,
-                      myIndex: 0,
-                      title: 'All',
-                      action: () {
-                        switchSelection(0);
-                      },
-                    ),
-                    TopStoreFilterButton(
-                      mainIndex: currentSelection,
                       myIndex: 1,
-                      title: 'Active',
+                      title: 'In-House',
                       action: () {
                         switchSelection(1);
                       },
@@ -74,7 +84,7 @@ class _AgentsState extends State<Agents> {
                     TopStoreFilterButton(
                       mainIndex: currentSelection,
                       myIndex: 2,
-                      title: 'Paid',
+                      title: 'Freelance',
                       action: () {
                         switchSelection(2);
                       },
@@ -82,7 +92,7 @@ class _AgentsState extends State<Agents> {
                     TopStoreFilterButton(
                       mainIndex: currentSelection,
                       myIndex: 3,
-                      title: 'Unpaid',
+                      title: 'Installers',
                       action: () {
                         switchSelection(3);
                       },
@@ -101,99 +111,119 @@ class _AgentsState extends State<Agents> {
                 color: theme.lightModeColor.prColor250,
                 child: Builder(
                   builder: (context) {
-                    return Container();
-                    // if (currentSelection == 1
-                    //     ? returnUserProvider(
-                    //         context: context,
-                    //       ).activeUsers(context).isEmpty
-                    //     : currentSelection == 2
-                    //     ? returnUserProvider(
-                    //         context: context,
-                    //       ).paidUsers(context).isEmpty
-                    //     : currentSelection == 3
-                    //     ? returnUserProvider(
-                    //         context: context,
-                    //       ).unPaidUsers(context).isEmpty
-                    //     : returnUserProvider(
-                    //         context: context,
-                    //       ).agents.isEmpty) {
-                    //   return ListView(
-                    //     children: [
-                    //       SizedBox(
-                    //         height:
-                    //             MediaQuery.of(
-                    //               context,
-                    //             ).size.height -
-                    //             200,
-                    //         child: EmptyWidget(
-                    //           isDashboard: false,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   );
-                    // } else {
-                    // return ListView(
-                    //   padding: EdgeInsets.symmetric(
-                    //     horizontal: 20,
-                    //     vertical: 15,
-                    //   ),
-                    //   children: currentSelection == 1
-                    //       ? returnUserProvider(
-                    //               context: context,
-                    //             )
-                    //             .activeUsers(context)
-                    //             .map(
-                    //               (agent) =>
-                    //                   AgentTileMain(
-                    //                     isAll: false,
-                    //                     agent: agent,
-                    //                   ),
-                    //             )
-                    //             .toList()
-                    //       : currentSelection == 2
-                    //       ? returnUserProvider(
-                    //               context: context,
-                    //             )
-                    //             .paidUsers(context)
-                    //             .map(
-                    //               (agent) =>
-                    //                   AgentTileMain(
-                    //                     isAll: false,
-                    //                     agent: agent,
-                    //                   ),
-                    //             )
-                    //             .toList()
-                    //       : currentSelection == 3
-                    //       ? returnUserProvider(
-                    //               context: context,
-                    //             )
-                    //             .unPaidUsers(context)
-                    //             .map(
-                    //               (agent) =>
-                    //                   AgentTileMain(
-                    //                     isAll: false,
-                    //                     agent: agent,
-                    //                   ),
-                    //             )
-                    //             .toList()
-                    //       : returnUserProvider(
-                    //               context: context,
-                    //             ).agents
-                    //             .map(
-                    //               (agent) =>
-                    //                   AgentTileMain(
-                    //                     isAll: true,
-                    //                     agent: agent,
-                    //                   ),
-                    //             )
-                    //             .toList(),
-                    // );
-                    // }
+                    if (agents.isEmpty) {
+                      return EmptyWidget(
+                        isDashboard: false,
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 15.0,
+                          horizontal: 20,
+                        ),
+                        child: ListView(
+                          children: agents
+                              .map(
+                                (item) => AgentListTile(
+                                  theme: theme,
+                                  agent: item,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      );
+                    }
                   },
                 ),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class AgentListTile extends StatelessWidget {
+  const AgentListTile({
+    super.key,
+    required this.theme,
+    required this.agent,
+  });
+
+  final ThemeProvider theme;
+  final UserClass agent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Ink(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(4),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return AgentPage(
+                    agentUuid: agent.userId!,
+                  );
+                },
+              ),
+            );
+          },
+          mouseCursor: SystemMouseCursors.click,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 25,
+              horizontal: 15,
+            ),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: const Color.fromARGB(5, 0, 0, 0),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+              spacing: 5,
+              children: [
+                Row(
+                  spacing: 5,
+                  children: [
+                    Icon(
+                      size: 20,
+                      color: Colors.amber,
+                      Icons.person,
+                    ),
+                    Text(
+                      style: TextStyle(
+                        fontSize:
+                            theme.mobileTexts.b3.fontSize,
+                        // fontWeight:
+                        //     FontWeight
+                        //         .bold,
+                      ),
+                      "${agent.name} ${agent.lastName ?? ''}",
+                    ),
+                  ],
+                ),
+                Icon(
+                  size: 20,
+                  color: Colors.grey,
+                  Icons.arrow_forward_ios_rounded,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

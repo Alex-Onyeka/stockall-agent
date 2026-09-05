@@ -5,11 +5,13 @@ class ShopDetailsTabWidget extends StatelessWidget {
   final String body;
   final String title;
   final Function()? action;
+  final bool? isCopy;
   const ShopDetailsTabWidget({
     super.key,
     required this.body,
     required this.title,
     this.action,
+    this.isCopy,
   });
 
   @override
@@ -78,7 +80,10 @@ class ShopDetailsTabWidget extends StatelessWidget {
                           opacity: action != null ? 1 : 0,
                           child: Icon(
                             size: 15,
-                            Icons.arrow_forward_ios_rounded,
+                            isCopy == true
+                                ? Icons.copy
+                                : Icons
+                                      .arrow_forward_ios_rounded,
                           ),
                         ),
                       ],

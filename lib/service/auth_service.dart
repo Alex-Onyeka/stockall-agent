@@ -68,7 +68,7 @@ class AuthService {
         email: newEmail ?? user.email,
         phone: user.phone,
         password: user.password,
-        // role: user.role,
+        role: 'Agent',
       );
       print(userRow);
       print('Finished Mapping User Class');

@@ -67,7 +67,7 @@ class _MyTextFieldMainState extends State<MyTextFieldMain> {
         TextFormField(
           autofocus: widget.autoFocus ?? false,
           onChanged: widget.onChange,
-          maxLines: widget.lines,
+          maxLines: widget.lines ?? 1,
           onFieldSubmitted: widget.onSubmit,
           obscureText: widget.isPassword ? hideText : false,
           keyboardType: widget.isNumber

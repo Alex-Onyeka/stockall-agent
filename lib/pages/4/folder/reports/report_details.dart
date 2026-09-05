@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/analysis_report.dart';
-import 'package:stockallagent/components/empty_widget.dart';
-import 'package:stockallagent/components/shop_tile_main.dart';
 import 'package:stockallagent/constants/constants_main.dart';
 import 'package:stockallagent/main.dart';
 
@@ -101,465 +99,767 @@ class ReportDetails extends StatelessWidget {
                 ),
                 child: ListView(
                   children: [
-                    ClipRRect(
-                      clipBehavior: Clip.hardEdge,
-                      child: Stack(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 20,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(10),
-                              color: const Color.fromARGB(
-                                255,
-                                1,
-                                29,
-                                53,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color.fromARGB(
-                                        5,
-                                        0,
-                                        0,
-                                        0,
-                                      ),
-                                  blurRadius: 10,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  spacing: 10,
-                                  children: [
-                                    Column(
-                                      spacing: 2,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment
-                                              .start,
-                                      children: [
-                                        Text(
-                                          style: TextStyle(
-                                            fontSize: theme
-                                                .mobileTexts
-                                                .b4
-                                                .fontSize,
-                                            color: Colors
-                                                .white,
-                                          ),
-                                          'Net Revenue',
-                                        ),
-                                        Text(
-                                          style: TextStyle(
-                                            fontSize: theme
-                                                .mobileTexts
-                                                .h1
-                                                .fontSize,
-                                            fontWeight:
-                                                FontWeight
-                                                    .bold,
-                                            color: Colors
-                                                .white,
-                                          ),
-                                          returnResourceProvider(
-                                                context:
-                                                    context,
-                                              ).hideMoneyDashBoard
-                                              ? '********'
-                                              : formatMoney(
-                                                  (report.totalSales ??
-                                                          0)
-                                                      .toDouble(),
-                                                ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Divider(height: 30),
-                                Row(
-                                  spacing: 10,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Total Revenue',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .h4
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatMoney(
-                                                2000,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white,
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                              ),
-                                              'Referrals Cut',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white,
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .h4
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                              ),
-                                              formatMoney(
-                                                1000,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(height: 30),
-                                Row(
-                                  spacing: 10,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'New Stores',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .h4
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              report
-                                                  .totalShopsMain
-                                                  .toString(),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white,
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                              ),
-                                              'Subscribed Stores',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white,
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .h4
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                              ),
-                                              report
-                                                  .totalSubscriptions
-                                                  .toString(),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(height: 30),
-                                Row(
-                                  spacing: 10,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Total Headquarters',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .h4
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              1000.toString(),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Total Stores',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .h4
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              1000.toString(),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      height: (report.totalActive ?? 0) < 2
-                          ? MediaQuery.of(
-                                  context,
-                                ).size.height -
-                                390
-                          : (100 +
-                                    (98 *
-                                        (report.totalActive ??
-                                            0)))
-                                .toDouble(),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white10,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
-                      ),
-                      child: Column(
-                        spacing: 10,
-                        children: [
-                          Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceBetween,
-                            children: [
-                              Text(
-                                style: TextStyle(
-                                  fontSize: theme
-                                      .mobileTexts
-                                      .b1
-                                      .fontSize,
-                                  color:
-                                      Colors.grey.shade800,
-                                  fontWeight:
-                                      FontWeight.bold,
-                                ),
-                                'New Stores',
-                              ),
-                            ],
-                          ),
-                          Divider(
-                            height: 1,
-                            color: Colors.grey.shade300,
-                          ),
-                          Builder(
-                            builder: (context) {
-                              if (report.totalActive == 0) {
-                                return Expanded(
-                                  child: EmptyWidget(
-                                    isDashboard: false,
-                                  ),
-                                );
-                              } else {
-                                return Column(
-                                  spacing: 0,
-                                  children: report
-                                      .totalActiveList
-                                      .map((sho) {
-                                        var newSh =
-                                            returnShopProvider()
-                                                .shopInfos
-                                                .firstWhere(
-                                                  (sh) =>
-                                                      sh.shopId ==
-                                                      sho,
-                                                );
-                                        return ShopTileMain(
-                                          isReport: true,
-                                          shop: newSh,
-                                        );
-                                      })
-                                      .toList(),
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20),
+                    // ClipRRect(
+                    //   clipBehavior: Clip.hardEdge,
+                    //   child: Stack(
+                    //     children: [
+                    //       Container(
+                    //         padding: EdgeInsets.symmetric(
+                    //           vertical: 20,
+                    //           horizontal: 20,
+                    //         ),
+                    //         decoration: BoxDecoration(
+                    //           borderRadius:
+                    //               BorderRadius.circular(10),
+                    //           color: const Color.fromARGB(
+                    //             255,
+                    //             1,
+                    //             29,
+                    //             53,
+                    //           ),
+                    //           boxShadow: [
+                    //             BoxShadow(
+                    //               color:
+                    //                   const Color.fromARGB(
+                    //                     5,
+                    //                     0,
+                    //                     0,
+                    //                     0,
+                    //                   ),
+                    //               blurRadius: 10,
+                    //             ),
+                    //           ],
+                    //         ),
+                    //         child: Column(
+                    //           mainAxisAlignment:
+                    //               MainAxisAlignment.center,
+                    //           children: [
+                    //             Row(
+                    //               spacing: 10,
+                    //               mainAxisAlignment:
+                    //                   MainAxisAlignment
+                    //                       .spaceBetween,
+                    //               children: [
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           'Total Stores',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             report
+                    //                                 .getTotalShops(),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 Container(
+                    //                   height: 50,
+                    //                   width: 1,
+                    //                   color: Colors
+                    //                       .grey
+                    //                       .shade400,
+                    //                 ),
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           'Headquaters',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             report.totalShopsMain
+                    //                                     ?.toDouble() ??
+                    //                                 0,
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 Container(
+                    //                   height: 50,
+                    //                   width: 1,
+                    //                   color: Colors
+                    //                       .grey
+                    //                       .shade400,
+                    //                 ),
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             color: Colors
+                    //                                 .white,
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                           ),
+                    //                           'Branches',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             color: Colors
+                    //                                 .white,
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             (report.totalShopsBranches ??
+                    //                                     0)
+                    //                                 .toDouble(),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //             Divider(
+                    //               height:
+                    //                   isMobileSmall(context)
+                    //                   ? 25
+                    //                   : 30,
+                    //             ),
+                    //             Row(
+                    //               spacing: 10,
+                    //               mainAxisAlignment:
+                    //                   MainAxisAlignment
+                    //                       .spaceBetween,
+                    //               children: [
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           'Total Subsc.',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             report.totalSubscriptions
+                    //                                     ?.toDouble() ??
+                    //                                 0,
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 Container(
+                    //                   height: 50,
+                    //                   width: 1,
+                    //                   color: Colors
+                    //                       .grey
+                    //                       .shade400,
+                    //                 ),
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           'Subsc. Today',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             shopProv
+                    //                                 .getTodaysSubscribedShops()
+                    //                                 .length
+                    //                                 .toDouble(),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 Container(
+                    //                   height: 50,
+                    //                   width: 1,
+                    //                   color: Colors
+                    //                       .grey
+                    //                       .shade400,
+                    //                 ),
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             color: Colors
+                    //                                 .white,
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                           ),
+                    //                           'New Stores',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             color: Colors
+                    //                                 .white,
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             shopProv
+                    //                                 .getTodaysRegisteredStores()
+                    //                                 .length
+                    //                                 .toDouble(),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //             Divider(
+                    //               height:
+                    //                   isMobileSmall(context)
+                    //                   ? 25
+                    //                   : 30,
+                    //             ),
+                    //             Row(
+                    //               spacing: 10,
+                    //               mainAxisAlignment:
+                    //                   MainAxisAlignment
+                    //                       .spaceBetween,
+                    //               children: [
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           'Total Trial',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             shopProv
+                    //                                 .getTotalTrialShops()
+                    //                                 .length
+                    //                                 .toDouble(),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 Container(
+                    //                   height: 50,
+                    //                   width: 1,
+                    //                   color: Colors
+                    //                       .grey
+                    //                       .shade400,
+                    //                 ),
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           'Total Free',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             shopProv
+                    //                                 .getTotalFreeShops()
+                    //                                 .length
+                    //                                 .toDouble(),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 Container(
+                    //                   height: 50,
+                    //                   width: 1,
+                    //                   color: Colors
+                    //                       .grey
+                    //                       .shade400,
+                    //                 ),
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           'Total Expired',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             shopProv
+                    //                                 .getTotalExpiredShops()
+                    //                                 .length
+                    //                                 .toDouble(),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //             Divider(
+                    //               height:
+                    //                   isMobileSmall(context)
+                    //                   ? 25
+                    //                   : 30,
+                    //             ),
+                    //             Row(
+                    //               spacing: 10,
+                    //               mainAxisAlignment:
+                    //                   MainAxisAlignment
+                    //                       .spaceBetween,
+                    //               children: [
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           'Active',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             shopProv
+                    //                                 .getTotalActiveShops()
+                    //                                 .length
+                    //                                 .toDouble(),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 Container(
+                    //                   height: 50,
+                    //                   width: 1,
+                    //                   color: Colors
+                    //                       .grey
+                    //                       .shade400,
+                    //                 ),
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           'Semi Active',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             shopProv
+                    //                                 .getTotalSemiActiveShops()
+                    //                                 .length
+                    //                                 .toDouble(),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 Container(
+                    //                   height: 50,
+                    //                   width: 1,
+                    //                   color: Colors
+                    //                       .grey
+                    //                       .shade400,
+                    //                 ),
+                    //                 Expanded(
+                    //                   child: SizedBox(
+                    //                     // width: 110,
+                    //                     child: Column(
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment
+                    //                               .start,
+                    //                       spacing: 5,
+                    //                       children: [
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b4
+                    //                                 .fontSize,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           'Inactive',
+                    //                         ),
+                    //                         Text(
+                    //                           style: TextStyle(
+                    //                             fontSize: theme
+                    //                                 .mobileTexts
+                    //                                 .b2
+                    //                                 .fontSize,
+                    //                             fontWeight:
+                    //                                 FontWeight
+                    //                                     .bold,
+                    //                             color: Colors
+                    //                                 .white,
+                    //                           ),
+                    //                           formatNumber(
+                    //                             shopProv
+                    //                                 .getTotalInActiveShops()
+                    //                                 .length
+                    //                                 .toDouble(),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //       Align(
+                    //         alignment: AlignmentGeometry.xy(
+                    //           -1.4,
+                    //           0,
+                    //         ),
+                    //         child: Container(
+                    //           height: 140,
+                    //           width: 140,
+                    //           decoration: BoxDecoration(
+                    //             shape: BoxShape.circle,
+                    //             color: const Color.fromARGB(
+                    //               15,
+                    //               255,
+                    //               255,
+                    //               255,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // SizedBox(height: 20),
+                    // Container(
+                    //   height: (report.totalActive ?? 0) < 2
+                    //       ? MediaQuery.of(
+                    //               context,
+                    //             ).size.height -
+                    //             390
+                    //       : (100 +
+                    //                 (98 *
+                    //                     (report.totalActive ??
+                    //                         0)))
+                    //             .toDouble(),
+                    //   padding: EdgeInsets.symmetric(
+                    //     horizontal: 5,
+                    //   ),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white10,
+                    //     borderRadius: BorderRadius.vertical(
+                    //       top: Radius.circular(20),
+                    //     ),
+                    //   ),
+                    //   child: Column(
+                    //     spacing: 10,
+                    //     children: [
+                    //       Row(
+                    //         mainAxisAlignment:
+                    //             MainAxisAlignment
+                    //                 .spaceBetween,
+                    //         children: [
+                    //           Text(
+                    //             style: TextStyle(
+                    //               fontSize: theme
+                    //                   .mobileTexts
+                    //                   .b1
+                    //                   .fontSize,
+                    //               color:
+                    //                   Colors.grey.shade800,
+                    //               fontWeight:
+                    //                   FontWeight.bold,
+                    //             ),
+                    //             'New Stores',
+                    //           ),
+                    //         ],
+                    //       ),
+                    //       Divider(
+                    //         height: 1,
+                    //         color: Colors.grey.shade300,
+                    //       ),
+                    //       Builder(
+                    //         builder: (context) {
+                    //           if (report.totalActive == 0) {
+                    //             return Expanded(
+                    //               child: EmptyWidget(
+                    //                 isDashboard: false,
+                    //               ),
+                    //             );
+                    //           } else {
+                    //             return Column(
+                    //               spacing: 0,
+                    //               children: report
+                    //                   .totalActiveList
+                    //                   .map((sho) {
+                    //                     var newSh =
+                    //                         returnShopProvider()
+                    //                             .shopInfos
+                    //                             .firstWhere(
+                    //                               (sh) =>
+                    //                                   sh.shopId ==
+                    //                                   sho,
+                    //                             );
+                    //                     return ShopTileMain(
+                    //                       isReport: true,
+                    //                       shop: newSh,
+                    //                     );
+                    //                   })
+                    //                   .toList(),
+                    //             );
+                    //           }
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // SizedBox(height: 20),
                   ],
                 ),
               ),

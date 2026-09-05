@@ -194,24 +194,28 @@ class _HomeState extends State<Home> {
                                       context: context,
                                     ).admin ==
                                     null) {
-                                  return NavButtons(
-                                    theme: theme,
-                                    icon: Icons
-                                        .receipt_rounded,
-                                    mainIndex: currentPage,
-                                    myIndex: 2,
-                                    title: 'Payments',
-                                    navAction: () {
-                                      navActionMain(2);
-                                    },
-                                  );
+                                  // return NavButtons(
+                                  //   theme: theme,
+                                  //   icon: Icons
+                                  //       .receipt_rounded,
+                                  //   mainIndex:
+                                  //       currentPage,
+                                  //   myIndex: 2,
+                                  //   title:  'Payments',
+                                  //   navAction: () {
+                                  //     navActionMain(2);
+                                  //   },
+                                  // );
+                                  return Container();
                                 } else {
                                   return NavButtons(
                                     theme: theme,
                                     icon: Icons.people,
                                     mainIndex: currentPage,
                                     myIndex: 2,
-                                    title: 'Agents',
+                                    title: topAdmin()
+                                        ? 'Agents'
+                                        : 'My Stores',
                                     navAction: () {
                                       navActionMain(2);
                                     },

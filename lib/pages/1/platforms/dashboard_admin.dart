@@ -805,7 +805,8 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                   )
                                   .getThisMonthRegisteredStores()
                                   .isEmpty) {
-                                return Expanded(
+                                return SizedBox(
+                                  height: 250,
                                   child: EmptyWidget(
                                     isDashboard: true,
                                   ),

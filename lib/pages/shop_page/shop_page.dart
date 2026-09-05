@@ -286,78 +286,82 @@ class EmptyAgentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: Ink(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(28, 0, 0, 0),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: InkWell(
-          mouseCursor: SystemMouseCursors.click,
-          onTap: () {
-            if (!returnShopProvider().isLoading) {
-              addAgentAction(
-                context: context,
-                shopId: shop.shopId.toInt(),
-              );
-            }
-          },
-          borderRadius: BorderRadius.circular(5),
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 20,
-            ),
+    return Visibility(
+      visible: topAdmin(),
+      child: Material(
+        type: MaterialType.transparency,
+        child: Ink(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(28, 0, 0, 0),
+                blurRadius: 10,
+              ),
+            ],
+          ),
+          child: InkWell(
+            mouseCursor: SystemMouseCursors.click,
+            onTap: () {
+              if (!returnShopProvider().isLoading &&
+                  topAdmin()) {
+                addAgentAction(
+                  context: context,
+                  shopId: shop.shopId.toInt(),
+                );
+              }
+            },
+            borderRadius: BorderRadius.circular(5),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                vertical: 20,
+                horizontal: 20,
+              ),
 
-            child: Center(
-              child: Builder(
-                builder: (context) {
-                  if (returnShopProvider(
-                    context: context,
-                  ).isLoading) {
-                    return Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: SizedBox(
-                        height: 25,
-                        width: 25,
-                        child: CircularProgressIndicator(
-                          color: Colors.amber,
-                          strokeWidth: 3,
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 5,
-                      children: [
-                        Icon(
-                          size: 20,
-                          color: theme
-                              .lightModeColor
-                              .tertColor200,
-                          Icons.person_add_alt_1_outlined,
-                        ),
-                        Text(
-                          style: TextStyle(
-                            fontSize: theme
-                                .mobileTexts
-                                .b3
-                                .fontSize,
+              child: Center(
+                child: Builder(
+                  builder: (context) {
+                    if (returnShopProvider(
+                      context: context,
+                    ).isLoading) {
+                      return Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: CircularProgressIndicator(
+                            color: Colors.amber,
+                            strokeWidth: 3,
                           ),
-                          'Add Agent',
                         ),
-                      ],
-                    );
-                  }
-                },
+                      );
+                    } else {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 5,
+                        children: [
+                          Icon(
+                            size: 20,
+                            color: theme
+                                .lightModeColor
+                                .tertColor200,
+                            Icons.person_add_alt_1_outlined,
+                          ),
+                          Text(
+                            style: TextStyle(
+                              fontSize: theme
+                                  .mobileTexts
+                                  .b3
+                                  .fontSize,
+                            ),
+                            'Add Agent',
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           ),

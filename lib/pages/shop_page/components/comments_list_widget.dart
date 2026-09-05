@@ -211,7 +211,10 @@ void addCommentAction({
   required ShopInfo shop,
   required TextEditingController commentController,
 }) {
-  if (!returnShopProvider().isLoading) {
+  if (!returnShopProvider().isLoading &&
+      (shop.agentUuid != currentUser().userId
+          ? topAdmin()
+          : true)) {
     showDialog(
       context: context,
       builder: (firstContext) {
@@ -361,48 +364,54 @@ class _CommentTileWidgetState
                 type: MaterialType.transparency,
                 child: InkWell(
                   onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (firstContext) {
-                        return DialogTemplate(
-                          title: 'Delete Comment',
-                          message:
-                              'You are about to Delete This Comment. Are you sure you want to Proceed?',
-                          action: () async {
-                            if (!isLoading) {
-                              Navigator.of(
-                                firstContext,
-                              ).pop();
-                              setState(() {
-                                isLoading = true;
-                              });
-                              await returnShopProvider()
-                                  .updateAgentShopComment(
-                                    agentAndShopUuid:
-                                        widget
-                                            .shop
-                                            .agentAndShopUuid ??
-                                        '',
-                                    newComment: null,
-                                    commentUuid:
-                                        widget.comment.uuid,
-                                    agentUuid:
-                                        returnUserProvider()
-                                            .currentUser
-                                            ?.userId ??
-                                        '',
-                                    agentName:
-                                        "${returnUserProvider().currentUser?.name ?? ''} ${returnUserProvider().currentUser?.lastName ?? ''}",
-                                    shopId: widget
-                                        .shop
-                                        .shopId
-                                        .toInt(),
-                                  );
-                            }
-                          },
-                        );
-                      },
-                    );
+                    if ((widget.shop.agentUuid !=
+                            currentUser().userId
+                        ? topAdmin()
+                        : true)) {
+                      showDialog(
+                        context: context,
+                        builder: (firstContext) {
+                          return DialogTemplate(
+                            title: 'Delete Comment',
+                            message:
+                                'You are about to Delete This Comment. Are you sure you want to Proceed?',
+                            action: () async {
+                              if (!isLoading) {
+                                Navigator.of(
+                                  firstContext,
+                                ).pop();
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                await returnShopProvider()
+                                    .updateAgentShopComment(
+                                      agentAndShopUuid:
+                                          widget
+                                              .shop
+                                              .agentAndShopUuid ??
+                                          '',
+                                      newComment: null,
+                                      commentUuid: widget
+                                          .comment
+                                          .uuid,
+                                      agentUuid:
+                                          returnUserProvider()
+                                              .currentUser
+                                              ?.userId ??
+                                          '',
+                                      agentName:
+                                          "${returnUserProvider().currentUser?.name ?? ''} ${returnUserProvider().currentUser?.lastName ?? ''}",
+                                      shopId: widget
+                                          .shop
+                                          .shopId
+                                          .toInt(),
+                                    );
+                              }
+                            },
+                          );
+                        },
+                      );
+                    }
                   },
                   mouseCursor: SystemMouseCursors.click,
                   child: Builder(

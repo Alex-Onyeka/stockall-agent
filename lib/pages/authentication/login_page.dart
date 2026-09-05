@@ -89,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           SizedBox(height: 15),
                           MyTextFieldMain(
+                            lines: 1,
                             onSubmit: (value) {
                               submitAction();
                             },

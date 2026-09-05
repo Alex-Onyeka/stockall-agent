@@ -7,7 +7,7 @@ void showSnackbar({
   required BuildContext context,
   required String actionResult,
 }) {
-  var theme = returnTheme(context: context);
+  var theme = returnTheme();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       elevation: 0,

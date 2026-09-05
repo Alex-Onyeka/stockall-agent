@@ -42,9 +42,9 @@ class UserProvider extends ChangeNotifier {
 
   Future<List<UserClass>> getAgents() async {
     try {
-      List<Map<String, dynamic>> res = await _client.rpc(
-        'get_agents',
-      );
+      List<Map<String, dynamic>> res = await _client
+          .from('agents')
+          .select();
 
       if (res.isEmpty) {
         print('Users Not Found');

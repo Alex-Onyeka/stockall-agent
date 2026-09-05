@@ -37,8 +37,10 @@ class _MainTopBarState extends State<MainTopBar> {
         children: [
           Builder(
             builder: (context) {
-              if (widget.agentUuid != null) {
+              if (widget.agentUuid != null &&
+                  (topAdmin())) {
                 return IconButton(
+                  mouseCursor: SystemMouseCursors.click,
                   onPressed: () {
                     if (Navigator.canPop(context)) {
                       Navigator.of(context).pop();

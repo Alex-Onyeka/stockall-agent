@@ -345,7 +345,7 @@ class ShopTileMain extends StatelessWidget {
                                               FontWeight
                                                   .normal,
                                         ),
-                                        'Created At:',
+                                        'Last Seen:',
                                       ),
                                       Text(
                                         style: TextStyle(
@@ -362,6 +362,40 @@ class ShopTileMain extends StatelessWidget {
                                         ),
 
                                         shop.getLastSeen(),
+                                      ),
+                                    ],
+                                  );
+                                } else if (sortInt == 5) {
+                                  return Row(
+                                    spacing: 4,
+                                    children: [
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          fontWeight:
+                                              FontWeight
+                                                  .normal,
+                                        ),
+                                        'Subscribed:',
+                                      ),
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          color: Colors
+                                              .grey
+                                              .shade900,
+                                          fontWeight:
+                                              FontWeight
+                                                  .bold,
+                                        ),
+
+                                        shop.getSubscribedDate(),
                                       ),
                                     ],
                                   );

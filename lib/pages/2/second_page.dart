@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/main.dart';
 import 'package:stockallagent/pages/2/platforms/second_page_admin.dart';
-import 'package:stockallagent/pages/2/platforms/second_page_agent.dart';
 import 'package:stockallagent/pages/2/platforms/second_page_alt.dart';
 
-class SecondPage extends StatelessWidget {
+class SecondPage extends StatefulWidget {
   final Function()? popPage;
   final Function()? profileNavAction;
   final String? agentUuid;
@@ -16,20 +15,34 @@ class SecondPage extends StatelessWidget {
   });
 
   @override
+  State<SecondPage> createState() => _SecondPageState();
+}
+
+class _SecondPageState extends State<SecondPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      returnShopProvider().getShops();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (agentUuid != null) {
-      return SecondPageAlt(agentUuid: agentUuid);
+    if (widget.agentUuid != null) {
+      return SecondPageAlt(agentUuid: widget.agentUuid);
     } else {
       if (returnAdminProvider(context: context).admin ==
           null) {
-        return SecondPageAgent(
-          popPage: popPage,
-          profileNavAction: profileNavAction,
-        );
+        return SecondPageAlt(agentUuid: widget.agentUuid);
+        // return SecondPageAgent(
+        //   popPage: widget.popPage,
+        //   profileNavAction: widget.profileNavAction,
+        // );
       } else {
         return SecondPageAdmin(
-          popPage: popPage,
-          profileNavAction: profileNavAction,
+          popPage: widget.popPage,
+          profileNavAction: widget.profileNavAction,
         );
       }
     }

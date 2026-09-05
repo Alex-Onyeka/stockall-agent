@@ -19,13 +19,6 @@ class Reports extends StatefulWidget {
 }
 
 class _ReportsState extends State<Reports> {
-  // int currentSelection = 0;
-  // void switchSelection(int index) {
-  //   setState(() {
-  //     currentSelection = index;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     var theme = returnTheme(context: context);
@@ -42,83 +35,83 @@ class _ReportsState extends State<Reports> {
             ),
             SizedBox(height: 10),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-              ),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 15,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: theme.lightModeColor.prColor300,
-                ),
-                child: Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      spacing: 5,
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Total:',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: theme
-                                .mobileTexts
-                                .b4
-                                .fontSize,
-                          ),
-                        ),
-                        Text(
-                          formatMoney(1000),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: theme
-                                .mobileTexts
-                                .b2
-                                .fontSize,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      spacing: 5,
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Net:',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: theme
-                                .mobileTexts
-                                .b4
-                                .fontSize,
-                          ),
-                        ),
-                        Text(
-                          formatMoney(1000),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: theme
-                                .mobileTexts
-                                .b2
-                                .fontSize,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(
+            //     horizontal: 20.0,
+            //   ),
+            //   child: Container(
+            //     padding: EdgeInsets.symmetric(
+            //       vertical: 10,
+            //       horizontal: 15,
+            //     ),
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(5),
+            //       color: theme.lightModeColor.prColor300,
+            //     ),
+            //     child: Row(
+            //       mainAxisAlignment:
+            //           MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         Row(
+            //           spacing: 5,
+            //           mainAxisAlignment:
+            //               MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             Text(
+            //               'Total:',
+            //               style: TextStyle(
+            //                 color: Colors.white,
+            //                 fontSize: theme
+            //                     .mobileTexts
+            //                     .b4
+            //                     .fontSize,
+            //               ),
+            //             ),
+            //             Text(
+            //               formatMoney(1000),
+            //               style: TextStyle(
+            //                 color: Colors.white,
+            //                 fontSize: theme
+            //                     .mobileTexts
+            //                     .b2
+            //                     .fontSize,
+            //                 fontWeight: FontWeight.bold,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //         Row(
+            //           spacing: 5,
+            //           mainAxisAlignment:
+            //               MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             Text(
+            //               'Net:',
+            //               style: TextStyle(
+            //                 color: Colors.white,
+            //                 fontSize: theme
+            //                     .mobileTexts
+            //                     .b4
+            //                     .fontSize,
+            //               ),
+            //             ),
+            //             Text(
+            //               formatMoney(1000),
+            //               style: TextStyle(
+            //                 color: Colors.white,
+            //                 fontSize: theme
+            //                     .mobileTexts
+            //                     .b2
+            //                     .fontSize,
+            //                 fontWeight: FontWeight.bold,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             // SizedBox(height: 10),
             Expanded(
               child: RefreshIndicator.adaptive(
@@ -214,7 +207,7 @@ class ReportTileMain extends StatelessWidget {
                                   .fontSize,
                               fontWeight: FontWeight.bold,
                             ),
-                            getMonthAndYear(
+                            formatDateOrDaysAgo(
                               report.createdAt,
                             ),
                           ),
@@ -225,16 +218,16 @@ class ReportTileMain extends StatelessWidget {
                   Row(
                     spacing: 8,
                     children: [
-                      Text(
-                        style: TextStyle(
-                          fontSize:
-                              theme.mobileTexts.b4.fontSize,
-                        ),
-                        formatMoney(
-                          (report.totalActive ?? 0)
-                              .toDouble(),
-                        ),
-                      ),
+                      // Text(
+                      //   style: TextStyle(
+                      //     fontSize:
+                      //         theme.mobileTexts.b4.fontSize,
+                      //   ),
+                      //   formatNumber(
+                      //     (report. ?? 0)
+                      //         .toDouble(),
+                      //   ),
+                      // ),
                       Icon(
                         size: 14,
                         color: Colors.grey,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:stockallagent/classes/action_result.dart';
 import 'package:stockallagent/classes/shop_info.dart';
 import 'package:stockallagent/components/dialog_template.dart';
+import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/main.dart';
 import 'package:stockallagent/pages/2/second_page.dart';
 import 'package:stockallagent/pages/shop_page/components/shop_details_tab_widget.dart';
@@ -31,6 +34,22 @@ class AgentDetailsSection extends StatelessWidget {
             ),
             Expanded(
               child: ShopDetailsTabWidget(
+                action: () {
+                  print('Copying shit');
+                  Clipboard.setData(
+                    ClipboardData(
+                      text: shop.agentPhone ?? '',
+                    ),
+                  );
+
+                  showSnackbar(
+                    message:
+                        'Agent Phone Numberhas been copied to clipboard.',
+                    title: 'Copied to Clipboard!',
+                    context: context,
+                    actionResult: ActionResult().success,
+                  );
+                },
                 body: "${shop.agentPhone}",
                 title: 'Phone',
               ),
@@ -49,16 +68,21 @@ class AgentDetailsSection extends StatelessWidget {
             Expanded(
               child: ShopDetailsTabWidget(
                 action: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return SecondPage(
-                          agentUuid: shop.agentUuid,
-                        );
-                      },
-                    ),
-                  );
+                  if ((shop.agentUuid !=
+                          currentUser().userId
+                      ? topAdmin()
+                      : true)) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SecondPage(
+                            agentUuid: shop.agentUuid,
+                          );
+                        },
+                      ),
+                    );
+                  }
                 },
                 body: returnShopProvider().shopInfos
                     .where(
@@ -72,84 +96,99 @@ class AgentDetailsSection extends StatelessWidget {
             ),
           ],
         ),
-        Material(
-          color: Colors.transparent,
-          child: Ink(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              border: Border.all(color: Colors.redAccent),
-              color: const Color.fromARGB(20, 244, 67, 54),
-            ),
-            child: InkWell(
-              onTap: () {
-                if (!returnShopProvider().isLoading) {
-                  showDialog(
-                    context: context,
-                    builder: (firstContext) {
-                      return DialogTemplate(
-                        title: 'Remove Agent',
-                        action: () async {
-                          Navigator.of(firstContext).pop();
-                          await returnShopProvider()
-                              .setAgent(
-                                agentUuid:
-                                    shop.agentAndShopUuid!,
-                                isDelete: true,
-                                shopId: shop.shopId.toInt(),
-                              );
-                        },
-                        message:
-                            'You are about to Remove this Agent From this Business. All Comments Created Will be deleted. Are you sure you want to proceed?',
-                      );
-                    },
-                  );
-                }
-              },
-              mouseCursor: SystemMouseCursors.click,
-              child: Container(
-                constraints: BoxConstraints(maxWidth: 300),
-                padding: EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 10,
+        Visibility(
+          visible: topAdmin(),
+          child: Material(
+            color: Colors.transparent,
+            child: Ink(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                border: Border.all(color: Colors.redAccent),
+                color: const Color.fromARGB(
+                  20,
+                  244,
+                  67,
+                  54,
                 ),
+              ),
+              child: InkWell(
+                onTap: () {
+                  if (!returnShopProvider().isLoading &&
+                      topAdmin()) {
+                    showDialog(
+                      context: context,
+                      builder: (firstContext) {
+                        return DialogTemplate(
+                          title: 'Remove Agent',
+                          action: () async {
+                            Navigator.of(
+                              firstContext,
+                            ).pop();
+                            await returnShopProvider()
+                                .setAgent(
+                                  agentUuid: shop
+                                      .agentAndShopUuid!,
+                                  isDelete: true,
+                                  shopId: shop.shopId
+                                      .toInt(),
+                                );
+                          },
+                          message:
+                              'You are about to Remove this Agent From this Business. All Comments Created Will be deleted. Are you sure you want to proceed?',
+                        );
+                      },
+                    );
+                  }
+                },
+                mouseCursor: SystemMouseCursors.click,
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxWidth: 300,
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 10,
+                  ),
 
-                child: Builder(
-                  builder: (context) {
-                    if (returnShopProvider().isLoading) {
-                      return Center(
-                        child: SizedBox(
-                          height: 23,
-                          width: 23,
-                          child: CircularProgressIndicator(
-                            color: Colors.amber,
-                            strokeWidth: 2,
+                  child: Builder(
+                    builder: (context) {
+                      if (returnShopProvider().isLoading) {
+                        return Center(
+                          child: SizedBox(
+                            height: 23,
+                            width: 23,
+                            child:
+                                CircularProgressIndicator(
+                                  color: Colors.amber,
+                                  strokeWidth: 2,
+                                ),
                           ),
-                        ),
-                      );
-                    } else {
-                      return Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.center,
-                        spacing: 4,
-                        children: [
-                          Text(
-                            style: TextStyle(
-                              fontSize: theme
-                                  .mobileTexts
-                                  .b3
-                                  .fontSize,
+                        );
+                      } else {
+                        return Row(
+                          mainAxisAlignment:
+                              MainAxisAlignment.center,
+                          spacing: 4,
+                          children: [
+                            Text(
+                              style: TextStyle(
+                                fontSize: theme
+                                    .mobileTexts
+                                    .b3
+                                    .fontSize,
+                              ),
+                              'Remove Agent',
                             ),
-                            'Remove Agent',
-                          ),
-                          Icon(
-                            size: 20,
-                            color: Colors.red,
-                            Icons.clear,
-                          ),
-                        ],
-                      );
-                    }
-                  },
+                            Icon(
+                              size: 20,
+                              color: Colors.red,
+                              Icons.clear,
+                            ),
+                          ],
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
             ),

@@ -24,7 +24,9 @@ class ReportProvider extends ChangeNotifier {
       reports = res
           .map((re) => AnalysisReport.fromJson(re))
           .toList();
-
+      reports.sort(
+        (a, b) => b.createdAt.compareTo(a.createdAt),
+      );
       notifyListeners();
       return reports;
     } catch (e) {

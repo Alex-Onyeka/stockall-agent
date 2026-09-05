@@ -159,6 +159,9 @@ class _ProfileState extends State<Profile> {
                                               user.roleId,
                                           password:
                                               user.password,
+                                          userId:
+                                              user.userId,
+                                          role: user.role,
                                           name:
                                               nameController
                                                   .text
@@ -949,7 +952,7 @@ class InfoSections extends StatelessWidget {
       spacing: 10,
       children: [
         SizedBox(
-          width: titleBoxWidth ?? 30,
+          width: titleBoxWidth ?? 40,
           child: Text(
             style: TextStyle(
               fontSize: theme.mobileTexts.b4.fontSize,

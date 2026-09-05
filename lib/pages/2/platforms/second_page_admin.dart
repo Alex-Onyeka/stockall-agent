@@ -83,8 +83,27 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
               return true;
             }
           } else if (filterIndex == 1) {
-            return item.currentPlanValue() ==
-                currentSelection;
+            if (currentSelection == 0) {
+              return true;
+            } else if (currentSelection == 1) {
+              return item.isSubscribed();
+            } else if (currentSelection == 2) {
+              return item.isTrial;
+            } else if (currentSelection == 3) {
+              return item.isFree();
+            } else if (currentSelection == 4) {
+              return item.isExpired;
+            } else if (currentSelection == 5) {
+              return item.isBasicPlan();
+            } else if (currentSelection == 6) {
+              return item.isStandardPlan();
+            } else if (currentSelection == 7) {
+              return item.isPremiumPlan();
+            } else if (currentSelection == 8) {
+              return item.isSilverPlan();
+            } else {
+              return item.isGoldPlan();
+            }
           } else if (filterIndex == 2) {
             if (currentSelection == 0) {
               return true;
@@ -141,7 +160,13 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                   true,
         )
         .toList();
-    if (filterIndex == 4) {
+    if (currentSelection == 1) {
+      shops.sort(
+        (a, b) => b.getLastPayment().compareTo(
+          a.getLastPayment(),
+        ),
+      );
+    } else if (filterIndex == 4) {
       if (currentSelection == 0) {
         shops.sort(
           (a, b) => a.shopName.toLowerCase().compareTo(
@@ -190,259 +215,250 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           children: [
             MainTopBar(
               profileNavAction: widget.profileNavAction,
-              lastWidget: Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: PopupMenuButton(
-                    offset: Offset(-20, 30),
-                    color: Colors.white,
-                    itemBuilder: (context) {
-                      return [
-                        PopupMenuItem(
-                          onTap: () {
-                            setFilterIndex(0);
-                          },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(
-                                  horizontal: 10.0,
+              lastWidget: Material(
+                type: MaterialType.transparency,
+                child: PopupMenuButton(
+                  offset: Offset(-20, 30),
+                  color: Colors.white,
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        onTap: () {
+                          setFilterIndex(0);
+                        },
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                              ),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                            children: [
+                              Text(
+                                style: TextStyle(
+                                  fontSize: theme
+                                      .mobileTexts
+                                      .b3
+                                      .fontSize,
+                                  fontWeight:
+                                      filterIndex == 0
+                                      ? FontWeight.bold
+                                      : null,
                                 ),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .spaceBetween,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b3
-                                        .fontSize,
-                                    fontWeight:
-                                        filterIndex == 0
-                                        ? FontWeight.bold
-                                        : null,
-                                  ),
-                                  'Filter By Created Date',
-                                ),
-                                Visibility(
-                                  visible: filterIndex == 0,
-                                  child: Icon(
-                                    size: 17,
-                                    color: Colors
-                                        .grey
-                                        .shade700,
-                                    Icons.check,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          onTap: () {
-                            setFilterIndex(1);
-                          },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(
-                                  horizontal: 10.0,
-                                ),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .spaceBetween,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b3
-                                        .fontSize,
-                                    fontWeight:
-                                        filterIndex == 1
-                                        ? FontWeight.bold
-                                        : null,
-                                  ),
-                                  'Filter By Subscription',
-                                ),
-                                Visibility(
-                                  visible: filterIndex == 1,
-                                  child: Icon(
-                                    size: 17,
-                                    color: Colors
-                                        .grey
-                                        .shade700,
-                                    Icons.check,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          onTap: () {
-                            setFilterIndex(2);
-                          },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(
-                                  horizontal: 10.0,
-                                ),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .spaceBetween,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b3
-                                        .fontSize,
-                                    fontWeight:
-                                        filterIndex == 2
-                                        ? FontWeight.bold
-                                        : null,
-                                  ),
-                                  'Filter By Active/Inactive',
-                                ),
-                                Visibility(
-                                  visible: filterIndex == 2,
-                                  child: Icon(
-                                    size: 17,
-                                    color: Colors
-                                        .grey
-                                        .shade700,
-                                    Icons.check,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          onTap: () {
-                            setFilterIndex(3);
-                          },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(
-                                  horizontal: 10.0,
-                                ),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .spaceBetween,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b3
-                                        .fontSize,
-                                    fontWeight:
-                                        filterIndex == 3
-                                        ? FontWeight.bold
-                                        : null,
-                                  ),
-                                  'Filter By Assigned Agent',
-                                ),
-                                Visibility(
-                                  visible: filterIndex == 3,
-                                  child: Icon(
-                                    size: 17,
-                                    color: Colors
-                                        .grey
-                                        .shade700,
-                                    Icons.check,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          onTap: () {
-                            setFilterIndex(4);
-                          },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(
-                                  horizontal: 10.0,
-                                ),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .spaceBetween,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b3
-                                        .fontSize,
-                                    fontWeight:
-                                        filterIndex == 4
-                                        ? FontWeight.bold
-                                        : null,
-                                  ),
-                                  'Sort List',
-                                ),
-                                Visibility(
-                                  visible: filterIndex == 4,
-                                  child: Icon(
-                                    size: 17,
-                                    color: Colors
-                                        .grey
-                                        .shade700,
-                                    Icons.check,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          onTap: () {
-                            toggleIsSearch();
-                          },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(
-                                  horizontal: 10.0,
-                                ),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.start,
-                              spacing: 5,
-                              children: [
-                                Icon(
+                                'Filter By Created Date',
+                              ),
+                              Visibility(
+                                visible: filterIndex == 0,
+                                child: Icon(
                                   size: 17,
                                   color:
                                       Colors.grey.shade700,
-                                  Icons.search,
+                                  Icons.check,
                                 ),
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b3
-                                        .fontSize,
-                                  ),
-                                  'Search Shops',
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                      ];
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(Icons.more_vert_rounded),
-                    ),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          setFilterIndex(1);
+                        },
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                              ),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                            children: [
+                              Text(
+                                style: TextStyle(
+                                  fontSize: theme
+                                      .mobileTexts
+                                      .b3
+                                      .fontSize,
+                                  fontWeight:
+                                      filterIndex == 1
+                                      ? FontWeight.bold
+                                      : null,
+                                ),
+                                'Filter By Subscription',
+                              ),
+                              Visibility(
+                                visible: filterIndex == 1,
+                                child: Icon(
+                                  size: 17,
+                                  color:
+                                      Colors.grey.shade700,
+                                  Icons.check,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          setFilterIndex(2);
+                        },
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                              ),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                            children: [
+                              Text(
+                                style: TextStyle(
+                                  fontSize: theme
+                                      .mobileTexts
+                                      .b3
+                                      .fontSize,
+                                  fontWeight:
+                                      filterIndex == 2
+                                      ? FontWeight.bold
+                                      : null,
+                                ),
+                                'Filter By Active/Inactive',
+                              ),
+                              Visibility(
+                                visible: filterIndex == 2,
+                                child: Icon(
+                                  size: 17,
+                                  color:
+                                      Colors.grey.shade700,
+                                  Icons.check,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          setFilterIndex(3);
+                        },
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                              ),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                            children: [
+                              Text(
+                                style: TextStyle(
+                                  fontSize: theme
+                                      .mobileTexts
+                                      .b3
+                                      .fontSize,
+                                  fontWeight:
+                                      filterIndex == 3
+                                      ? FontWeight.bold
+                                      : null,
+                                ),
+                                'Filter By Assigned Agent',
+                              ),
+                              Visibility(
+                                visible: filterIndex == 3,
+                                child: Icon(
+                                  size: 17,
+                                  color:
+                                      Colors.grey.shade700,
+                                  Icons.check,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          setFilterIndex(4);
+                        },
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                              ),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                            children: [
+                              Text(
+                                style: TextStyle(
+                                  fontSize: theme
+                                      .mobileTexts
+                                      .b3
+                                      .fontSize,
+                                  fontWeight:
+                                      filterIndex == 4
+                                      ? FontWeight.bold
+                                      : null,
+                                ),
+                                'Sort List',
+                              ),
+                              Visibility(
+                                visible: filterIndex == 4,
+                                child: Icon(
+                                  size: 17,
+                                  color:
+                                      Colors.grey.shade700,
+                                  Icons.check,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          toggleIsSearch();
+                        },
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                              ),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.start,
+                            spacing: 5,
+                            children: [
+                              Icon(
+                                size: 17,
+                                color: Colors.grey.shade700,
+                                Icons.search,
+                              ),
+                              Text(
+                                style: TextStyle(
+                                  fontSize: theme
+                                      .mobileTexts
+                                      .b3
+                                      .fontSize,
+                                ),
+                                'Search Shops',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ];
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    child: Icon(Icons.more_vert_rounded),
                   ),
                 ),
               ),
@@ -587,6 +603,10 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                                 shop: shop,
                                 sortInt: filterIndex == 4
                                     ? currentSelection
+                                    : (filterIndex == 1 &&
+                                          currentSelection ==
+                                              1)
+                                    ? 5
                                     : null,
                               ),
                             )
@@ -709,7 +729,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 1,
           title:
-              'Trial${currentSelection == 1 ? " (${shops.length})" : ''}',
+              'Latest${currentSelection == 1 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(1);
           },
@@ -718,7 +738,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 2,
           title:
-              'Free${currentSelection == 2 ? " (${shops.length})" : ''}',
+              'Trial${currentSelection == 2 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(2);
           },
@@ -727,7 +747,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 3,
           title:
-              'Expired${currentSelection == 3 ? " (${shops.length})" : ''}',
+              'Free${currentSelection == 3 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(3);
           },
@@ -736,7 +756,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 4,
           title:
-              'Basic${currentSelection == 4 ? " (${shops.length})" : ''}',
+              'Expired${currentSelection == 4 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(4);
           },
@@ -745,7 +765,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 5,
           title:
-              'Standard${currentSelection == 5 ? " (${shops.length})" : ''}',
+              'Basic${currentSelection == 5 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(5);
           },
@@ -754,7 +774,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 6,
           title:
-              'Premium${currentSelection == 6 ? " (${shops.length})" : ''}',
+              'Standard${currentSelection == 6 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(6);
           },
@@ -763,7 +783,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 7,
           title:
-              'Silver${currentSelection == 7 ? " (${shops.length})" : ''}',
+              'Premium${currentSelection == 7 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(7);
           },
@@ -772,9 +792,18 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 8,
           title:
-              'Gold${currentSelection == 8 ? " (${shops.length})" : ''}',
+              'Silver${currentSelection == 8 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(8);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 9,
+          title:
+              'Gold${currentSelection == 9 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(9);
           },
         ),
       ],

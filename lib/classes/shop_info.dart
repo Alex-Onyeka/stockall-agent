@@ -262,14 +262,34 @@ class ShopInfo {
 
   int currentPlanValue() {
     if (isTrial) {
-      return 1;
+      return 3;
     } else if (isFree()) {
-      return 2;
+      return 0;
     } else if (isExpired) {
       return 3;
     } else {
-      return ((currentPlan ?? 0) + 3).toInt();
+      return (currentPlan ?? 0).toInt();
     }
+  }
+
+  bool isBasicPlan() {
+    return currentPlan == 1 && isSubscribed();
+  }
+
+  bool isStandardPlan() {
+    return currentPlan == 2 && isSubscribed();
+  }
+
+  bool isPremiumPlan() {
+    return currentPlan == 3 && isSubscribed();
+  }
+
+  bool isSilverPlan() {
+    return currentPlan == 4 && isSubscribed();
+  }
+
+  bool isGoldPlan() {
+    return currentPlan == 5 && isSubscribed();
   }
 
   String currentPlanName() {
@@ -375,6 +395,12 @@ class ShopInfo {
         : 'Not Set';
   }
 
+  String getSubscribedDate() {
+    return subscriptionLastPayment != null
+        ? formatDateOrDaysAgo(subscriptionLastPayment!)
+        : 'Not Set';
+  }
+
   DateTime getLastActivity() {
     return lastActivity ??
         DateTime.now().subtract(Duration(days: 90));
@@ -382,6 +408,11 @@ class ShopInfo {
 
   DateTime getExpiryDate() {
     return subscriptionNextPayment ??
+        DateTime.now().subtract(Duration(days: 90));
+  }
+
+  DateTime getLastPayment() {
+    return subscriptionLastPayment ??
         DateTime.now().subtract(Duration(days: 90));
   }
 

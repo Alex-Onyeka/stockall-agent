@@ -7,7 +7,7 @@ class UserClass {
   String email;
   String? phone;
   String? referralCode;
-  // String? role;
+  String? role;
   int roleId;
 
   UserClass({
@@ -19,7 +19,7 @@ class UserClass {
     required this.email,
     this.phone,
     this.referralCode,
-    // this.role,
+    this.role,
     required this.roleId,
   });
 
@@ -35,19 +35,20 @@ class UserClass {
       phone: json['phone'],
       password: json['password'] ?? '',
       referralCode: json['ref_code'] as String?,
-      // role: json['role'] as String?,
+      role: json['role'] as String?,
       roleId: json['role_id'] as int,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'uuid': userId,
       'first_name': name,
       'last_name': lastName,
       'email': email,
       'phone': phone,
       'password': password,
-      // 'role': role,
+      'role': role,
       'role_id': roleId,
     };
   }
@@ -73,7 +74,7 @@ class UserClass {
       lastName: lastName ?? this.lastName,
       phone: phone ?? this.phone,
       referralCode: referralCode ?? this.referralCode,
-      // role: role ?? this.role,
+      role: role ?? this.role,
       userId: userId ?? this.userId,
     );
   }

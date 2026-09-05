@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:stockallagent/classes/action_result.dart';
 import 'package:stockallagent/classes/shop_info.dart';
+import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/constants/constants_main.dart';
 import 'package:stockallagent/pages/shop_page/components/shop_details_tab_widget.dart';
 
@@ -37,8 +40,25 @@ class ShopDetailsSection extends StatelessWidget {
           children: [
             Expanded(
               child: ShopDetailsTabWidget(
+                isCopy: true,
                 body: shop.userPhone ?? 'Not Set',
                 title: 'Owner\'s Phone',
+                action: () {
+                  // print('Copying shit');
+                  Clipboard.setData(
+                    ClipboardData(
+                      text: shop.userPhone ?? '',
+                    ),
+                  );
+
+                  showSnackbar(
+                    message:
+                        'Owner\'s Phone Number has been copied to clipboard.',
+                    title: 'Copied to Clipboard!',
+                    context: context,
+                    actionResult: ActionResult().success,
+                  );
+                },
               ),
             ),
             Expanded(

@@ -22,6 +22,7 @@ class DashboardAgent extends StatefulWidget {
 class _DashboardAgentState extends State<DashboardAgent> {
   @override
   Widget build(BuildContext context) {
+    var shopProv = returnShopProvider(context: context);
     var theme = returnTheme(context: context);
     return Scaffold(
       backgroundColor: theme.lightModeColor.prColor300,
@@ -80,173 +81,6 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                   MainAxisAlignment.center,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  spacing: 10,
-                                  children: [
-                                    Column(
-                                      spacing: 2,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment
-                                              .start,
-                                      children: [
-                                        Text(
-                                          style: TextStyle(
-                                            fontSize: theme
-                                                .mobileTexts
-                                                .b4
-                                                .fontSize,
-                                            color: Colors
-                                                .white,
-                                          ),
-                                          'Balance',
-                                        ),
-                                        Text(
-                                          style: TextStyle(
-                                            fontSize: theme
-                                                .mobileTexts
-                                                .h1
-                                                .fontSize,
-                                            fontWeight:
-                                                FontWeight
-                                                    .bold,
-                                            color: Colors
-                                                .white,
-                                          ),
-                                          '',
-                                        ),
-                                      ],
-                                    ),
-                                    InkWell(
-                                      mouseCursor:
-                                          SystemMouseCursors
-                                              .click,
-                                      onTap: () {
-                                        returnResourceProvider()
-                                            .toggleHideMoney();
-                                      },
-                                      child: Icon(
-                                        color: Colors.white,
-                                        returnResourceProvider(
-                                              context:
-                                                  context,
-                                            ).hideMoneyDashBoard
-                                            ? Icons
-                                                  .desktop_access_disabled_rounded
-                                            : Icons
-                                                  .desktop_mac_rounded,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(height: 30),
-                                Row(
-                                  spacing: 10,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Subscribed Stores',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .h4
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              returnResourceProvider(
-                                                    context:
-                                                        context,
-                                                  ).hideMoneyDashBoard
-                                                  ? '***'
-                                                  : returnShopProvider(
-                                                      context:
-                                                          context,
-                                                    ).getThisMonthSubscribedShops().length.toString(),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white,
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                              ),
-                                              'Month\'s Subscription',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white,
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .h4
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                              ),
-                                              returnResourceProvider(
-                                                    context:
-                                                        context,
-                                                  ).hideMoneyDashBoard
-                                                  ? '***'
-                                                  : formatMoney(1000),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(height: 30),
-                                Row(
                                   spacing: 10,
                                   mainAxisAlignment:
                                       MainAxisAlignment
@@ -276,7 +110,7 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                               style: TextStyle(
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
@@ -284,15 +118,60 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                                 color: Colors
                                                     .white,
                                               ),
-                                              returnResourceProvider(
-                                                    context:
-                                                        context,
-                                                  ).hideMoneyDashBoard
-                                                  ? '***'
-                                                  : returnShopProvider(
-                                                      context:
-                                                          context,
-                                                    ).shopInfos.length.toString(),
+                                              formatNumber(
+                                                shopProv
+                                                    .getAllShops(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 1,
+                                      color: Colors
+                                          .grey
+                                          .shade400,
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        // width: 110,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                          spacing: 5,
+                                          children: [
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b4
+                                                    .fontSize,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              'Headquaters',
+                                            ),
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b2
+                                                    .fontSize,
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              formatNumber(
+                                                shopProv
+                                                    .shopInfos
+                                                    .length
+                                                    .toDouble(),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -323,7 +202,7 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                                     .b4
                                                     .fontSize,
                                               ),
-                                              'This Month',
+                                              'Branches',
                                             ),
                                             Text(
                                               style: TextStyle(
@@ -331,21 +210,487 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                                     .white,
                                                 fontSize: theme
                                                     .mobileTexts
-                                                    .h4
+                                                    .b2
                                                     .fontSize,
                                                 fontWeight:
                                                     FontWeight
                                                         .bold,
                                               ),
-                                              returnResourceProvider(
-                                                    context:
-                                                        context,
-                                                  ).hideMoneyDashBoard
-                                                  ? '***'
-                                                  : returnShopProvider(
-                                                      context:
-                                                          context,
-                                                    ).getThisMonthRegisteredStores().length.toString(),
+                                              formatNumber(
+                                                shopProv
+                                                    .getTotalBranchShops(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(
+                                  height:
+                                      isMobileSmall(context)
+                                      ? 25
+                                      : 30,
+                                ),
+                                Row(
+                                  spacing: 10,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: SizedBox(
+                                        // width: 110,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                          spacing: 5,
+                                          children: [
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b4
+                                                    .fontSize,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              'Total Subsc.',
+                                            ),
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b2
+                                                    .fontSize,
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              formatNumber(
+                                                shopProv
+                                                    .getTotalSubscribedShops()
+                                                    .length
+                                                    .toDouble(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 1,
+                                      color: Colors
+                                          .grey
+                                          .shade400,
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        // width: 110,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                          spacing: 5,
+                                          children: [
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b4
+                                                    .fontSize,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              'Subsc. Today',
+                                            ),
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b2
+                                                    .fontSize,
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              formatNumber(
+                                                shopProv
+                                                    .getTodaysSubscribedShops()
+                                                    .length
+                                                    .toDouble(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 1,
+                                      color: Colors
+                                          .grey
+                                          .shade400,
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        // width: 110,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                          spacing: 5,
+                                          children: [
+                                            Text(
+                                              style: TextStyle(
+                                                color: Colors
+                                                    .white,
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b4
+                                                    .fontSize,
+                                              ),
+                                              'New Stores',
+                                            ),
+                                            Text(
+                                              style: TextStyle(
+                                                color: Colors
+                                                    .white,
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b2
+                                                    .fontSize,
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                              ),
+                                              formatNumber(
+                                                shopProv
+                                                    .getTodaysRegisteredStores()
+                                                    .length
+                                                    .toDouble(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(
+                                  height:
+                                      isMobileSmall(context)
+                                      ? 25
+                                      : 30,
+                                ),
+                                Row(
+                                  spacing: 10,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: SizedBox(
+                                        // width: 110,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                          spacing: 5,
+                                          children: [
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b4
+                                                    .fontSize,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              'Total Trial',
+                                            ),
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b2
+                                                    .fontSize,
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              formatNumber(
+                                                shopProv
+                                                    .getTotalTrialShops()
+                                                    .length
+                                                    .toDouble(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 1,
+                                      color: Colors
+                                          .grey
+                                          .shade400,
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        // width: 110,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                          spacing: 5,
+                                          children: [
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b4
+                                                    .fontSize,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              'Total Free',
+                                            ),
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b2
+                                                    .fontSize,
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              formatNumber(
+                                                shopProv
+                                                    .getTotalFreeShops()
+                                                    .length
+                                                    .toDouble(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 1,
+                                      color: Colors
+                                          .grey
+                                          .shade400,
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        // width: 110,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                          spacing: 5,
+                                          children: [
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b4
+                                                    .fontSize,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              'Total Expired',
+                                            ),
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b2
+                                                    .fontSize,
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              formatNumber(
+                                                shopProv
+                                                    .getTotalExpiredShops()
+                                                    .length
+                                                    .toDouble(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(
+                                  height:
+                                      isMobileSmall(context)
+                                      ? 25
+                                      : 30,
+                                ),
+                                Row(
+                                  spacing: 10,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: SizedBox(
+                                        // width: 110,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                          spacing: 5,
+                                          children: [
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b4
+                                                    .fontSize,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              'Active',
+                                            ),
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b2
+                                                    .fontSize,
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              formatNumber(
+                                                shopProv
+                                                    .getTotalActiveShops()
+                                                    .length
+                                                    .toDouble(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 1,
+                                      color: Colors
+                                          .grey
+                                          .shade400,
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        // width: 110,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                          spacing: 5,
+                                          children: [
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b4
+                                                    .fontSize,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              'Semi Active',
+                                            ),
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b2
+                                                    .fontSize,
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              formatNumber(
+                                                shopProv
+                                                    .getTotalSemiActiveShops()
+                                                    .length
+                                                    .toDouble(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 1,
+                                      color: Colors
+                                          .grey
+                                          .shade400,
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        // width: 110,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                          spacing: 5,
+                                          children: [
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b4
+                                                    .fontSize,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              'Inactive',
+                                            ),
+                                            Text(
+                                              style: TextStyle(
+                                                fontSize: theme
+                                                    .mobileTexts
+                                                    .b2
+                                                    .fontSize,
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                color: Colors
+                                                    .white,
+                                              ),
+                                              formatNumber(
+                                                shopProv
+                                                    .getTotalInActiveShops()
+                                                    .length
+                                                    .toDouble(),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -359,7 +704,7 @@ class _DashboardAgentState extends State<DashboardAgent> {
                           Align(
                             alignment: AlignmentGeometry.xy(
                               -1.4,
-                              1.5,
+                              0,
                             ),
                             child: Container(
                               height: 140,
@@ -380,27 +725,7 @@ class _DashboardAgentState extends State<DashboardAgent> {
                     ),
                     SizedBox(height: 20),
                     Container(
-                      height:
-                          returnShopProvider(
-                                    context: context,
-                                  )
-                                  .getThisMonthRegisteredStores()
-                                  .length <
-                              2
-                          ? MediaQuery.of(
-                                  context,
-                                ).size.height -
-                                390
-                          : (100 +
-                                    (98 *
-                                        returnShopProvider(
-                                              context:
-                                                  context,
-                                            )
-                                            .getThisMonthRegisteredStores()
-                                            .length))
-                                .toDouble(),
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                         color: Colors.white10,
                         borderRadius: BorderRadius.vertical(
@@ -415,23 +740,17 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                 MainAxisAlignment
                                     .spaceBetween,
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(
-                                      left: 0.0,
-                                    ),
-                                child: Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b1
-                                        .fontSize,
-                                    color: Colors.white,
-                                    fontWeight:
-                                        FontWeight.bold,
-                                  ),
-                                  'Recent Stores',
+                              Text(
+                                style: TextStyle(
+                                  fontSize: theme
+                                      .mobileTexts
+                                      .b3
+                                      .fontSize,
+                                  color: Colors.white,
+                                  fontWeight:
+                                      FontWeight.bold,
                                 ),
+                                'New Stores',
                               ),
                               InkWell(
                                 mouseCursor:
@@ -476,7 +795,7 @@ class _DashboardAgentState extends State<DashboardAgent> {
                             ],
                           ),
                           Divider(
-                            height: 10,
+                            height: 1,
                             color: Colors.white38,
                           ),
                           Builder(
@@ -486,7 +805,8 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                   )
                                   .getThisMonthRegisteredStores()
                                   .isEmpty) {
-                                return Expanded(
+                                return SizedBox(
+                                  height: 250,
                                   child: EmptyWidget(
                                     isDashboard: true,
                                   ),
@@ -496,18 +816,39 @@ class _DashboardAgentState extends State<DashboardAgent> {
                                   spacing: 0,
                                   children:
                                       returnShopProvider(
-                                            context:
-                                                context,
-                                          )
-                                          .getThisMonthRegisteredStores()
-                                          .map(
-                                            (shop) =>
-                                                ShopTileMain(
-                                                  shop:
-                                                      shop,
-                                                ),
-                                          )
-                                          .toList(),
+                                                context:
+                                                    context,
+                                              )
+                                              .getThisMonthRegisteredStores()
+                                              .length >
+                                          10
+                                      ? returnShopProvider(
+                                              context:
+                                                  context,
+                                            )
+                                            .getThisMonthRegisteredStores()
+                                            .getRange(0, 10)
+                                            .map(
+                                              (shop) =>
+                                                  ShopTileMain(
+                                                    shop:
+                                                        shop,
+                                                  ),
+                                            )
+                                            .toList()
+                                      : returnShopProvider(
+                                              context:
+                                                  context,
+                                            )
+                                            .getThisMonthRegisteredStores()
+                                            .map(
+                                              (shop) =>
+                                                  ShopTileMain(
+                                                    shop:
+                                                        shop,
+                                                  ),
+                                            )
+                                            .toList(),
                                 );
                               }
                             },
