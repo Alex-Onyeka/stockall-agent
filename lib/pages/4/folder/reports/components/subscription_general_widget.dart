@@ -10,10 +10,12 @@ class SubscriptionGeneralWidget extends StatelessWidget {
     super.key,
     required this.theme,
     required this.report,
+    required this.report2,
   });
 
   final ThemeProvider theme;
   final AnalysisReport report;
+  final AnalysisReport? report2;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +29,19 @@ class SubscriptionGeneralWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalSubscribedShops ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalSubscribedShops ?? 0).toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'Free Plan Subscribers',
           value: formatNumber(
             (report.totalFreePlanSubscribers ?? 0)
+                .toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalFreePlanSubscribers ?? 0)
                 .toDouble(),
           ),
         ),
@@ -42,12 +51,20 @@ class SubscriptionGeneralWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalTrialSubscribers ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalTrialSubscribers ?? 0)
+                .toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'Basic Plan Subscribers',
           value: formatNumber(
             (report.totalBasicPlanSubscribers ?? 0)
+                .toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalBasicPlanSubscribers ?? 0)
                 .toDouble(),
           ),
         ),
@@ -58,12 +75,20 @@ class SubscriptionGeneralWidget extends StatelessWidget {
             (report.totalStandardPlanSubscribers ?? 0)
                 .toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalStandardPlanSubscribers ?? 0)
+                .toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'Premium Plan Subscribers',
           value: formatNumber(
             (report.totalPremiumPlanSubscribers ?? 0)
+                .toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalPremiumPlanSubscribers ?? 0)
                 .toDouble(),
           ),
         ),
@@ -74,12 +99,20 @@ class SubscriptionGeneralWidget extends StatelessWidget {
             (report.totalSilverPlanSubscribers ?? 0)
                 .toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalSilverPlanSubscribers ?? 0)
+                .toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'GOLD Plan Subscribers',
           value: formatNumber(
             (report.totalGoldPlanSubscribers ?? 0)
+                .toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalGoldPlanSubscribers ?? 0)
                 .toDouble(),
           ),
         ),

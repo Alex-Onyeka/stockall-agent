@@ -175,9 +175,9 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
         );
       } else if (currentSelection == 1) {
         shops.sort(
-          (a, b) => a.userName!.toLowerCase().compareTo(
-            b.userName!.toLowerCase(),
-          ),
+          (a, b) => (a.userName ?? '')
+              .toLowerCase()
+              .compareTo((b.userName ?? '').toLowerCase()),
         );
       } else if (currentSelection == 2) {
         shops.sort(

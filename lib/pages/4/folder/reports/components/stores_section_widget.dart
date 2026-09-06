@@ -10,10 +10,12 @@ class StoresSectionWidget extends StatelessWidget {
     super.key,
     required this.theme,
     required this.report,
+    required this.report2,
   });
 
   final ThemeProvider theme;
   final AnalysisReport report;
+  final AnalysisReport? report2;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +27,18 @@ class StoresSectionWidget extends StatelessWidget {
           theme: theme,
           title: 'Total New',
           value: formatNumber(report.getTotalShops()),
+          value2: formatNumber(
+            report2?.getTotalShops() ?? 0,
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'New Headquarters',
           value: formatNumber(
             (report.totalShopsMain ?? 0).toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalShopsMain ?? 0).toDouble(),
           ),
         ),
         ReportSectionTileWidget(
@@ -39,12 +47,18 @@ class StoresSectionWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalShopsBranches ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalShopsBranches ?? 0).toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'Total Active',
           value: formatNumber(
             (report.totalActive ?? 0).toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalActive ?? 0).toDouble(),
           ),
         ),
         ReportSectionTileWidget(
@@ -53,12 +67,18 @@ class StoresSectionWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalSemiActive ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalSemiActive ?? 0).toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'Total In-Active',
           value: formatNumber(
             (report.totalInactive ?? 0).toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalInactive ?? 0).toDouble(),
           ),
         ),
       ],

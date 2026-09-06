@@ -6,6 +6,7 @@ import 'package:stockallagent/components/dialog_template.dart';
 import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/main.dart';
 import 'package:stockallagent/pages/2/second_page.dart';
+import 'package:stockallagent/pages/agent_page/agent_page.dart';
 import 'package:stockallagent/pages/shop_page/components/shop_details_tab_widget.dart';
 
 class AgentDetailsSection extends StatelessWidget {
@@ -27,6 +28,22 @@ class AgentDetailsSection extends StatelessWidget {
           children: [
             Expanded(
               child: ShopDetailsTabWidget(
+                action:
+                    currentUser().userId != shop.agentUuid
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return AgentPage(
+                                agentUuid:
+                                    shop.agentUuid ?? '',
+                              );
+                            },
+                          ),
+                        );
+                      }
+                    : null,
                 body:
                     '${shop.agentFirstName} ${shop.agentLastName}',
                 title: 'Name',

@@ -110,11 +110,13 @@ class ReportDetails extends StatelessWidget {
                         return DesktopView(
                           theme: theme,
                           report: report,
+                          report2: report2,
                         );
                       } else {
                         return MobileView(
                           theme: theme,
                           report: report,
+                          report2: report2,
                         );
                       }
                     },
@@ -135,10 +137,12 @@ class DesktopView extends StatelessWidget {
     super.key,
     required this.theme,
     required this.report,
+    this.report2,
   });
 
   final ThemeProvider theme;
   final AnalysisReport report;
+  final AnalysisReport? report2;
 
   @override
   Widget build(BuildContext context) {
@@ -153,12 +157,14 @@ class DesktopView extends StatelessWidget {
               child: StoresSectionWidget(
                 theme: theme,
                 report: report,
+                report2: report2,
               ),
             ),
             Expanded(
               child: SubscriptionTodayWidget(
                 theme: theme,
                 report: report,
+                report2: report2,
               ),
             ),
           ],
@@ -171,12 +177,14 @@ class DesktopView extends StatelessWidget {
               child: OthersSectionWidget(
                 theme: theme,
                 report: report,
+                report2: report2,
               ),
             ),
             Expanded(
               child: SubscriptionGeneralWidget(
                 theme: theme,
                 report: report,
+                report2: report2,
               ),
             ),
           ],
@@ -191,26 +199,38 @@ class MobileView extends StatelessWidget {
     super.key,
     required this.theme,
     required this.report,
+    required this.report2,
   });
 
   final ThemeProvider theme;
   final AnalysisReport report;
+  final AnalysisReport? report2;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       spacing: 15,
       children: [
-        StoresSectionWidget(theme: theme, report: report),
+        StoresSectionWidget(
+          theme: theme,
+          report: report,
+          report2: report2,
+        ),
         SubscriptionTodayWidget(
           theme: theme,
           report: report,
+          report2: report2,
         ),
         SubscriptionGeneralWidget(
           theme: theme,
           report: report,
+          report2: report2,
         ),
-        OthersSectionWidget(theme: theme, report: report),
+        OthersSectionWidget(
+          theme: theme,
+          report: report,
+          report2: report2,
+        ),
       ],
     );
   }

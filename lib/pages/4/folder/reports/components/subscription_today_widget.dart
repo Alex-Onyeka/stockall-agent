@@ -10,10 +10,12 @@ class SubscriptionTodayWidget extends StatelessWidget {
     super.key,
     required this.theme,
     required this.report,
+    required this.report2,
   });
 
   final ThemeProvider theme;
   final AnalysisReport report;
+  final AnalysisReport? report2;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +29,18 @@ class SubscriptionTodayWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalSubscriptions ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalSubscriptions ?? 0).toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'Total Free Plan',
           value: formatNumber(
             (report.totalFreePlan ?? 0).toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalFreePlan ?? 0).toDouble(),
           ),
         ),
         ReportSectionTileWidget(
@@ -41,12 +49,18 @@ class SubscriptionTodayWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalBasicPlan ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalBasicPlan ?? 0).toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'Standard Plan',
           value: formatNumber(
             (report.totalStandardPlan ?? 0).toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalStandardPlan ?? 0).toDouble(),
           ),
         ),
         ReportSectionTileWidget(
@@ -55,6 +69,9 @@ class SubscriptionTodayWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalPremiumPlan ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalPremiumPlan ?? 0).toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
@@ -62,12 +79,18 @@ class SubscriptionTodayWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalSilverPlan ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalSilverPlan ?? 0).toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'GOLD Plan',
           value: formatNumber(
             (report.totalGoldPlan ?? 0).toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalGoldPlan ?? 0).toDouble(),
           ),
         ),
       ],

@@ -10,10 +10,12 @@ class OthersSectionWidget extends StatelessWidget {
     super.key,
     required this.theme,
     required this.report,
+    required this.report2,
   });
 
   final ThemeProvider theme;
   final AnalysisReport report;
+  final AnalysisReport? report2;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +29,18 @@ class OthersSectionWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalSales ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalSales ?? 0).toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'Total Invoices',
           value: formatNumber(
             (report.totalInvoices ?? 0).toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalInvoices ?? 0).toDouble(),
           ),
         ),
         ReportSectionTileWidget(
@@ -41,12 +49,18 @@ class OthersSectionWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalProducts ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalProducts ?? 0).toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'Total Expenses',
           value: formatNumber(
             (report.totalExpenses ?? 0).toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalExpenses ?? 0).toDouble(),
           ),
         ),
         ReportSectionTileWidget(
@@ -55,12 +69,19 @@ class OthersSectionWidget extends StatelessWidget {
           value: formatNumber(
             (report.totalCustomers ?? 0).toDouble(),
           ),
+          value2: formatNumber(
+            (report2?.totalCustomers ?? 0).toDouble(),
+          ),
         ),
         ReportSectionTileWidget(
           theme: theme,
           title: 'Total Productions',
           value: formatNumber(
             (report.totalProductionRecords ?? 0).toDouble(),
+          ),
+          value2: formatNumber(
+            (report2?.totalProductionRecords ?? 0)
+                .toDouble(),
           ),
         ),
       ],
