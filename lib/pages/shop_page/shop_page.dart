@@ -200,23 +200,28 @@ class ShopPage extends StatelessWidget {
                 child: Column(
                   spacing: 10,
                   children: [
-                    Builder(
-                      builder: (context) {
-                        if (shop.agentEmail != null) {
-                          return ShopDetailsMainSection(
-                            title: 'Agent Details',
-                            shop: shop,
-                            widgett: AgentDetailsSection(
+                    Visibility(
+                      visible:
+                          currentUser().userId !=
+                          shop.agentUuid,
+                      child: Builder(
+                        builder: (context) {
+                          if (shop.agentEmail != null) {
+                            return ShopDetailsMainSection(
+                              title: 'Agent Details',
                               shop: shop,
-                            ),
-                          );
-                        } else {
-                          return EmptyAgentWidget(
-                            shop: shop,
-                            theme: theme,
-                          );
-                        }
-                      },
+                              widgett: AgentDetailsSection(
+                                shop: shop,
+                              ),
+                            );
+                          } else {
+                            return EmptyAgentWidget(
+                              shop: shop,
+                              theme: theme,
+                            );
+                          }
+                        },
+                      ),
                     ),
                     ShopDetailsMainSection(
                       title: 'Shop Details',

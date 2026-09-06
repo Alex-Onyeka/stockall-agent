@@ -121,20 +121,30 @@ class _ReportsState extends State<Reports> {
                 },
                 backgroundColor: Colors.white,
                 color: theme.lightModeColor.prColor250,
-                child: ListView(
+                child: ListView.builder(
                   padding: EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 15,
                   ),
-                  children:
-                      returnReportProvider(context: context)
-                          .reports
-                          .map(
-                            (report) => ReportTileMain(
-                              report: report,
-                            ),
-                          )
-                          .toList(),
+                  itemCount:
+                      returnReportProvider().reports.length,
+                  itemBuilder: (context, index) {
+                    List<AnalysisReport> reports =
+                        returnReportProvider().reports;
+                    AnalysisReport report = reports[index];
+                    AnalysisReport? report2() {
+                      try {
+                        return reports[index + 1];
+                      } catch (e) {
+                        return null;
+                      }
+                    }
+
+                    return ReportTileMain(
+                      report: report,
+                      report2: report2(),
+                    );
+                  },
                 ),
               ),
             ),
@@ -147,7 +157,12 @@ class _ReportsState extends State<Reports> {
 
 class ReportTileMain extends StatelessWidget {
   final AnalysisReport report;
-  const ReportTileMain({super.key, required this.report});
+  final AnalysisReport? report2;
+  const ReportTileMain({
+    super.key,
+    required this.report,
+    this.report2,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +189,10 @@ class ReportTileMain extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return ReportDetails(report: report);
+                    return ReportDetails(
+                      report: report,
+                      report2: report2,
+                    );
                   },
                 ),
               );

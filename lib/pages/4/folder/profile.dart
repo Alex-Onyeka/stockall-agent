@@ -8,6 +8,7 @@ import 'package:stockallagent/components/textfields/my_text_field.dart';
 import 'package:stockallagent/constants/comp_constants.dart';
 import 'package:stockallagent/constants/media_links.dart';
 import 'package:stockallagent/main.dart';
+import 'package:stockallagent/pages/2/second_page.dart';
 import 'package:stockallagent/pages/authentication/base_page.dart';
 import 'package:stockallagent/pages/settings_page.dart/settings_page.dart';
 import 'package:stockallagent/service/auth_service.dart';
@@ -384,11 +385,7 @@ class _ProfileState extends State<Profile> {
                           // indent: 50,
                         ),
                         Visibility(
-                          visible:
-                              returnAdminProvider(
-                                context: context,
-                              ).admin ==
-                              null,
+                          visible: true,
                           child: InfoSections(
                             copyAction: () {
                               print('Copying shit');
@@ -424,6 +421,41 @@ class _ProfileState extends State<Profile> {
                             title: 'Ref. Code',
                           ),
                         ),
+                        Divider(
+                          height: 25,
+                          color: Colors.grey.shade200,
+                          // endIndent: 50,
+                          // indent: 50,
+                        ),
+                        InfoSections(
+                          action: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return SecondPage(
+                                    agentUuid: currentUser()
+                                        .userId,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          titleBoxWidth: 50,
+                          mainInfo:
+                              returnShopProvider(
+                                    context: context,
+                                  ).shopInfos
+                                  .where(
+                                    (item) =>
+                                        item.agentUuid ==
+                                        currentUser()
+                                            .userId,
+                                  )
+                                  .length
+                                  .toString(),
+                          title: 'My Stores',
+                        ),
                       ],
                     ),
                   ],
@@ -431,11 +463,7 @@ class _ProfileState extends State<Profile> {
               ),
               SizedBox(height: 10),
               Visibility(
-                visible:
-                    returnAdminProvider(
-                      context: context,
-                    ).admin ==
-                    null,
+                visible: false,
                 child: Container(
                   padding: EdgeInsets.fromLTRB(
                     20,
@@ -936,12 +964,14 @@ class InfoSections extends StatelessWidget {
   final String mainInfo;
   final double? titleBoxWidth;
   final Function()? copyAction;
+  final Function()? action;
   const InfoSections({
     super.key,
     required this.title,
     required this.mainInfo,
     this.titleBoxWidth,
     this.copyAction,
+    this.action,
   });
 
   @override
@@ -966,28 +996,48 @@ class InfoSections extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               mouseCursor: SystemMouseCursors.click,
-              onTap: copyAction,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Visibility(
-                    visible: copyAction != null,
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Icon(size: 16, Icons.copy),
+              onTap: action ?? copyAction,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 4.0,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Visibility(
+                      visible: copyAction != null,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Icon(size: 16, Icons.copy),
+                      ),
                     ),
-                  ),
-                  Text(
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      fontSize:
-                          theme.mobileTexts.b3.fontSize,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontSize:
+                            theme.mobileTexts.b3.fontSize,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      mainInfo,
                     ),
-                    mainInfo,
-                  ),
-                ],
+                    Visibility(
+                      visible: action != null,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          6.0,
+                          4,
+                          10,
+                          4,
+                        ),
+                        child: Icon(
+                          size: 16,
+                          Icons.arrow_forward_ios_rounded,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

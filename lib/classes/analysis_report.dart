@@ -33,6 +33,18 @@ class AnalysisReport {
   final int? totalSuppliers;
   final int? totalWaybills;
   final String uuid;
+
+  // Subscription status metrics
+  final int? totalSubscribedShops;
+  final int? totalTrialSubscribers;
+  final int? totalFreePlanSubscribers;
+  final int? totalBasicPlanSubscribers;
+  final int? totalStandardPlanSubscribers;
+  final int? totalPremiumPlanSubscribers;
+  final int? totalSilverPlanSubscribers;
+  final int? totalGoldPlanSubscribers;
+  final int? totalExpiredStores;
+
   const AnalysisReport({
     required this.createdAt,
     required this.totalShopsBranchesList,
@@ -68,6 +80,17 @@ class AnalysisReport {
     this.totalSuppliers,
     this.totalWaybills,
     required this.uuid,
+
+    // Subscription status metrics
+    this.totalSubscribedShops,
+    this.totalTrialSubscribers,
+    this.totalFreePlanSubscribers,
+    this.totalBasicPlanSubscribers,
+    this.totalStandardPlanSubscribers,
+    this.totalPremiumPlanSubscribers,
+    this.totalSilverPlanSubscribers,
+    this.totalGoldPlanSubscribers,
+    this.totalExpiredStores,
   });
   factory AnalysisReport.fromJson(
     Map<String, dynamic> json,
@@ -125,6 +148,32 @@ class AnalysisReport {
       totalSuppliers: json['total_suppliers'] as int?,
       totalWaybills: json['total_waybills'] as int?,
       uuid: json['uuid'].toString(),
+
+      totalSubscribedShops:
+          (json['total_subscribed_shops'] as num?)?.toInt(),
+      totalTrialSubscribers:
+          (json['total_trial_subscribers'] as num?)
+              ?.toInt(),
+      totalFreePlanSubscribers:
+          (json['total_free_plan_subscribers'] as num?)
+              ?.toInt(),
+      totalBasicPlanSubscribers:
+          (json['total_basic_plan_subscribers'] as num?)
+              ?.toInt(),
+      totalStandardPlanSubscribers:
+          (json['total_standard_plan_subscribers'] as num?)
+              ?.toInt(),
+      totalPremiumPlanSubscribers:
+          (json['total_premium_plan_subscribers'] as num?)
+              ?.toInt(),
+      totalSilverPlanSubscribers:
+          (json['total_silver_plan_subscribers'] as num?)
+              ?.toInt(),
+      totalGoldPlanSubscribers:
+          (json['total_gold_plan_subscribers'] as num?)
+              ?.toInt(),
+      totalExpiredStores:
+          (json['total_expired_stores'] as num?)?.toInt(),
     );
   }
 

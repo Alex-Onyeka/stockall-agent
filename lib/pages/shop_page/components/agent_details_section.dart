@@ -34,6 +34,7 @@ class AgentDetailsSection extends StatelessWidget {
             ),
             Expanded(
               child: ShopDetailsTabWidget(
+                isCopy: true,
                 action: () {
                   print('Copying shit');
                   Clipboard.setData(
