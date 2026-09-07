@@ -266,3 +266,14 @@ var uuid = Uuid();
 String uuidGen() {
   return uuid.v4();
 }
+
+String cutLongText({
+  required int length,
+  required String text,
+}) {
+  if (text.length <= length) {
+    return text;
+  } else {
+    return '${text.substring(0, length - 1)}...';
+  }
+}

@@ -126,6 +126,20 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
             } else {
               return true;
             }
+          } else if (filterIndex == 5) {
+            if (currentSelection == 0) {
+              return true;
+            } else if (currentSelection == 1) {
+              return item.isImportant;
+            } else if (currentSelection == 2) {
+              return item.isImportanter;
+            } else if (currentSelection == 3) {
+              return item.isImportantest;
+            } else if (currentSelection == 4) {
+              return item.isDeleted;
+            } else {
+              return true;
+            }
           } else {
             return true;
           }
@@ -160,12 +174,14 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                   true,
         )
         .toList();
-    if (currentSelection == 1) {
-      shops.sort(
-        (a, b) => b.getLastPayment().compareTo(
-          a.getLastPayment(),
-        ),
-      );
+    if (filterIndex == 1) {
+      if (currentSelection == 1) {
+        shops.sort(
+          (a, b) => b.getLastPayment().compareTo(
+            a.getLastPayment(),
+          ),
+        );
+      }
     } else if (filterIndex == 4) {
       if (currentSelection == 0) {
         shops.sort(
@@ -174,11 +190,28 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           ),
         );
       } else if (currentSelection == 1) {
-        shops.sort(
-          (a, b) => (a.userName ?? '')
-              .toLowerCase()
-              .compareTo((b.userName ?? '').toLowerCase()),
-        );
+        shops.sort((a, b) {
+          final aDate = a.assignedDate;
+          final bDate = b.assignedDate;
+
+          // Both null → same position
+          if (aDate == null && bDate == null) {
+            return 0;
+          }
+
+          // a is null → a goes last
+          if (aDate == null) {
+            return 1;
+          }
+
+          // b is null → b goes last
+          if (bDate == null) {
+            return -1;
+          }
+
+          // Both have dates → newest first
+          return bDate.compareTo(aDate);
+        });
       } else if (currentSelection == 2) {
         shops.sort(
           (a, b) =>
@@ -424,6 +457,46 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                       ),
                       PopupMenuItem(
                         onTap: () {
+                          setFilterIndex(5);
+                        },
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                              ),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                            children: [
+                              Text(
+                                style: TextStyle(
+                                  fontSize: theme
+                                      .mobileTexts
+                                      .b3
+                                      .fontSize,
+                                  fontWeight:
+                                      filterIndex == 5
+                                      ? FontWeight.bold
+                                      : null,
+                                ),
+                                'Filter By Importance/Deleted',
+                              ),
+                              Visibility(
+                                visible: filterIndex == 5,
+                                child: Icon(
+                                  size: 17,
+                                  color:
+                                      Colors.grey.shade700,
+                                  Icons.check,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
                           toggleIsSearch();
                         },
                         child: Padding(
@@ -471,44 +544,49 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
               child: Builder(
                 builder: (context) {
                   if (isSearch) {
-                    return Row(
-                      spacing: 5,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: 400,
-                          height: 40,
-                          child: MyTextFieldMain(
-                            autoFocus: true,
-                            onChange: (value) {
-                              setState(() {});
+                    return ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: 400,
+                        maxHeight: 40,
+                      ),
+                      child: Row(
+                        spacing: 5,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: MyTextFieldMain(
+                              autoFocus: true,
+                              onChange: (value) {
+                                setState(() {});
+                              },
+                              controller: searchController,
+                              isEmail: false,
+                              showTitle: false,
+                              isNumber: false,
+                              isOptional: true,
+                              hintText: 'Enter Text',
+                              isPassword: false,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              toggleIsSearch();
                             },
-                            controller: searchController,
-                            isEmail: false,
-                            showTitle: false,
-                            isNumber: false,
-                            isOptional: true,
-                            hintText: 'Enter Text',
-                            isPassword: false,
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            toggleIsSearch();
-                          },
-                          mouseCursor:
-                              SystemMouseCursors.click,
-                          child: Padding(
-                            padding: EdgeInsetsGeometry.all(
-                              10,
-                            ),
-                            child: Icon(
-                              size: 22,
-                              Icons.clear,
+                            mouseCursor:
+                                SystemMouseCursors.click,
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsGeometry.all(
+                                    10,
+                                  ),
+                              child: Icon(
+                                size: 22,
+                                Icons.clear,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   } else {
                     return SingleChildScrollView(
@@ -551,6 +629,11 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                                 } else if (filterIndex ==
                                     4) {
                                   return sortWidget(shops);
+                                } else if (filterIndex ==
+                                    5) {
+                                  return findByImportanceAndDeletedWidget(
+                                    shops,
+                                  );
                                 } else {
                                   return findByCreatedDateWidget(
                                     shops,
@@ -904,7 +987,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
         TopStoreFilterButton(
           mainIndex: currentSelection,
           myIndex: 1,
-          title: 'Owner\'s Name',
+          title: 'Assigned Date',
           action: () {
             switchSelection(1);
           },
@@ -929,6 +1012,61 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 4,
           title: 'Expiry Date',
+          action: () {
+            switchSelection(4);
+          },
+        ),
+      ],
+    );
+  }
+
+  Row findByImportanceAndDeletedWidget(
+    List<ShopInfo> shops,
+  ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 0,
+          title:
+              'All${currentSelection == 0 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(0);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 1,
+          title:
+              'Important${currentSelection == 1 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(1);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 2,
+          title:
+              'Importanter${currentSelection == 2 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(2);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 3,
+          title:
+              'Importantest${currentSelection == 3 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(3);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 4,
+          title:
+              'Deleted${currentSelection == 4 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(4);
           },

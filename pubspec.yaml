@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.1+8
+version: 1.0.1+10
 
 environment:
   sdk: ^3.9.2
@@ -47,13 +47,19 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.6
 
-# msix_config:
-#   display_name: Stockall Agent
-#   publisher_display_name: Stockall Technologies
-#   identity_name: com.stockall.agent
-#   msix_version: 1.0.1.0
-#   logo_path: assets/logo/logo_icon_black.png
-#   capabilities: internetClient
+msix_config:
+  display_name: Stockall Agents
+  publisher_display_name: Stockall Solutions
+  identity_name: StockallSolutions.StockallAgents
+  msix_version: 1.0.10.0
+  logo_path: assets/logo/logo_icon_black.png
+  start_menu_icon_path: assets/logo/logo_icon_black.png
+  tile_icon_path: assets/logo/logo_icon_black.png
+  capabilities: internetClient
+  publisher: CN=C30F1185-CC3C-46C0-BCF0-18DA02C31DC5
+  certificate_path: windows/certificates/stockallagent.pfx
+  certificate_password: myuzician
+
 
 
 flutter_launcher_icons:

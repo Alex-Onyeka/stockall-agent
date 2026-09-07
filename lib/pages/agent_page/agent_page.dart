@@ -24,10 +24,7 @@ class AgentPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 15,
-              horizontal: 15,
-            ),
+            padding: EdgeInsets.fromLTRB(15, 25, 15, 15),
             decoration: BoxDecoration(
               color: theme.lightModeColor.prColor300,
               borderRadius: BorderRadius.vertical(

@@ -22,38 +22,18 @@ class ShopDetailsSection extends StatelessWidget {
           children: [
             Expanded(
               child: ShopDetailsTabWidget(
-                body: shop.userName ?? 'Not Set',
-                title: 'Owner\'s Name',
-              ),
-            ),
-            Expanded(
-              child: ShopDetailsTabWidget(
-                body: shop.userEmail ?? 'Not Set',
-                title: 'Owner\'s Email',
-              ),
-            ),
-          ],
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 10,
-          children: [
-            Expanded(
-              child: ShopDetailsTabWidget(
+                body: shop.shopName,
                 isCopy: true,
-                body: shop.userPhone ?? 'Not Set',
-                title: 'Owner\'s Phone',
+                title: 'Shop Name',
                 action: () {
-                  // print('Copying shit');
+                  print('Copying shit');
                   Clipboard.setData(
-                    ClipboardData(
-                      text: shop.userPhone ?? '',
-                    ),
+                    ClipboardData(text: shop.shopName),
                   );
 
                   showSnackbar(
                     message:
-                        'Owner\'s Phone Number has been copied to clipboard.',
+                        'Shop Name been copied to clipboard.',
                     title: 'Copied to Clipboard!',
                     context: context,
                     actionResult: ActionResult().success,
@@ -63,8 +43,8 @@ class ShopDetailsSection extends StatelessWidget {
             ),
             Expanded(
               child: ShopDetailsTabWidget(
-                body: shop.userRole ?? 'Not Set',
-                title: 'Owner\'s Role',
+                body: formatDate(shop.shopCreatedAt),
+                title: 'Created Date',
               ),
             ),
           ],
@@ -119,27 +99,6 @@ class ShopDetailsSection extends StatelessWidget {
               child: ShopDetailsTabWidget(
                 body: formatNumber(shop.totalStaffs ?? 0),
                 title: 'Staffs',
-              ),
-            ),
-          ],
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 10,
-          children: [
-            Expanded(
-              child: ShopDetailsTabWidget(
-                body: formatDate(shop.shopCreatedAt),
-                title: 'Created Date',
-              ),
-            ),
-            Expanded(
-              child: Opacity(
-                opacity: 0,
-                child: ShopDetailsTabWidget(
-                  body: formatNumber(shop.totalStaffs ?? 0),
-                  title: 'Staffs',
-                ),
               ),
             ),
           ],

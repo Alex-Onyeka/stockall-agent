@@ -133,6 +133,10 @@ bool topAdmin() {
       returnAdminProvider().admin?.level == 2;
 }
 
+bool mainAdmin() {
+  return returnAdminProvider().admin?.level == 1;
+}
+
 UserClass currentUser() {
   return returnUserProvider().currentUser!;
 }

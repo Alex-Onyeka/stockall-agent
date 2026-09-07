@@ -151,10 +151,28 @@ class _MainTopBarState extends State<MainTopBar> {
                     },
                     child: Container(
                       padding: EdgeInsets.all(10),
-                      child: Icon(
-                        size: 20,
-                        color: Colors.grey,
-                        Icons.refresh,
+                      child: Builder(
+                        builder: (context) {
+                          if (returnShopProvider(
+                            context: context,
+                          ).isLoading) {
+                            return SizedBox(
+                              height: 18,
+                              width: 18,
+                              child:
+                                  CircularProgressIndicator(
+                                    color: Colors.amber,
+                                    strokeWidth: 2,
+                                  ),
+                            );
+                          } else {
+                            return Icon(
+                              size: 20,
+                              color: Colors.grey,
+                              Icons.refresh,
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),

@@ -144,6 +144,9 @@ class AgentDetailsSection extends StatelessWidget {
                             ).pop();
                             await returnShopProvider()
                                 .setAgent(
+                                  uuid:
+                                      shop.agentAndShopUuid,
+                                  shopName: shop.shopName,
                                   agentUuid: shop
                                       .agentAndShopUuid!,
                                   isDelete: true,

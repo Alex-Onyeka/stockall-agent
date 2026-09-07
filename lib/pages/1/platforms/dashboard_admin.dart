@@ -20,6 +20,13 @@ class DashboardAdmin extends StatefulWidget {
 }
 
 class _DashboardAdminState extends State<DashboardAdmin> {
+  bool viewMore = false;
+  void toggleViewMore() {
+    setState(() {
+      viewMore = !viewMore;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var shopProv = returnShopProvider(context: context);
@@ -80,619 +87,273 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                               mainAxisAlignment:
                                   MainAxisAlignment.center,
                               children: [
-                                Row(
-                                  spacing: 10,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Total Stores',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getAllShops(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Headquaters',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .shopInfos
-                                                    .length
-                                                    .toDouble(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white,
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                              ),
-                                              'Branches',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white,
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getTotalBranchShops(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                DashboardRowWidget(
+                                  showTopDivider: false,
+                                  title1: 'Total Stores',
+                                  value1: formatNumber(
+                                    shopProv.getAllShops(),
+                                  ),
+                                  title2: 'Headquaters',
+                                  value2: formatNumber(
+                                    shopProv
+                                        .shopInfos
+                                        .length
+                                        .toDouble(),
+                                  ),
+                                  title3: 'Branches',
+                                  value3: formatNumber(
+                                    shopProv
+                                        .getTotalBranchShops(),
+                                  ),
                                 ),
-                                Divider(
-                                  height:
-                                      isMobileSmall(context)
-                                      ? 25
-                                      : 30,
+
+                                DashboardRowWidget(
+                                  showTopDivider: true,
+                                  title1: 'Active',
+                                  value1: formatNumber(
+                                    shopProv
+                                        .getTotalActiveShops()
+                                        .length
+                                        .toDouble(),
+                                  ),
+                                  title2: 'Semi Active',
+                                  value2: formatNumber(
+                                    shopProv
+                                        .getTotalSemiActiveShops()
+                                        .length
+                                        .toDouble(),
+                                  ),
+                                  title3: 'Inactive',
+                                  value3: formatNumber(
+                                    shopProv
+                                        .getTotalInActiveShops()
+                                        .length
+                                        .toDouble(),
+                                  ),
                                 ),
-                                Row(
-                                  spacing: 10,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Total Subsc.',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getTotalSubscribedShops()
-                                                    .length
-                                                    .toDouble(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Subsc. Today',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getTodaysSubscribedShops()
-                                                    .length
-                                                    .toDouble(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white,
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                              ),
-                                              'New Stores',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white,
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getTodaysRegisteredStores()
-                                                    .length
-                                                    .toDouble(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+
+                                DashboardRowWidget(
+                                  showTopDivider: true,
+                                  title1: 'Total Subsc.',
+                                  value1: formatNumber(
+                                    shopProv
+                                        .getTotalSubscribedShops()
+                                        .length
+                                        .toDouble(),
+                                  ),
+                                  title2: 'Subsc. Today',
+                                  value2: formatNumber(
+                                    shopProv
+                                        .getTodaysSubscribedShops()
+                                        .length
+                                        .toDouble(),
+                                  ),
+                                  title3: 'New Stores',
+                                  value3: formatNumber(
+                                    shopProv
+                                        .getTodaysRegisteredStores()
+                                        .length
+                                        .toDouble(),
+                                  ),
                                 ),
-                                Divider(
-                                  height:
-                                      isMobileSmall(context)
-                                      ? 25
-                                      : 30,
+
+                                DashboardRowWidget(
+                                  showTopDivider: true,
+                                  title1: 'Total Trial',
+                                  value1: formatNumber(
+                                    shopProv
+                                        .getTotalTrialShops()
+                                        .length
+                                        .toDouble(),
+                                  ),
+                                  title2: 'Total Free',
+                                  value2: formatNumber(
+                                    shopProv
+                                        .getTotalFreeShops()
+                                        .length
+                                        .toDouble(),
+                                  ),
+                                  title3: 'Total Expired',
+                                  value3: formatNumber(
+                                    shopProv
+                                        .getTotalExpiredShops()
+                                        .length
+                                        .toDouble(),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: viewMore,
+                                  child: Column(
+                                    children: [
+                                      DashboardRowWidget(
+                                        showTopDivider:
+                                            true,
+                                        title1:
+                                            'Total Basic',
+                                        value1: formatNumber(
+                                          shopProv
+                                              .getTotalSubscribedBasic()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                        title2:
+                                            'Total Standard',
+                                        value2: formatNumber(
+                                          shopProv
+                                              .getTotalSubscribedStandard()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                        title3:
+                                            'Total Premium',
+                                        value3: formatNumber(
+                                          shopProv
+                                              .getTotalSubscribedPremium()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                      ),
+                                      DashboardRowWidget(
+                                        showTopDivider:
+                                            true,
+                                        title1:
+                                            'Total Silver',
+                                        value1: formatNumber(
+                                          shopProv
+                                              .getTotalSubscribedSilver()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                        title2:
+                                            'Total Gold',
+                                        value2: formatNumber(
+                                          shopProv
+                                              .getTotalSubscribedGold()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                        title3: '',
+                                        value3: formatNumber(
+                                          shopProv
+                                              .getTotalSubscribedPremium()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                      ),
+                                      DashboardRowWidget(
+                                        showTopDivider:
+                                            true,
+                                        title1:
+                                            'Today\'s Free',
+                                        value1: formatNumber(
+                                          shopProv
+                                              .getTodaysSubscribedShopsFree()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                        title2:
+                                            'Today\'s Basic',
+                                        value2: formatNumber(
+                                          shopProv
+                                              .getTodaysSubscribedShopsBasic()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                        title3:
+                                            'Today\'s Standard',
+                                        value3: formatNumber(
+                                          shopProv
+                                              .getTodaysSubscribedShopsStandard()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                      ),
+                                      DashboardRowWidget(
+                                        showTopDivider:
+                                            true,
+                                        title1:
+                                            'Today\'s Premium',
+                                        value1: formatNumber(
+                                          shopProv
+                                              .getTodaysSubscribedShopsPremium()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                        title2:
+                                            'Today\'s Silver',
+                                        value2: formatNumber(
+                                          shopProv
+                                              .getTodaysSubscribedShopsSilver()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                        title3:
+                                            'Today\'s Gold',
+                                        value3: formatNumber(
+                                          shopProv
+                                              .getTodaysSubscribedShopsGold()
+                                              .length
+                                              .toDouble(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 Row(
-                                  spacing: 10,
                                   mainAxisAlignment:
                                       MainAxisAlignment
-                                          .spaceBetween,
+                                          .center,
                                   children: [
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
+                                    Material(
+                                      type: MaterialType
+                                          .transparency,
+                                      child: InkWell(
+                                        mouseCursor:
+                                            SystemMouseCursors
+                                                .click,
+                                        onTap: () {
+                                          toggleViewMore();
+                                        },
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.symmetric(
+                                                horizontal:
+                                                    10,
+                                                vertical:
+                                                    5.0,
+                                              ),
+                                          child: Row(
+                                            mainAxisSize:
+                                                MainAxisSize
+                                                    .min,
+                                            spacing: 4,
+
+                                            children: [
+                                              Text(
+                                                style: TextStyle(
+                                                  fontSize: theme
+                                                      .mobileTexts
+                                                      .b5
+                                                      .fontSize,
+                                                  color: Colors
+                                                      .amber,
+                                                ),
+                                                viewMore
+                                                    ? 'View Less'
+                                                    : 'View More',
+                                              ),
+                                              Icon(
+                                                size: 20,
                                                 color: Colors
-                                                    .white,
+                                                    .amber,
+                                                viewMore
+                                                    ? Icons
+                                                          .keyboard_arrow_up_rounded
+                                                    : Icons
+                                                          .keyboard_arrow_down_rounded,
                                               ),
-                                              'Total Trial',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getTotalTrialShops()
-                                                    .length
-                                                    .toDouble(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Total Free',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getTotalFreeShops()
-                                                    .length
-                                                    .toDouble(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Total Expired',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getTotalExpiredShops()
-                                                    .length
-                                                    .toDouble(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  height:
-                                      isMobileSmall(context)
-                                      ? 25
-                                      : 30,
-                                ),
-                                Row(
-                                  spacing: 10,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Active',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getTotalActiveShops()
-                                                    .length
-                                                    .toDouble(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Semi Active',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getTotalSemiActiveShops()
-                                                    .length
-                                                    .toDouble(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 1,
-                                      color: Colors
-                                          .grey
-                                          .shade400,
-                                    ),
-                                    Expanded(
-                                      child: SizedBox(
-                                        // width: 110,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-                                          spacing: 5,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b4
-                                                    .fontSize,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              'Inactive',
-                                            ),
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b2
-                                                    .fontSize,
-                                                fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                color: Colors
-                                                    .white,
-                                              ),
-                                              formatNumber(
-                                                shopProv
-                                                    .getTotalInActiveShops()
-                                                    .length
-                                                    .toDouble(),
-                                              ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -750,7 +411,13 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                   fontWeight:
                                       FontWeight.bold,
                                 ),
-                                'New Stores',
+                                returnShopProvider(
+                                          context: context,
+                                        )
+                                        .getAssignedStores()
+                                        .isNotEmpty
+                                    ? 'Assigned Stores'
+                                    : 'New Stores',
                               ),
                               InkWell(
                                 mouseCursor:
@@ -778,7 +445,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               .lightModeColor
                                               .secColor200,
                                         ),
-                                        'See All',
+                                        'See All Stores',
                                       ),
                                       Icon(
                                         size: 12,
@@ -803,15 +470,8 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                               if (returnShopProvider(
                                     context: context,
                                   )
-                                  .getThisMonthRegisteredStores()
-                                  .isEmpty) {
-                                return SizedBox(
-                                  height: 250,
-                                  child: EmptyWidget(
-                                    isDashboard: true,
-                                  ),
-                                );
-                              } else {
+                                  .getAssignedStores()
+                                  .isNotEmpty) {
                                 return Column(
                                   spacing: 0,
                                   children:
@@ -819,14 +479,14 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                                 context:
                                                     context,
                                               )
-                                              .getThisMonthRegisteredStores()
+                                              .getAssignedStores()
                                               .length >
                                           10
                                       ? returnShopProvider(
                                               context:
                                                   context,
                                             )
-                                            .getThisMonthRegisteredStores()
+                                            .getAssignedStores()
                                             .getRange(0, 10)
                                             .map(
                                               (shop) =>
@@ -840,15 +500,75 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                               context:
                                                   context,
                                             )
-                                            .getThisMonthRegisteredStores()
+                                            .getAssignedStores()
                                             .map(
-                                              (shop) =>
-                                                  ShopTileMain(
-                                                    shop:
-                                                        shop,
-                                                  ),
+                                              (
+                                                shop,
+                                              ) => ShopTileMain(
+                                                shop: shop,
+                                                sortInt: 1,
+                                              ),
                                             )
                                             .toList(),
+                                );
+                              } else {
+                                return Builder(
+                                  builder: (context) {
+                                    if (returnShopProvider(
+                                          context: context,
+                                        )
+                                        .getThisMonthRegisteredStores()
+                                        .isEmpty) {
+                                      return SizedBox(
+                                        height: 250,
+                                        child: EmptyWidget(
+                                          isDashboard: true,
+                                        ),
+                                      );
+                                    } else {
+                                      return Column(
+                                        spacing: 0,
+                                        children:
+                                            returnShopProvider(
+                                                  context:
+                                                      context,
+                                                ).getThisMonthRegisteredStores().length >
+                                                10
+                                            ? returnShopProvider(
+                                                    context:
+                                                        context,
+                                                  )
+                                                  .getThisMonthRegisteredStores()
+                                                  .getRange(
+                                                    0,
+                                                    10,
+                                                  )
+                                                  .map(
+                                                    (
+                                                      shop,
+                                                    ) => ShopTileMain(
+                                                      shop:
+                                                          shop,
+                                                    ),
+                                                  )
+                                                  .toList()
+                                            : returnShopProvider(
+                                                    context:
+                                                        context,
+                                                  )
+                                                  .getThisMonthRegisteredStores()
+                                                  .map(
+                                                    (
+                                                      shop,
+                                                    ) => ShopTileMain(
+                                                      shop:
+                                                          shop,
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                      );
+                                    }
+                                  },
                                 );
                               }
                             },
@@ -868,6 +588,187 @@ class _DashboardAdminState extends State<DashboardAdmin> {
   }
 }
 
+//
+//
+//
+//
+//
+//
+//
+//
+
+class DashboardRowWidget extends StatelessWidget {
+  final bool showTopDivider;
+  final String title1;
+  final String value1;
+  final String title2;
+  final String value2;
+  final String title3;
+  final String value3;
+  const DashboardRowWidget({
+    super.key,
+    required this.title1,
+    required this.value1,
+    required this.title2,
+    required this.value2,
+    required this.title3,
+    required this.value3,
+    required this.showTopDivider,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = returnTheme();
+    return Column(
+      children: [
+        Visibility(
+          visible: showTopDivider,
+          child: Divider(
+            height: isMobileSmall(context) ? 25 : 30,
+          ),
+        ),
+        Row(
+          // spacing: 10,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Opacity(
+                      opacity: title1.isNotEmpty ? 1 : 0,
+                      child: SizedBox(
+                        // width: 110,
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          spacing: 5,
+                          children: [
+                            Text(
+                              style: TextStyle(
+                                fontSize: theme
+                                    .mobileTexts
+                                    .b4
+                                    .fontSize,
+                                color: Colors.white,
+                              ),
+                              title1,
+                            ),
+                            Text(
+                              style: TextStyle(
+                                fontSize: theme
+                                    .mobileTexts
+                                    .b2
+                                    .fontSize,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              value1,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    height: 50,
+                    width: 1,
+                    color: Colors.grey.shade400,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Opacity(
+                opacity: title2.isNotEmpty ? 1 : 0,
+                child: SizedBox(
+                  // width: 110,
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    spacing: 5,
+                    children: [
+                      Text(
+                        style: TextStyle(
+                          fontSize:
+                              theme.mobileTexts.b4.fontSize,
+                          color: Colors.white,
+                        ),
+                        title2,
+                      ),
+                      Text(
+                        style: TextStyle(
+                          fontSize:
+                              theme.mobileTexts.b2.fontSize,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        value2,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    height: 50,
+                    width: 1,
+                    color: Colors.grey.shade400,
+                  ),
+                  Expanded(
+                    child: Opacity(
+                      opacity: title3.isNotEmpty ? 1 : 0,
+                      child: SizedBox(
+                        // width: 110,
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          spacing: 5,
+                          children: [
+                            Text(
+                              style: TextStyle(
+                                fontSize: theme
+                                    .mobileTexts
+                                    .b4
+                                    .fontSize,
+                                color: Colors.white,
+                              ),
+                              title3,
+                            ),
+                            Text(
+                              style: TextStyle(
+                                fontSize: theme
+                                    .mobileTexts
+                                    .b2
+                                    .fontSize,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              value3,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
 
 /*
 

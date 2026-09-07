@@ -17,81 +17,92 @@ class ShopInfoProvider extends ChangeNotifier {
   List<ShopInfo> shopInfos = [];
 
   Future<List<ShopInfo>> getShops() async {
-    UserClass? user = await returnUserProvider().getUser();
-    if (user == null) {
-      print('User not Found');
-      return [];
-    } else {
-      AdminClass? admin = await returnAdminProvider()
-          .getAdmin();
-      print("Admin Name: ${admin?.name}");
+    if (!isLoading) {
+      toggleLoading(true);
+      UserClass? user = await returnUserProvider()
+          .getUser();
+      if (user == null) {
+        print('User not Found');
+        toggleLoading(false);
+        return [];
+      } else {
+        AdminClass? admin = await returnAdminProvider()
+            .getAdmin();
+        print("Admin Name: ${admin?.name}");
 
-      if (admin == null) {
-        print('📍📍User is Not an Admin');
-        try {
-          var res = await _client
-              .from(tableName)
-              .select()
-              .eq('agent_uuid', user.userId!);
+        if (admin == null) {
+          print('📍📍User is Not an Admin');
+          try {
+            var res = await _client
+                .from(tableName)
+                .select()
+                .eq('agent_uuid', user.userId!);
 
-          if (res.isEmpty) {
-            print('No Shops Gotten');
-            shopInfos = [];
+            if (res.isEmpty) {
+              print('No Shops Gotten');
+              // shopInfos = [];
+              notifyListeners();
+              return [];
+            }
+
+            shopInfos = res
+                .map((shop) => ShopInfo.fromJson(shop))
+                .toList();
+
+            print(
+              "✅ Shops Gotten Success: ${shopInfos.length}",
+            );
+            shopInfos.sort(
+              (a, b) => a.shopName.toLowerCase().compareTo(
+                b.shopName.toLowerCase(),
+              ),
+            );
             notifyListeners();
+            toggleLoading(false);
+            return shopInfos;
+          } catch (e) {
+            print('❌ Error Getting Shops: ${e.toString()}');
+            // shopInfos = [];
+            notifyListeners();
+            toggleLoading(false);
             return [];
           }
+        } else {
+          print('❤❤User is an Admin');
+          try {
+            List<Map<String, dynamic>> res = await _client
+                .from(tableName)
+                .select();
 
-          shopInfos = res
-              .map((shop) => ShopInfo.fromJson(shop))
-              .toList();
+            shopInfos = res
+                .map((sh) => ShopInfo.fromJson(sh))
+                .toList();
+            shopInfos.sort(
+              (a, b) => a.shopName.toLowerCase().compareTo(
+                b.shopName.toLowerCase(),
+              ),
+            );
 
-          print(
-            "✅ Shops Gotten Success: ${shopInfos.length}",
-          );
-          shopInfos.sort(
-            (a, b) => a.shopName.toLowerCase().compareTo(
-              b.shopName.toLowerCase(),
-            ),
-          );
-          notifyListeners();
-          return shopInfos;
-        } catch (e) {
-          print('❌ Error Getting Shops: ${e.toString()}');
-          shopInfos = [];
-          notifyListeners();
-          return [];
-        }
-      } else {
-        print('❤❤User is an Admin');
-        try {
-          List<Map<String, dynamic>> res = await _client
-              .from(tableName)
-              .select();
-
-          shopInfos = res
-              .map((sh) => ShopInfo.fromJson(sh))
-              .toList();
-          shopInfos.sort(
-            (a, b) => a.shopName.toLowerCase().compareTo(
-              b.shopName.toLowerCase(),
-            ),
-          );
-
-          await returnUserProvider().getAgents();
-          await returnReportProvider().getReports();
-          print(
-            "✅ All Shops Gotten Success: ${shopInfos.length}",
-          );
-          return shopInfos;
-        } catch (e) {
-          print(
-            "❌ Error Getting all Shops: ${e.toString()}",
-          );
-          shopInfos = [];
-          notifyListeners();
-          return [];
+            await returnUserProvider().getAgents();
+            await returnReportProvider().getReports();
+            print(
+              "✅ All Shops Gotten Success: ${shopInfos.length}",
+            );
+            toggleLoading(false);
+            return shopInfos;
+          } catch (e) {
+            print(
+              "❌ Error Getting all Shops: ${e.toString()}",
+            );
+            // shopInfos = [];
+            notifyListeners();
+            toggleLoading(false);
+            return [];
+          }
         }
       }
+    } else {
+      return [];
     }
   }
 
@@ -106,14 +117,19 @@ class ShopInfoProvider extends ChangeNotifier {
     required String agentUuid,
     required bool isDelete,
     required int shopId,
+    required String? shopName,
+    required String? uuid,
   }) async {
     try {
       toggleLoading(true);
       if (isDelete) {
         var res = await _client
             .from('agents_and_shops')
-            .delete()
-            .eq('uuid', agentUuid)
+            .update({
+              'agent_uuid': null,
+              'assigned_date': null,
+            })
+            .eq('uuid', uuid ?? agentUuid)
             .select()
             .maybeSingle();
 
@@ -125,8 +141,12 @@ class ShopInfoProvider extends ChangeNotifier {
       } else {
         var res = await _client
             .from('agents_and_shops')
-            .insert({
+            .upsert({
+              'uuid': uuid ?? uuidGen(),
               'agent_uuid': agentUuid,
+              'assigned_date': DateTime.now()
+                  .toIso8601String(),
+              'shop_name': shopName,
               'shop_id': shopId,
             })
             .select()
@@ -159,6 +179,72 @@ class ShopInfoProvider extends ChangeNotifier {
           shopTwo.agentPhone = tempShop.agentPhone;
           shopTwo.agentRoleId = tempShop.agentRoleId;
           shopTwo.agentUuid = tempShop.agentUuid;
+          shopTwo.assignedDate = tempShop.assignedDate;
+        }
+      } catch (e) {
+        print(
+          'Error Getting Updated Shop: ${e.toString()}',
+        );
+      }
+      notifyListeners();
+      toggleLoading(false);
+      return 1;
+    } catch (e) {
+      toggleLoading(false);
+      print('Error Setting Agent: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  Future<int> setBusinessBoolValues({
+    bool? isDelete,
+    bool? isImportant,
+    bool? isImportanter,
+    bool? isImportantest,
+    required String uuidd,
+    required int shopId,
+  }) async {
+    try {
+      toggleLoading(true);
+      Map<String, dynamic> value() {
+        if (isDelete != null) {
+          return {'is_deleted': isDelete};
+        } else if (isImportant != null) {
+          return {'is_important': isImportant};
+        } else if (isImportanter != null) {
+          return {'is_importanter': isImportanter};
+        } else {
+          return {'is_importantest': isImportantest};
+        }
+      }
+
+      var res = await _client
+          .from('agents_and_shops')
+          .update(value())
+          .eq('uuid', uuidd)
+          .select()
+          .maybeSingle();
+
+      if (res == null) {
+        print('Error Seting Agent');
+        return 0;
+      }
+      print('Agent Set Success');
+      try {
+        var shopRes = await _client
+            .from(tableName)
+            .select()
+            .eq('shop_id', shopId)
+            .maybeSingle();
+        if (shopRes != null) {
+          ShopInfo tempShop = ShopInfo.fromJson(shopRes);
+          var shopTwo = shopInfos.firstWhere(
+            (item) => item.shopId == tempShop.shopId,
+          );
+          shopTwo.isDeleted = tempShop.isDeleted;
+          shopTwo.isImportant = tempShop.isImportant;
+          shopTwo.isImportanter = tempShop.isImportanter;
+          shopTwo.isImportantest = tempShop.isImportantest;
         }
       } catch (e) {
         print(
@@ -269,6 +355,7 @@ class ShopInfoProvider extends ChangeNotifier {
           shopTwo.agentRoleId = tempShop.agentRoleId;
 
           shopTwo.agentUuid = tempShop.agentUuid;
+          shopTwo.assignedDate = tempShop.assignedDate;
         }
       } catch (e) {
         print(
@@ -296,6 +383,16 @@ class ShopInfoProvider extends ChangeNotifier {
                 dayStart(DateTime.now()),
               ),
         )
+        .toList();
+    tempSh.sort(
+      (a, b) => b.shopCreatedAt.compareTo(a.shopCreatedAt),
+    );
+    return tempSh;
+  }
+
+  List<ShopInfo> getAssignedStores() {
+    var tempSh = shopInfos
+        .where((sh) => sh.agentUuid == currentUser().userId)
         .toList();
     tempSh.sort(
       (a, b) => b.shopCreatedAt.compareTo(a.shopCreatedAt),
@@ -354,6 +451,42 @@ class ShopInfoProvider extends ChangeNotifier {
         .toList();
   }
 
+  List<ShopInfo> getTodaysSubscribedShopsFree() {
+    return getTodaysSubscribedShops()
+        .where((item) => item.isFree())
+        .toList();
+  }
+
+  List<ShopInfo> getTodaysSubscribedShopsBasic() {
+    return getTodaysSubscribedShops()
+        .where((item) => item.isBasicPlan())
+        .toList();
+  }
+
+  List<ShopInfo> getTodaysSubscribedShopsStandard() {
+    return getTodaysSubscribedShops()
+        .where((item) => item.isStandardPlan())
+        .toList();
+  }
+
+  List<ShopInfo> getTodaysSubscribedShopsPremium() {
+    return getTodaysSubscribedShops()
+        .where((item) => item.isPremiumPlan())
+        .toList();
+  }
+
+  List<ShopInfo> getTodaysSubscribedShopsSilver() {
+    return getTodaysSubscribedShops()
+        .where((item) => item.isSilverPlan())
+        .toList();
+  }
+
+  List<ShopInfo> getTodaysSubscribedShopsGold() {
+    return getTodaysSubscribedShops()
+        .where((item) => item.isGoldPlan())
+        .toList();
+  }
+
   List<ShopInfo> getTotalActiveShops() {
     return shopInfos
         .where((item) => item.isActive == true)
@@ -393,6 +526,36 @@ class ShopInfoProvider extends ChangeNotifier {
               item.currentPlan != 0 &&
               item.subscriptionNextPayment != null,
         )
+        .toList();
+  }
+
+  List<ShopInfo> getTotalSubscribedBasic() {
+    return getTotalSubscribedShops()
+        .where((item) => item.isBasicPlan())
+        .toList();
+  }
+
+  List<ShopInfo> getTotalSubscribedStandard() {
+    return getTotalSubscribedShops()
+        .where((item) => item.isStandardPlan())
+        .toList();
+  }
+
+  List<ShopInfo> getTotalSubscribedPremium() {
+    return getTotalSubscribedShops()
+        .where((item) => item.isPremiumPlan())
+        .toList();
+  }
+
+  List<ShopInfo> getTotalSubscribedSilver() {
+    return getTotalSubscribedShops()
+        .where((item) => item.isSilverPlan())
+        .toList();
+  }
+
+  List<ShopInfo> getTotalSubscribedGold() {
+    return getTotalSubscribedShops()
+        .where((item) => item.isGoldPlan())
         .toList();
   }
 

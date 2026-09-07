@@ -40,6 +40,21 @@ class ShopInfo {
   final bool isSemiActive;
   final bool isInactive;
 
+  // Agent & Shop assignment
+  DateTime? assignedDate;
+  bool isDeleted;
+  bool isImportant;
+  bool isImportanter;
+  bool isImportantest;
+
+  // Statistics
+  final double todaysReceipts;
+  final double totalReceipts;
+  final double todaysInvoice;
+  final double totalInvoice;
+  final double todaysProducts;
+  final double totalProducts;
+
   ShopInfo({
     required this.shopId,
     required this.shopCreatedAt,
@@ -74,6 +89,20 @@ class ShopInfo {
     required this.isActive,
     required this.isSemiActive,
     required this.isInactive,
+    // Agent & Shop assignment
+    this.assignedDate,
+    this.isDeleted = false,
+    this.isImportant = false,
+    this.isImportanter = false,
+    this.isImportantest = false,
+
+    // Statistics
+    this.todaysReceipts = 0.0,
+    this.totalReceipts = 0.0,
+    this.todaysInvoice = 0.0,
+    this.totalInvoice = 0.0,
+    this.todaysProducts = 0.0,
+    this.totalProducts = 0.0,
   });
   factory ShopInfo.fromJson(Map<String, dynamic> json) {
     return ShopInfo(
@@ -146,6 +175,48 @@ class ShopInfo {
       isSemiActive: json['isSemiActive'] as bool? ?? false,
 
       isInactive: json['isInactive'] as bool? ?? false,
+
+      // Agent & Shop assignment
+      assignedDate: json['assigned_date'] != null
+          ? DateTime.tryParse(
+              json['assigned_date'].toString(),
+            )
+          : null,
+
+      isDeleted: json['is_deleted'] as bool? ?? false,
+
+      isImportant: json['is_important'] as bool? ?? false,
+
+      isImportanter:
+          json['is_importanter'] as bool? ?? false,
+
+      isImportantest:
+          json['is_importantest'] as bool? ?? false,
+
+      // Statistics
+      todaysReceipts:
+          (json['todays_receipts'] as num?)?.toDouble() ??
+          0.0,
+
+      totalReceipts:
+          (json['total_receipts'] as num?)?.toDouble() ??
+          0.0,
+
+      todaysInvoice:
+          (json['todays_invoice'] as num?)?.toDouble() ??
+          0.0,
+
+      totalInvoice:
+          (json['total_invoice'] as num?)?.toDouble() ??
+          0.0,
+
+      todaysProducts:
+          (json['todays_products'] as num?)?.toDouble() ??
+          0.0,
+
+      totalProducts:
+          (json['total_products'] as num?)?.toDouble() ??
+          0.0,
     );
   }
 
@@ -183,6 +254,21 @@ class ShopInfo {
     bool? isActive,
     bool? isSemiActive,
     bool? isInactive,
+
+    // Agent & Shop assignment
+    DateTime? assignedDate,
+    bool? isDeleted,
+    bool? isImportant,
+    bool? isImportanter,
+    bool? isImportantest,
+
+    // Statistics
+    double? todaysReceipts,
+    double? totalReceipts,
+    double? todaysInvoice,
+    double? totalInvoice,
+    double? todaysProducts,
+    double? totalProducts,
   }) {
     return ShopInfo(
       shopId: shopId ?? this.shopId,
@@ -225,6 +311,20 @@ class ShopInfo {
       isActive: isActive ?? this.isActive,
       isSemiActive: isSemiActive ?? this.isSemiActive,
       isInactive: isInactive ?? this.isInactive,
+      // Agent & Shop assignment
+      assignedDate: assignedDate ?? this.assignedDate,
+      isDeleted: isDeleted ?? this.isDeleted,
+      isImportant: isImportant ?? this.isImportant,
+      isImportanter: isImportanter ?? this.isImportanter,
+      isImportantest: isImportantest ?? this.isImportantest,
+
+      // Statistics
+      todaysReceipts: todaysReceipts ?? this.todaysReceipts,
+      totalReceipts: totalReceipts ?? this.totalReceipts,
+      todaysInvoice: todaysInvoice ?? this.todaysInvoice,
+      totalInvoice: totalInvoice ?? this.totalInvoice,
+      todaysProducts: todaysProducts ?? this.todaysProducts,
+      totalProducts: totalProducts ?? this.totalProducts,
     );
   }
 
@@ -398,6 +498,12 @@ class ShopInfo {
   String getSubscribedDate() {
     return subscriptionLastPayment != null
         ? formatDateOrDaysAgo(subscriptionLastPayment!)
+        : 'Not Set';
+  }
+
+  String getAssignedDate() {
+    return assignedDate != null
+        ? formatDateOrDaysAgo(assignedDate!)
         : 'Not Set';
   }
 

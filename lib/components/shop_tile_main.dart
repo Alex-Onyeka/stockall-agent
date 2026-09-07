@@ -137,9 +137,13 @@ class ShopTileMain extends StatelessWidget {
                                               color: Colors
                                                   .grey,
                                             ),
-                                            (shop.userName ??
-                                                    'Not Set')
-                                                .toUpperCase(),
+                                            cutLongText(
+                                              length: 16,
+                                              text:
+                                                  (shop.userName ??
+                                                          'Not Set')
+                                                      .toUpperCase(),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -186,9 +190,13 @@ class ShopTileMain extends StatelessWidget {
                                               color: Colors
                                                   .grey,
                                             ),
-                                            (shop.agentLastName ??
-                                                    'Not Set')
-                                                .toUpperCase(),
+                                            cutLongText(
+                                              length: 16,
+                                              text:
+                                                  (shop.agentFirstName ??
+                                                          'Not Set')
+                                                      .toUpperCase(),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -294,6 +302,40 @@ class ShopTileMain extends StatelessWidget {
                                         ),
                                       ],
                                     ),
+                                  );
+                                } else if (sortInt == 1) {
+                                  return Row(
+                                    spacing: 4,
+                                    children: [
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          fontWeight:
+                                              FontWeight
+                                                  .normal,
+                                        ),
+                                        'Assigned:',
+                                      ),
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          color: Colors
+                                              .grey
+                                              .shade900,
+                                          fontWeight:
+                                              FontWeight
+                                                  .bold,
+                                        ),
+
+                                        shop.getAssignedDate(),
+                                      ),
+                                    ],
                                   );
                                 } else if (sortInt == 2) {
                                   return Row(
