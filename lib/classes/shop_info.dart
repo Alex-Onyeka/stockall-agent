@@ -393,7 +393,9 @@ class ShopInfo {
   }
 
   String currentPlanName() {
-    if (isExpired) {
+    if (isDeleted) {
+      return 'Deleted';
+    } else if (isExpired) {
       return 'Expired';
     } else if (isTrial) {
       return 'Trial';
@@ -470,7 +472,7 @@ class ShopInfo {
   }
 
   Color? expiredColor() {
-    return isExpired ? Colors.red : null;
+    return (isExpired || isDeleted) ? Colors.red : null;
   }
 
   Color activeColor() {
