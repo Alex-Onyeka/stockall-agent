@@ -25,7 +25,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
     });
   }
 
-  int filterIndex = 0;
+  int filterIndex = 5;
 
   void setFilterIndex(int index) {
     setState(() {
@@ -79,49 +79,57 @@ class _SecondPageAltState extends State<SecondPageAlt> {
             }
           } else if (filterIndex == 1) {
             if (currentSelection == 0) {
-              return true;
-            } else if (currentSelection == 1) {
               return item.isSubscribed();
-            } else if (currentSelection == 2) {
+            } else if (currentSelection == 1) {
               return item.isTrial;
-            } else if (currentSelection == 3) {
+            } else if (currentSelection == 2) {
               return item.isFree();
-            } else if (currentSelection == 4) {
+            } else if (currentSelection == 3) {
               return item.isExpired;
-            } else if (currentSelection == 5) {
+            } else if (currentSelection == 4) {
               return item.isBasicPlan();
-            } else if (currentSelection == 6) {
+            } else if (currentSelection == 5) {
               return item.isStandardPlan();
-            } else if (currentSelection == 7) {
+            } else if (currentSelection == 6) {
               return item.isPremiumPlan();
-            } else if (currentSelection == 8) {
+            } else if (currentSelection == 7) {
               return item.isSilverPlan();
-            } else {
+            } else if (currentSelection == 8) {
               return item.isGoldPlan();
+            } else {
+              return true;
             }
           } else if (filterIndex == 2) {
             if (currentSelection == 0) {
-              return true;
-            } else if (currentSelection == 1) {
               return item.isActive;
-            } else if (currentSelection == 2) {
+            } else if (currentSelection == 1) {
               return item.isSemiActive;
-            } else if (currentSelection == 3) {
+            } else if (currentSelection == 2) {
               return item.isInactive;
             } else {
               return true;
             }
           } else if (filterIndex == 4) {
             if (currentSelection == 0) {
-              return true;
-            } else if (currentSelection == 1) {
               return item.isImportant;
+            } else if (currentSelection == 1) {
+              return item.isFollowUp;
             } else if (currentSelection == 2) {
-              return item.isImportanter;
+              return item.isUrgent;
             } else if (currentSelection == 3) {
-              return item.isImportantest;
-            } else if (currentSelection == 4) {
               return item.isDeleted;
+            } else {
+              return true;
+            }
+          } else if (filterIndex == 5) {
+            if (currentSelection == 0) {
+              return item.getLastCallDateToday();
+            } else if (currentSelection == 1) {
+              return item.getLastCallDateYesterday();
+            } else if (currentSelection == 2) {
+              return item.getLastCallDateOtherDays();
+            } else if (currentSelection == 3) {
+              return !item.isCalled();
             } else {
               return true;
             }
@@ -153,6 +161,17 @@ class _SecondPageAltState extends State<SecondPageAlt> {
                         searchController.text.toLowerCase(),
                       ) ==
                   true ||
+              item.state?.toString().toLowerCase().contains(
+                    searchController.text.toLowerCase(),
+                  ) ==
+                  true ||
+              item.userPhone
+                      ?.toString()
+                      .toLowerCase()
+                      .contains(
+                        searchController.text.toLowerCase(),
+                      ) ==
+                  true ||
               item.currentPlanName().toLowerCase().contains(
                     searchController.text.toLowerCase(),
                   ) ==
@@ -168,13 +187,19 @@ class _SecondPageAltState extends State<SecondPageAlt> {
         .toList();
 
     if (filterIndex == 1) {
-      if (currentSelection == 1) {
+      if (currentSelection == 0) {
         shops.sort(
           (a, b) => b.getLastPayment().compareTo(
             a.getLastPayment(),
           ),
         );
       }
+    } else if (filterIndex == 2) {
+      shops.sort(
+        (a, b) => b.getLastActivity().compareTo(
+          a.getLastActivity(),
+        ),
+      );
     } else if (filterIndex == 3) {
       if (currentSelection == 0) {
         shops.sort(
@@ -222,7 +247,31 @@ class _SecondPageAltState extends State<SecondPageAlt> {
             a.getExpiryDate(),
           ),
         );
+      } else if (currentSelection == 5) {
+        shops.sort(
+          (a, b) => b.getLastCallDate().compareTo(
+            a.getLastCallDate(),
+          ),
+        );
+      } else if (currentSelection == 6) {
+        shops.sort(
+          (a, b) => b.markedDateValue().compareTo(
+            a.markedDateValue(),
+          ),
+        );
       }
+    } else if (filterIndex == 4) {
+      shops.sort(
+        (a, b) => b.markedDateValue().compareTo(
+          a.markedDateValue(),
+        ),
+      );
+    } else if (filterIndex == 5) {
+      shops.sort(
+        (a, b) => b.getLastCallDate().compareTo(
+          a.getLastCallDate(),
+        ),
+      );
     } else {
       shops.sort(
         (a, b) => a.shopName.toLowerCase().compareTo(
@@ -232,9 +281,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
     }
 
     var theme = returnTheme(context: context);
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {},
+    return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
@@ -248,6 +295,46 @@ class _SecondPageAltState extends State<SecondPageAlt> {
                   color: Colors.white,
                   itemBuilder: (context) {
                     return [
+                      PopupMenuItem(
+                        onTap: () {
+                          setFilterIndex(5);
+                        },
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                              ),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                            children: [
+                              Text(
+                                style: TextStyle(
+                                  fontSize: theme
+                                      .mobileTexts
+                                      .b3
+                                      .fontSize,
+                                  fontWeight:
+                                      filterIndex == 5
+                                      ? FontWeight.bold
+                                      : null,
+                                ),
+                                'Filter By Call Dates',
+                              ),
+                              Visibility(
+                                visible: filterIndex == 5,
+                                child: Icon(
+                                  size: 17,
+                                  color:
+                                      Colors.grey.shade700,
+                                  Icons.check,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       PopupMenuItem(
                         onTap: () {
                           setFilterIndex(0);
@@ -582,6 +669,11 @@ class _SecondPageAltState extends State<SecondPageAlt> {
                                   return findByImportanceAndDeletedWidget(
                                     shops,
                                   );
+                                } else if (filterIndex ==
+                                    5) {
+                                  return findByCallDateWidget(
+                                    shops,
+                                  );
                                 } else {
                                   return findByCreatedDateWidget(
                                     shops,
@@ -632,13 +724,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
                             .map(
                               (shop) => ShopTileMain(
                                 shop: shop,
-                                sortInt: filterIndex == 3
-                                    ? currentSelection
-                                    : (filterIndex == 1 &&
-                                          currentSelection ==
-                                              1)
-                                    ? 5
-                                    : null,
+                                sortInt: sortFunction(),
                               ),
                             )
                             .toList(),
@@ -751,7 +837,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 0,
           title:
-              'All${currentSelection == 0 ? " (${shops.length})" : ''}',
+              'Latest${currentSelection == 0 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(0);
           },
@@ -760,7 +846,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 1,
           title:
-              'Latest${currentSelection == 1 ? " (${shops.length})" : ''}',
+              'Trial${currentSelection == 1 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(1);
           },
@@ -769,7 +855,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 2,
           title:
-              'Trial${currentSelection == 2 ? " (${shops.length})" : ''}',
+              'Free${currentSelection == 2 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(2);
           },
@@ -778,7 +864,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 3,
           title:
-              'Free${currentSelection == 3 ? " (${shops.length})" : ''}',
+              'Expired${currentSelection == 3 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(3);
           },
@@ -787,7 +873,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 4,
           title:
-              'Expired${currentSelection == 4 ? " (${shops.length})" : ''}',
+              'Basic${currentSelection == 4 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(4);
           },
@@ -796,7 +882,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 5,
           title:
-              'Basic${currentSelection == 5 ? " (${shops.length})" : ''}',
+              'Standard${currentSelection == 5 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(5);
           },
@@ -805,7 +891,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 6,
           title:
-              'Standard${currentSelection == 6 ? " (${shops.length})" : ''}',
+              'Premium${currentSelection == 6 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(6);
           },
@@ -814,7 +900,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 7,
           title:
-              'Premium${currentSelection == 7 ? " (${shops.length})" : ''}',
+              'Silver${currentSelection == 7 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(7);
           },
@@ -823,18 +909,9 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 8,
           title:
-              'Silver${currentSelection == 8 ? " (${shops.length})" : ''}',
+              'Gold${currentSelection == 8 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(8);
-          },
-        ),
-        TopStoreFilterButton(
-          mainIndex: currentSelection,
-          myIndex: 9,
-          title:
-              'Gold${currentSelection == 9 ? " (${shops.length})" : ''}',
-          action: () {
-            switchSelection(9);
           },
         ),
       ],
@@ -849,7 +926,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 0,
           title:
-              'All${currentSelection == 0 ? " (${shops.length})" : ''}',
+              'Active${currentSelection == 0 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(0);
           },
@@ -858,7 +935,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 1,
           title:
-              'Active${currentSelection == 1 ? " (${shops.length})" : ''}',
+              'Semi Active${currentSelection == 1 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(1);
           },
@@ -867,18 +944,9 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 2,
           title:
-              'Semi Active${currentSelection == 2 ? " (${shops.length})" : ''}',
+              'Inactive${currentSelection == 2 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(2);
-          },
-        ),
-        TopStoreFilterButton(
-          mainIndex: currentSelection,
-          myIndex: 3,
-          title:
-              'Inactive${currentSelection == 3 ? " (${shops.length})" : ''}',
-          action: () {
-            switchSelection(3);
           },
         ),
       ],
@@ -929,6 +997,22 @@ class _SecondPageAltState extends State<SecondPageAlt> {
             switchSelection(4);
           },
         ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 5,
+          title: 'Call Date',
+          action: () {
+            switchSelection(5);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 6,
+          title: 'Marked Date',
+          action: () {
+            switchSelection(6);
+          },
+        ),
       ],
     );
   }
@@ -943,7 +1027,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 0,
           title:
-              'All${currentSelection == 0 ? " (${shops.length})" : ''}',
+              'Important${currentSelection == 0 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(0);
           },
@@ -952,7 +1036,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 1,
           title:
-              'Important${currentSelection == 1 ? " (${shops.length})" : ''}',
+              'Follow Up${currentSelection == 1 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(1);
           },
@@ -961,7 +1045,7 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 2,
           title:
-              'Importanter${currentSelection == 2 ? " (${shops.length})" : ''}',
+              'Urgent${currentSelection == 2 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(2);
           },
@@ -970,21 +1054,83 @@ class _SecondPageAltState extends State<SecondPageAlt> {
           mainIndex: currentSelection,
           myIndex: 3,
           title:
-              'Importantest${currentSelection == 3 ? " (${shops.length})" : ''}',
+              'Deleted${currentSelection == 3 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(3);
           },
         ),
+      ],
+    );
+  }
+
+  Row findByCallDateWidget(List<ShopInfo> shops) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
         TopStoreFilterButton(
           mainIndex: currentSelection,
-          myIndex: 4,
+          myIndex: 0,
           title:
-              'Deleted${currentSelection == 4 ? " (${shops.length})" : ''}',
+              'Called Today${currentSelection == 0 ? " (${shops.length})" : ''}',
           action: () {
-            switchSelection(4);
+            switchSelection(0);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 1,
+          title:
+              'Called Y\'day${currentSelection == 1 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(1);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          containerWidth: 150,
+          myIndex: 2,
+          title:
+              'Called Other Days${currentSelection == 2 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(2);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 3,
+          title:
+              'All Un-Called${currentSelection == 3 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(3);
           },
         ),
       ],
     );
+  }
+
+  int? sortFunction() {
+    if (filterIndex == 1) {
+      if (currentSelection == 0) {
+        return 5;
+      } else {
+        return null;
+      }
+    } else if (filterIndex == 2) {
+      return 3;
+    } else if (filterIndex == 3) {
+      if (currentSelection == 5) {
+        return 6;
+      } else if (currentSelection == 6) {
+        return 7;
+      } else {
+        return currentSelection;
+      }
+    } else if (filterIndex == 4) {
+      return 7;
+    } else if (filterIndex == 5) {
+      return 6;
+    } else {
+      return null;
+    }
   }
 }

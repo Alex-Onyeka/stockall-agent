@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/user_class.dart';
+import 'package:stockallagent/pages/2/platforms/second_page_admin.dart';
 import 'package:stockallagent/providers/bank_provider.dart';
 import 'package:stockallagent/service/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,6 +15,51 @@ class UserProvider extends ChangeNotifier {
   UserClass? currentUser;
 
   List<UserClass> agents = [];
+
+  List<AgentTemp> agentTemps() {
+    return agents
+            .where((item) => item.roleId == 1)
+            .map(
+              (item) => AgentTemp(
+                index: agents.indexOf(item),
+                name: item.name,
+                uuid: item.userId!,
+              ),
+            )
+            .toList() +
+        [
+          AgentTemp(
+            name: currentUser?.name ?? 'Not Set',
+            uuid: currentUser?.userId ?? '',
+            index:
+                agents
+                    .where((item) => item.roleId == 1)
+                    .length +
+                5,
+          ),
+        ] +
+        [
+          AgentTemp(
+            name: 'Un-Managed',
+            uuid: '',
+            index:
+                agents
+                    .where((item) => item.roleId == 1)
+                    .length +
+                6,
+          ),
+        ];
+  }
+
+  AgentTemp? getAgentTemp({String? uuid}) {
+    return agentTemps()
+            .where((item) => item.uuid == uuid)
+            .isNotEmpty
+        ? agentTemps()
+              .where((item) => item.uuid == uuid)
+              .first
+        : null;
+  }
 
   Future<int> createAgent(UserClass user) async {
     // user.role = selectedRole;

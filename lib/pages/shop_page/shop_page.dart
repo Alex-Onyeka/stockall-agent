@@ -332,314 +332,324 @@ class ShopPage extends StatelessWidget {
                         shop: shop,
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.center,
-                      children: [
-                        Visibility(
-                          visible: !shop.isDeleted,
-                          child: Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(
-                                    right: 10.0,
-                                  ),
-                              child: Material(
-                                color: Colors.transparent,
-                                child: Ink(
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.circular(
-                                          3,
-                                        ),
-                                    border: Border.all(
-                                      color: Colors.grey,
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 15.0,
+                        bottom: 30,
+                      ),
+                      child: Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.center,
+                        children: [
+                          Visibility(
+                            visible: !shop.isDeleted,
+                            child: Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(
+                                      right: 10.0,
                                     ),
-                                    color: Colors
-                                        .grey
-                                        .shade100,
-                                  ),
-                                  child: InkWell(
-                                    onTap: () {
-                                      if (!returnShopProvider()
-                                          .isLoading) {
-                                        showDialog(
-                                          context: context,
-                                          builder: (firstContext) {
-                                            return DialogTemplate(
-                                              mainWidget: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                      0,
-                                                      20,
-                                                      0,
-                                                      0,
-                                                    ),
-                                                child: Column(
-                                                  spacing:
-                                                      10,
-                                                  children: [
-                                                    ImportanceListTileWidget(
-                                                      index:
-                                                          1,
-                                                      shop:
-                                                          shop,
-                                                      theme:
-                                                          theme,
-                                                      title:
-                                                          'Important',
-                                                      value:
-                                                          shop.isImportant,
-                                                    ),
-                                                    ImportanceListTileWidget(
-                                                      index:
-                                                          2,
-                                                      shop:
-                                                          shop,
-                                                      theme:
-                                                          theme,
-                                                      title:
-                                                          'Importanter',
-                                                      value:
-                                                          shop.isImportanter,
-                                                    ),
-                                                    ImportanceListTileWidget(
-                                                      index:
-                                                          3,
-                                                      shop:
-                                                          shop,
-                                                      theme:
-                                                          theme,
-                                                      title:
-                                                          'Importantest',
-                                                      value:
-                                                          shop.isImportantest,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              title:
-                                                  (shop.isImportant ||
-                                                      shop.isImportanter ||
-                                                      shop.isImportantest)
-                                                  ? "Cancel Importance"
-                                                  : 'Set Importance',
-
-                                              message:
-                                                  'You are about to ${(shop.isImportant || shop.isImportanter || shop.isImportantest) ? 'Cancel Importance' : 'Set Importance'} of This business. Are you sure you want to proceed?',
-                                            );
-                                          },
-                                        );
-                                      }
-                                    },
-                                    mouseCursor:
-                                        SystemMouseCursors
-                                            .click,
-                                    child: Container(
-                                      constraints:
-                                          BoxConstraints(
-                                            maxWidth: 300,
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: Ink(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(
+                                            3,
                                           ),
-                                      padding:
-                                          EdgeInsets.symmetric(
-                                            vertical: 10,
-                                            horizontal: 10,
-                                          ),
-
-                                      child: Builder(
-                                        builder: (context) {
-                                          if (returnShopProvider()
-                                              .isLoading) {
-                                            return Center(
-                                              child: SizedBox(
-                                                height: 23,
-                                                width: 23,
-                                                child: CircularProgressIndicator(
-                                                  color: Colors
-                                                      .amber,
-                                                  strokeWidth:
-                                                      2,
-                                                ),
-                                              ),
-                                            );
-                                          } else {
-                                            return Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .center,
-                                              spacing: 4,
-                                              children: [
-                                                Text(
-                                                  style: TextStyle(
-                                                    fontSize: theme
-                                                        .mobileTexts
-                                                        .b3
-                                                        .fontSize,
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                      ),
+                                      color: Colors
+                                          .grey
+                                          .shade100,
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        if (!returnShopProvider()
+                                            .isLoading) {
+                                          showDialog(
+                                            context:
+                                                context,
+                                            builder: (firstContext) {
+                                              return DialogTemplate(
+                                                mainWidget: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                        0,
+                                                        20,
+                                                        0,
+                                                        0,
+                                                      ),
+                                                  child: Column(
+                                                    spacing:
+                                                        10,
+                                                    children: [
+                                                      ImportanceListTileWidget(
+                                                        index:
+                                                            1,
+                                                        shop:
+                                                            shop,
+                                                        theme:
+                                                            theme,
+                                                        title:
+                                                            'Important',
+                                                        value:
+                                                            shop.isImportant,
+                                                      ),
+                                                      ImportanceListTileWidget(
+                                                        index:
+                                                            2,
+                                                        shop:
+                                                            shop,
+                                                        theme:
+                                                            theme,
+                                                        title:
+                                                            'Follow Up',
+                                                        value:
+                                                            shop.isFollowUp,
+                                                      ),
+                                                      ImportanceListTileWidget(
+                                                        index:
+                                                            3,
+                                                        shop:
+                                                            shop,
+                                                        theme:
+                                                            theme,
+                                                        title:
+                                                            'Urgent',
+                                                        value:
+                                                            shop.isUrgent,
+                                                      ),
+                                                    ],
                                                   ),
-                                                  shop.isImportant
-                                                      ? 'Important'
-                                                      : shop.isImportanter
-                                                      ? 'Importanter'
-                                                      : shop.isImportantest
-                                                      ? 'Importantest'
-                                                      : 'Set Importance',
                                                 ),
-                                                Icon(
-                                                  size: 20,
-                                                  color: Colors
-                                                      .grey,
-                                                  (shop.isImportant ||
-                                                          shop.isImportanter ||
-                                                          shop.isImportantest)
-                                                      ? Icons.clear
-                                                      : Icons.check,
-                                                ),
-                                              ],
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Material(
-                            color: Colors.transparent,
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(
-                                      3,
-                                    ),
-                                border: Border.all(
-                                  color: shop.isDeleted
-                                      ? Colors.greenAccent
-                                      : Colors.redAccent,
-                                ),
-                                color: shop.isDeleted
-                                    ? const Color.fromARGB(
-                                        19,
-                                        162,
-                                        244,
-                                        54,
-                                      )
-                                    : const Color.fromARGB(
-                                        20,
-                                        244,
-                                        67,
-                                        54,
-                                      ),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  if (!returnShopProvider()
-                                      .isLoading) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (firstContext) {
-                                        return DialogTemplate(
-                                          title:
-                                              shop.isDeleted
-                                              ? "Restore Shop"
-                                              : 'Mark As Deleted',
-                                          action: () async {
-                                            Navigator.of(
-                                              firstContext,
-                                            ).pop();
-                                            await returnShopProvider().setBusinessBoolValues(
-                                              isDelete: !shop
-                                                  .isDeleted,
-                                              shopId: shop
-                                                  .shopId
-                                                  .toInt(),
-                                              uuidd: shop
-                                                  .agentAndShopUuid!,
-                                            );
-                                          },
-                                          message:
-                                              'You are about to Mark This business as deleted. Are you sure you want to proceed?',
-                                        );
-                                      },
-                                    );
-                                  }
-                                },
-                                mouseCursor:
-                                    SystemMouseCursors
-                                        .click,
-                                child: Container(
-                                  constraints:
-                                      BoxConstraints(
-                                        maxWidth: 300,
-                                      ),
-                                  padding:
-                                      EdgeInsets.symmetric(
-                                        vertical: 10,
-                                        horizontal: 10,
-                                      ),
+                                                title:
+                                                    (shop.isImportant ||
+                                                        shop.isFollowUp ||
+                                                        shop.isUrgent)
+                                                    ? "Cancel Importance"
+                                                    : 'Set Importance',
 
-                                  child: Builder(
-                                    builder: (context) {
-                                      if (returnShopProvider()
-                                          .isLoading) {
-                                        return Center(
-                                          child: SizedBox(
-                                            height: 23,
-                                            width: 23,
-                                            child: CircularProgressIndicator(
-                                              color: Colors
-                                                  .amber,
-                                              strokeWidth:
-                                                  2,
+                                                message:
+                                                    'You are about to ${(shop.isImportant || shop.isFollowUp || shop.isUrgent) ? 'Cancel Importance' : 'Set Importance'} of This business. Are you sure you want to proceed?',
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
+                                      mouseCursor:
+                                          SystemMouseCursors
+                                              .click,
+                                      child: Container(
+                                        constraints:
+                                            BoxConstraints(
+                                              maxWidth: 300,
                                             ),
-                                          ),
-                                        );
-                                      } else {
-                                        return Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .center,
-                                          spacing: 4,
-                                          children: [
-                                            Text(
-                                              style: TextStyle(
-                                                fontSize: theme
-                                                    .mobileTexts
-                                                    .b3
-                                                    .fontSize,
-                                              ),
-                                              shop.isDeleted
-                                                  ? 'Restore Shop'
-                                                  : 'Mark As Deleted',
+                                        padding:
+                                            EdgeInsets.symmetric(
+                                              vertical: 10,
+                                              horizontal:
+                                                  10,
                                             ),
-                                            Icon(
-                                              size: 20,
-                                              color:
-                                                  shop.isDeleted
-                                                  ? Colors
-                                                        .green
-                                                  : Colors
-                                                        .red,
-                                              shop.isDeleted
-                                                  ? Icons
-                                                        .check
-                                                  : Icons
-                                                        .delete_forever_outlined,
-                                            ),
-                                          ],
-                                        );
-                                      }
-                                    },
+
+                                        child: Builder(
+                                          builder: (context) {
+                                            if (returnShopProvider()
+                                                .isLoading) {
+                                              return Center(
+                                                child: SizedBox(
+                                                  height:
+                                                      23,
+                                                  width: 23,
+                                                  child: CircularProgressIndicator(
+                                                    color: Colors
+                                                        .amber,
+                                                    strokeWidth:
+                                                        2,
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              return Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .center,
+                                                spacing: 4,
+                                                children: [
+                                                  Text(
+                                                    style: TextStyle(
+                                                      fontSize: theme
+                                                          .mobileTexts
+                                                          .b3
+                                                          .fontSize,
+                                                    ),
+                                                    shop.isImportant
+                                                        ? 'Important'
+                                                        : shop.isFollowUp
+                                                        ? 'Follow Up'
+                                                        : shop.isUrgent
+                                                        ? 'Urgent'
+                                                        : 'Set Importance',
+                                                  ),
+                                                  Icon(
+                                                    size:
+                                                        20,
+                                                    color: Colors
+                                                        .grey,
+                                                    (shop.isImportant ||
+                                                            shop.isFollowUp ||
+                                                            shop.isUrgent)
+                                                        ? Icons.clear
+                                                        : Icons.check,
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(
+                                        3,
+                                      ),
+                                  border: Border.all(
+                                    color: shop.isDeleted
+                                        ? Colors.greenAccent
+                                        : Colors.redAccent,
+                                  ),
+                                  color: shop.isDeleted
+                                      ? const Color.fromARGB(
+                                          19,
+                                          162,
+                                          244,
+                                          54,
+                                        )
+                                      : const Color.fromARGB(
+                                          20,
+                                          244,
+                                          67,
+                                          54,
+                                        ),
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    if (!returnShopProvider()
+                                        .isLoading) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (firstContext) {
+                                          return DialogTemplate(
+                                            title:
+                                                shop.isDeleted
+                                                ? "Restore Shop"
+                                                : 'Mark As Deleted',
+                                            action: () async {
+                                              Navigator.of(
+                                                firstContext,
+                                              ).pop();
+                                              await returnShopProvider().setBusinessBoolValues(
+                                                isDelete: !shop
+                                                    .isDeleted,
+                                                shopId: shop
+                                                    .shopId
+                                                    .toInt(),
+                                                uuidd: shop
+                                                    .agentAndShopUuid!,
+                                              );
+                                            },
+                                            message:
+                                                'You are about to Mark This business as deleted. Are you sure you want to proceed?',
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                  mouseCursor:
+                                      SystemMouseCursors
+                                          .click,
+                                  child: Container(
+                                    constraints:
+                                        BoxConstraints(
+                                          maxWidth: 300,
+                                        ),
+                                    padding:
+                                        EdgeInsets.symmetric(
+                                          vertical: 10,
+                                          horizontal: 10,
+                                        ),
+
+                                    child: Builder(
+                                      builder: (context) {
+                                        if (returnShopProvider()
+                                            .isLoading) {
+                                          return Center(
+                                            child: SizedBox(
+                                              height: 23,
+                                              width: 23,
+                                              child: CircularProgressIndicator(
+                                                color: Colors
+                                                    .amber,
+                                                strokeWidth:
+                                                    2,
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .center,
+                                            spacing: 4,
+                                            children: [
+                                              Text(
+                                                style: TextStyle(
+                                                  fontSize: theme
+                                                      .mobileTexts
+                                                      .b3
+                                                      .fontSize,
+                                                ),
+                                                shop.isDeleted
+                                                    ? 'Restore Shop'
+                                                    : 'Mark As Deleted',
+                                              ),
+                                              Icon(
+                                                size: 20,
+                                                color:
+                                                    shop.isDeleted
+                                                    ? Colors
+                                                          .green
+                                                    : Colors
+                                                          .red,
+                                                shop.isDeleted
+                                                    ? Icons
+                                                          .check
+                                                    : Icons
+                                                          .delete_forever_outlined,
+                                              ),
+                                            ],
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -682,10 +692,8 @@ class ImportanceListTileWidget extends StatelessWidget {
             await returnShopProvider()
                 .setBusinessBoolValues(
                   isImportant: index == 1 ? !value : null,
-                  isImportanter: index == 2 ? !value : null,
-                  isImportantest: index == 3
-                      ? !value
-                      : null,
+                  isFollowUp: index == 2 ? !value : null,
+                  isUrgent: index == 3 ? !value : null,
                   shopId: shop.shopId.toInt(),
                   uuidd: shop.agentAndShopUuid!,
                 );

@@ -44,8 +44,9 @@ class ShopInfo {
   DateTime? assignedDate;
   bool isDeleted;
   bool isImportant;
-  bool isImportanter;
-  bool isImportantest;
+  bool isFollowUp;
+  bool isUrgent;
+  DateTime? markedDate;
 
   // Statistics
   final double todaysReceipts;
@@ -91,10 +92,11 @@ class ShopInfo {
     required this.isInactive,
     // Agent & Shop assignment
     this.assignedDate,
+    this.markedDate,
     this.isDeleted = false,
     this.isImportant = false,
-    this.isImportanter = false,
-    this.isImportantest = false,
+    this.isFollowUp = false,
+    this.isUrgent = false,
 
     // Statistics
     this.todaysReceipts = 0.0,
@@ -183,15 +185,19 @@ class ShopInfo {
             )
           : null,
 
+      markedDate: json['marked_date'] != null
+          ? DateTime.tryParse(
+              json['marked_date'].toString(),
+            )
+          : null,
+
       isDeleted: json['is_deleted'] as bool? ?? false,
 
       isImportant: json['is_important'] as bool? ?? false,
 
-      isImportanter:
-          json['is_importanter'] as bool? ?? false,
+      isFollowUp: json['is_importanter'] as bool? ?? false,
 
-      isImportantest:
-          json['is_importantest'] as bool? ?? false,
+      isUrgent: json['is_importantest'] as bool? ?? false,
 
       // Statistics
       todaysReceipts:
@@ -257,10 +263,11 @@ class ShopInfo {
 
     // Agent & Shop assignment
     DateTime? assignedDate,
+    DateTime? markedDate,
     bool? isDeleted,
     bool? isImportant,
-    bool? isImportanter,
-    bool? isImportantest,
+    bool? isFollowUp,
+    bool? isUrgent,
 
     // Statistics
     double? todaysReceipts,
@@ -313,10 +320,11 @@ class ShopInfo {
       isInactive: isInactive ?? this.isInactive,
       // Agent & Shop assignment
       assignedDate: assignedDate ?? this.assignedDate,
+      markedDate: markedDate ?? this.markedDate,
       isDeleted: isDeleted ?? this.isDeleted,
       isImportant: isImportant ?? this.isImportant,
-      isImportanter: isImportanter ?? this.isImportanter,
-      isImportantest: isImportantest ?? this.isImportantest,
+      isFollowUp: isFollowUp ?? this.isFollowUp,
+      isUrgent: isUrgent ?? this.isUrgent,
 
       // Statistics
       todaysReceipts: todaysReceipts ?? this.todaysReceipts,
@@ -503,9 +511,24 @@ class ShopInfo {
         : 'Not Set';
   }
 
+  String getLastCalledDate() {
+    return (agentComments != null &&
+            agentComments!.isNotEmpty)
+        ? formatDateOrDaysAgo(
+            agentComments!.first.createdAt,
+          )
+        : 'Not Set';
+  }
+
   String getAssignedDate() {
     return assignedDate != null
         ? formatDateOrDaysAgo(assignedDate!)
+        : 'Not Set';
+  }
+
+  String getMarkedDate() {
+    return markedDate != null
+        ? formatDateOrDaysAgo(markedDate ?? DateTime.now())
         : 'Not Set';
   }
 
@@ -514,9 +537,56 @@ class ShopInfo {
         DateTime.now().subtract(Duration(days: 90));
   }
 
+  DateTime markedDateValue() {
+    return markedDate ??
+        DateTime.now().subtract(Duration(days: 90));
+  }
+
   DateTime getExpiryDate() {
     return subscriptionNextPayment ??
         DateTime.now().subtract(Duration(days: 90));
+  }
+
+  DateTime getLastCallDate() {
+    if (agentComments != null &&
+        agentComments?.isNotEmpty == true) {
+      return agentComments!.first.createdAt;
+    } else {
+      return DateTime.now().subtract(Duration(days: 90));
+    }
+  }
+
+  bool getLastCallDateToday() {
+    if (agentComments != null &&
+        agentComments?.isNotEmpty == true) {
+      return isToday(agentComments!.first.createdAt);
+    } else {
+      return false;
+    }
+  }
+
+  bool getLastCallDateYesterday() {
+    if (agentComments != null &&
+        agentComments?.isNotEmpty == true) {
+      return isYesterday(agentComments!.first.createdAt);
+    } else {
+      return false;
+    }
+  }
+
+  bool getLastCallDateOtherDays() {
+    return !getLastCallDateToday() &&
+        !getLastCallDateYesterday() &&
+        isCalled();
+  }
+
+  bool isCalled() {
+    if (agentComments != null &&
+        agentComments?.isNotEmpty == true) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   DateTime getLastPayment() {

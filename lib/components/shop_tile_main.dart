@@ -19,7 +19,7 @@ class ShopTileMain extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = returnTheme(context: context);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Material(
         type: MaterialType.transparency,
         child: Ink(
@@ -438,6 +438,74 @@ class ShopTileMain extends StatelessWidget {
                                         ),
 
                                         shop.getSubscribedDate(),
+                                      ),
+                                    ],
+                                  );
+                                } else if (sortInt == 6) {
+                                  return Row(
+                                    spacing: 4,
+                                    children: [
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          fontWeight:
+                                              FontWeight
+                                                  .normal,
+                                        ),
+                                        'Last Called:',
+                                      ),
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          color: Colors
+                                              .grey
+                                              .shade900,
+                                          fontWeight:
+                                              FontWeight
+                                                  .bold,
+                                        ),
+
+                                        shop.getLastCalledDate(),
+                                      ),
+                                    ],
+                                  );
+                                } else if (sortInt == 7) {
+                                  return Row(
+                                    spacing: 4,
+                                    children: [
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          fontWeight:
+                                              FontWeight
+                                                  .normal,
+                                        ),
+                                        'Marked:',
+                                      ),
+                                      Text(
+                                        style: TextStyle(
+                                          fontSize: theme
+                                              .mobileTexts
+                                              .b4
+                                              .fontSize,
+                                          color: Colors
+                                              .grey
+                                              .shade900,
+                                          fontWeight:
+                                              FontWeight
+                                                  .bold,
+                                        ),
+
+                                        shop.getMarkedDate(),
                                       ),
                                     ],
                                   );

@@ -30,7 +30,15 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
     });
   }
 
-  int filterIndex = 0;
+  void selectStaffUuid({String? uuid}) {
+    setState(() {
+      selectedStaffUuid = uuid;
+    });
+  }
+
+  String? selectedStaffUuid;
+
+  int filterIndex = 6;
 
   void setFilterIndex(int index) {
     setState(() {
@@ -84,59 +92,59 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
             }
           } else if (filterIndex == 1) {
             if (currentSelection == 0) {
-              return true;
-            } else if (currentSelection == 1) {
               return item.isSubscribed();
-            } else if (currentSelection == 2) {
+            } else if (currentSelection == 1) {
               return item.isTrial;
-            } else if (currentSelection == 3) {
+            } else if (currentSelection == 2) {
               return item.isFree();
-            } else if (currentSelection == 4) {
+            } else if (currentSelection == 3) {
               return item.isExpired;
-            } else if (currentSelection == 5) {
+            } else if (currentSelection == 4) {
               return item.isBasicPlan();
-            } else if (currentSelection == 6) {
+            } else if (currentSelection == 5) {
               return item.isStandardPlan();
-            } else if (currentSelection == 7) {
+            } else if (currentSelection == 6) {
               return item.isPremiumPlan();
-            } else if (currentSelection == 8) {
+            } else if (currentSelection == 7) {
               return item.isSilverPlan();
-            } else {
+            } else if (currentSelection == 8) {
               return item.isGoldPlan();
+            } else {
+              return true;
             }
           } else if (filterIndex == 2) {
             if (currentSelection == 0) {
-              return true;
-            } else if (currentSelection == 1) {
               return item.isActive;
-            } else if (currentSelection == 2) {
+            } else if (currentSelection == 1) {
               return item.isSemiActive;
-            } else if (currentSelection == 3) {
+            } else if (currentSelection == 2) {
               return item.isInactive;
             } else {
               return true;
             }
           } else if (filterIndex == 3) {
+            return item.agentUuid == selectedStaffUuid;
+          } else if (filterIndex == 5) {
             if (currentSelection == 0) {
-              return true;
+              return item.isImportant;
             } else if (currentSelection == 1) {
-              return item.agentUuid != null;
+              return item.isFollowUp;
             } else if (currentSelection == 2) {
-              return item.agentUuid == null;
+              return item.isUrgent;
+            } else if (currentSelection == 3) {
+              return item.isDeleted;
             } else {
               return true;
             }
-          } else if (filterIndex == 5) {
+          } else if (filterIndex == 6) {
             if (currentSelection == 0) {
-              return true;
+              return item.getLastCallDateToday();
             } else if (currentSelection == 1) {
-              return item.isImportant;
+              return item.getLastCallDateYesterday();
             } else if (currentSelection == 2) {
-              return item.isImportanter;
+              return item.getLastCallDateOtherDays();
             } else if (currentSelection == 3) {
-              return item.isImportantest;
-            } else if (currentSelection == 4) {
-              return item.isDeleted;
+              return !item.isCalled();
             } else {
               return true;
             }
@@ -168,6 +176,17 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                         searchController.text.toLowerCase(),
                       ) ==
                   true ||
+              item.state?.toString().toLowerCase().contains(
+                    searchController.text.toLowerCase(),
+                  ) ==
+                  true ||
+              item.userPhone
+                      ?.toString()
+                      .toLowerCase()
+                      .contains(
+                        searchController.text.toLowerCase(),
+                      ) ==
+                  true ||
               item.currentPlanName().toLowerCase().contains(
                     searchController.text.toLowerCase(),
                   ) ==
@@ -175,13 +194,19 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
         )
         .toList();
     if (filterIndex == 1) {
-      if (currentSelection == 1) {
+      if (currentSelection == 0) {
         shops.sort(
           (a, b) => b.getLastPayment().compareTo(
             a.getLastPayment(),
           ),
         );
       }
+    } else if (filterIndex == 2) {
+      shops.sort(
+        (a, b) => b.getLastActivity().compareTo(
+          a.getLastActivity(),
+        ),
+      );
     } else if (filterIndex == 4) {
       if (currentSelection == 0) {
         shops.sort(
@@ -229,7 +254,31 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
             a.getExpiryDate(),
           ),
         );
+      } else if (currentSelection == 5) {
+        shops.sort(
+          (a, b) => b.getLastCallDate().compareTo(
+            a.getLastCallDate(),
+          ),
+        );
+      } else if (currentSelection == 6) {
+        shops.sort(
+          (a, b) => b.markedDateValue().compareTo(
+            a.markedDateValue(),
+          ),
+        );
       }
+    } else if (filterIndex == 5) {
+      shops.sort(
+        (a, b) => b.markedDateValue().compareTo(
+          a.markedDateValue(),
+        ),
+      );
+    } else if (filterIndex == 6) {
+      shops.sort(
+        (a, b) => b.getLastCallDate().compareTo(
+          a.getLastCallDate(),
+        ),
+      );
     } else {
       shops.sort(
         (a, b) => a.shopName.toLowerCase().compareTo(
@@ -255,6 +304,46 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                   color: Colors.white,
                   itemBuilder: (context) {
                     return [
+                      PopupMenuItem(
+                        onTap: () {
+                          setFilterIndex(6);
+                        },
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                              ),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                            children: [
+                              Text(
+                                style: TextStyle(
+                                  fontSize: theme
+                                      .mobileTexts
+                                      .b3
+                                      .fontSize,
+                                  fontWeight:
+                                      filterIndex == 6
+                                      ? FontWeight.bold
+                                      : null,
+                                ),
+                                'Filter By Call Dates',
+                              ),
+                              Visibility(
+                                visible: filterIndex == 6,
+                                child: Icon(
+                                  size: 17,
+                                  color:
+                                      Colors.grey.shade700,
+                                  Icons.check,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       PopupMenuItem(
                         onTap: () {
                           setFilterIndex(0);
@@ -634,6 +723,11 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                                   return findByImportanceAndDeletedWidget(
                                     shops,
                                   );
+                                } else if (filterIndex ==
+                                    6) {
+                                  return findByCallDateWidget(
+                                    shops,
+                                  );
                                 } else {
                                   return findByCreatedDateWidget(
                                     shops,
@@ -684,13 +778,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
                             .map(
                               (shop) => ShopTileMain(
                                 shop: shop,
-                                sortInt: filterIndex == 4
-                                    ? currentSelection
-                                    : (filterIndex == 1 &&
-                                          currentSelection ==
-                                              1)
-                                    ? 5
-                                    : null,
+                                sortInt: sortFunction(),
                               ),
                             )
                             .toList(),
@@ -704,6 +792,32 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
         ),
       ),
     );
+  }
+
+  int? sortFunction() {
+    if (filterIndex == 1) {
+      if (currentSelection == 0) {
+        return 5;
+      } else {
+        return null;
+      }
+    } else if (filterIndex == 2) {
+      return 3;
+    } else if (filterIndex == 4) {
+      if (currentSelection == 5) {
+        return 6;
+      } else if (currentSelection == 6) {
+        return 7;
+      } else {
+        return currentSelection;
+      }
+    } else if (filterIndex == 5) {
+      return 7;
+    } else if (filterIndex == 6) {
+      return 6;
+    } else {
+      return null;
+    }
   }
 
   Row findByCreatedDateWidget(List<ShopInfo> shops) {
@@ -799,11 +913,20 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        // TopStoreFilterButton(
+        //   mainIndex: currentSelection,
+        //   myIndex: 0,
+        //   title:
+        //       'All${currentSelection == 0 ? " (${shops.length})" : ''}',
+        //   action: () {
+        //     switchSelection(0);
+        //   },
+        // ),
         TopStoreFilterButton(
           mainIndex: currentSelection,
           myIndex: 0,
           title:
-              'All${currentSelection == 0 ? " (${shops.length})" : ''}',
+              'Latest${currentSelection == 0 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(0);
           },
@@ -812,7 +935,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 1,
           title:
-              'Latest${currentSelection == 1 ? " (${shops.length})" : ''}',
+              'Trial${currentSelection == 1 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(1);
           },
@@ -821,7 +944,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 2,
           title:
-              'Trial${currentSelection == 2 ? " (${shops.length})" : ''}',
+              'Free${currentSelection == 2 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(2);
           },
@@ -830,7 +953,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 3,
           title:
-              'Free${currentSelection == 3 ? " (${shops.length})" : ''}',
+              'Expired${currentSelection == 3 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(3);
           },
@@ -839,7 +962,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 4,
           title:
-              'Expired${currentSelection == 4 ? " (${shops.length})" : ''}',
+              'Basic${currentSelection == 4 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(4);
           },
@@ -848,7 +971,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 5,
           title:
-              'Basic${currentSelection == 5 ? " (${shops.length})" : ''}',
+              'Standard${currentSelection == 5 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(5);
           },
@@ -857,7 +980,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 6,
           title:
-              'Standard${currentSelection == 6 ? " (${shops.length})" : ''}',
+              'Premium${currentSelection == 6 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(6);
           },
@@ -866,7 +989,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 7,
           title:
-              'Premium${currentSelection == 7 ? " (${shops.length})" : ''}',
+              'Silver${currentSelection == 7 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(7);
           },
@@ -875,18 +998,9 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 8,
           title:
-              'Silver${currentSelection == 8 ? " (${shops.length})" : ''}',
+              'Gold${currentSelection == 8 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(8);
-          },
-        ),
-        TopStoreFilterButton(
-          mainIndex: currentSelection,
-          myIndex: 9,
-          title:
-              'Gold${currentSelection == 9 ? " (${shops.length})" : ''}',
-          action: () {
-            switchSelection(9);
           },
         ),
       ],
@@ -901,7 +1015,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 0,
           title:
-              'All${currentSelection == 0 ? " (${shops.length})" : ''}',
+              'Active${currentSelection == 0 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(0);
           },
@@ -910,7 +1024,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 1,
           title:
-              'Active${currentSelection == 1 ? " (${shops.length})" : ''}',
+              'Semi Active${currentSelection == 1 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(1);
           },
@@ -919,18 +1033,9 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 2,
           title:
-              'Semi Active${currentSelection == 2 ? " (${shops.length})" : ''}',
+              'Inactive${currentSelection == 2 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(2);
-          },
-        ),
-        TopStoreFilterButton(
-          mainIndex: currentSelection,
-          myIndex: 3,
-          title:
-              'Inactive${currentSelection == 3 ? " (${shops.length})" : ''}',
-          action: () {
-            switchSelection(3);
           },
         ),
       ],
@@ -940,37 +1045,62 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
   Row findByAssignedAgentsWidget(List<ShopInfo> shops) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TopStoreFilterButton(
-          mainIndex: currentSelection,
-          myIndex: 0,
-          title:
-              'All${currentSelection == 0 ? " (${shops.length})" : ''}',
-          action: () {
-            switchSelection(0);
-          },
-        ),
-        TopStoreFilterButton(
-          mainIndex: currentSelection,
-          myIndex: 1,
-          title:
-              'Is Managed${currentSelection == 1 ? " (${shops.length})" : ''}',
-          action: () {
-            switchSelection(1);
-          },
-        ),
-        TopStoreFilterButton(
-          mainIndex: currentSelection,
-          myIndex: 2,
-          title:
-              'Un-Managed${currentSelection == 2 ? " (${shops.length})" : ''}',
-          action: () {
-            switchSelection(2);
-          },
-        ),
-      ],
+      children: returnUserProvider(context: context)
+          .agentTemps()
+          .map(
+            (item) => TopStoreFilterButton(
+              mainIndex: currentSelection,
+              myIndex: item.index,
+              title:
+                  '${item.name}${currentSelection == item.index ? " (${shops.length})" : ''}',
+              action: () {
+                switchSelection(item.index);
+                selectStaffUuid(
+                  uuid: item.uuid.isNotEmpty
+                      ? item.uuid
+                      : null,
+                );
+              },
+            ),
+          )
+          .toList(),
     );
   }
+
+  // Row findByAssignedAgentsWidget(List<ShopInfo> shops) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       TopStoreFilterButton(
+  //         mainIndex: currentSelection,
+  //         myIndex: 0,
+  //         title:
+  //             'All${currentSelection == 0 ? " (${shops.length})" : ''}',
+  //         action: () {
+  //           switchSelection(0);
+  //         },
+  //       ),
+  //       TopStoreFilterButton(
+  //         mainIndex: currentSelection,
+  //         myIndex: 1,
+  //         title:
+  //             'Is Managed${currentSelection == 1 ? " (${shops.length})" : ''}',
+  //         action: () {
+  //           switchSelection(1);
+  //         },
+  //       ),
+  //       TopStoreFilterButton(
+  //         mainIndex: currentSelection,
+  //         myIndex: 2,
+  //         title:
+  //             'Un-Managed${currentSelection == 2 ? " (${shops.length})" : ''}',
+  //         action: () {
+  //           switchSelection(2);
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Row sortWidget(List<ShopInfo> shops) {
     return Row(
@@ -1016,6 +1146,67 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
             switchSelection(4);
           },
         ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 5,
+          title: 'Call Date',
+          action: () {
+            switchSelection(5);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 6,
+          title: 'Marked Date',
+          action: () {
+            switchSelection(6);
+          },
+        ),
+      ],
+    );
+  }
+
+  Row findByCallDateWidget(List<ShopInfo> shops) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 0,
+          title:
+              'Called Today${currentSelection == 0 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(0);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 1,
+          title:
+              'Called Y\'day${currentSelection == 1 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(1);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 2,
+          containerWidth: 150,
+          title:
+              'Called Other Days${currentSelection == 2 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(2);
+          },
+        ),
+        TopStoreFilterButton(
+          mainIndex: currentSelection,
+          myIndex: 3,
+          title:
+              'All Un-Called${currentSelection == 3 ? " (${shops.length})" : ''}',
+          action: () {
+            switchSelection(3);
+          },
+        ),
       ],
     );
   }
@@ -1030,7 +1221,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 0,
           title:
-              'All${currentSelection == 0 ? " (${shops.length})" : ''}',
+              'Important${currentSelection == 0 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(0);
           },
@@ -1039,7 +1230,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 1,
           title:
-              'Important${currentSelection == 1 ? " (${shops.length})" : ''}',
+              'Follow Up${currentSelection == 1 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(1);
           },
@@ -1048,7 +1239,7 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 2,
           title:
-              'Importanter${currentSelection == 2 ? " (${shops.length})" : ''}',
+              'Urgent${currentSelection == 2 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(2);
           },
@@ -1057,21 +1248,24 @@ class _SecondPageAdminState extends State<SecondPageAdmin> {
           mainIndex: currentSelection,
           myIndex: 3,
           title:
-              'Importantest${currentSelection == 3 ? " (${shops.length})" : ''}',
+              'Deleted${currentSelection == 3 ? " (${shops.length})" : ''}',
           action: () {
             switchSelection(3);
-          },
-        ),
-        TopStoreFilterButton(
-          mainIndex: currentSelection,
-          myIndex: 4,
-          title:
-              'Deleted${currentSelection == 4 ? " (${shops.length})" : ''}',
-          action: () {
-            switchSelection(4);
           },
         ),
       ],
     );
   }
+}
+
+class AgentTemp {
+  final String name;
+  final String uuid;
+  final int index;
+
+  AgentTemp({
+    required this.name,
+    required this.uuid,
+    required this.index,
+  });
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stockallagent/classes/shop_info.dart';
 import 'package:stockallagent/components/dialog_template.dart';
-import 'package:stockallagent/components/textfields/my_text_field.dart';
+import 'package:stockallagent/components/textfields/general_text_field.dart';
 import 'package:stockallagent/constants/constants_main.dart';
 import 'package:stockallagent/main.dart';
 import 'package:stockallagent/theme/theme_provider.dart';
@@ -228,23 +228,14 @@ void addCommentAction({
           },
           title: 'Add Comment',
           subTitle: 'Enter Comment Below',
-          mainWidget: MyTextFieldMain(
+          mainWidget: GeneralTextField(
             lines: 5,
+            minLines: 3,
             controller: commentController,
-            isEmail: false,
-            showTitle: false,
-            isNumber: false,
-            isOptional: false,
-            hintText: 'Enter Comment',
-            isPassword: false,
-            onSubmit: (value) {
-              saveComment(
-                context: firstContext,
-                shop: shop,
-                commentController: commentController,
-              );
-            },
-            validatorText: 'Comment Cannot be Empty',
+            textInputAction: TextInputAction.newline,
+            hint: 'Enter Comment',
+            theme: returnTheme(),
+            autoFocus: true,
           ),
         );
       },

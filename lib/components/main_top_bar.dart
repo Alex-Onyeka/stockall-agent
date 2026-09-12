@@ -25,228 +25,236 @@ class _MainTopBarState extends State<MainTopBar> {
   @override
   Widget build(BuildContext context) {
     var theme = returnTheme(context: context);
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 12,
-      ),
-      decoration: BoxDecoration(color: Colors.white),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        spacing: 10,
-        children: [
-          Builder(
-            builder: (context) {
-              if (widget.agentUuid != null &&
-                  (topAdmin())) {
-                return IconButton(
-                  mouseCursor: SystemMouseCursors.click,
-                  onPressed: () {
-                    if (Navigator.canPop(context)) {
-                      Navigator.of(context).pop();
-                    } else {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return BasePage();
-                          },
-                        ),
-                      );
-                    }
-                  },
-                  icon: Icon(
-                    size: 20,
-                    Icons.arrow_back_ios_new_rounded,
-                  ),
-                );
-              } else {
-                return Material(
-                  type: MaterialType.transparency,
-                  child: Ink(
-                    color: Colors.white,
-                    child: InkWell(
-                      mouseCursor: SystemMouseCursors.click,
-                      onTap: widget.profileNavAction,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          spacing: 10,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.amber,
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 12,
+        ),
+        decoration: BoxDecoration(color: Colors.white),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          spacing: 10,
+          children: [
+            Builder(
+              builder: (context) {
+                if (widget.agentUuid != null &&
+                    (topAdmin())) {
+                  return IconButton(
+                    mouseCursor: SystemMouseCursors.click,
+                    onPressed: () {
+                      if (Navigator.canPop(context)) {
+                        Navigator.of(context).pop();
+                      } else {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return BasePage();
+                            },
+                          ),
+                        );
+                      }
+                    },
+                    icon: Icon(
+                      size: 20,
+                      Icons.arrow_back_ios_new_rounded,
+                    ),
+                  );
+                } else {
+                  return Material(
+                    type: MaterialType.transparency,
+                    child: Ink(
+                      color: Colors.white,
+                      child: InkWell(
+                        mouseCursor:
+                            SystemMouseCursors.click,
+                        onTap: widget.profileNavAction,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10.0,
                               ),
-                              child: Image.asset(
-                                profileIcon,
-                                height: 30,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            spacing: 10,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.amber,
+                                ),
+                                child: Image.asset(
+                                  profileIcon,
+                                  height: 30,
+                                ),
                               ),
-                            ),
-                            Column(
-                              spacing: 0,
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b1
-                                        .fontSize,
-                                    fontWeight:
-                                        FontWeight.bold,
+                              Column(
+                                spacing: 0,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment
+                                        .start,
+                                children: [
+                                  Text(
+                                    style: TextStyle(
+                                      fontSize: theme
+                                          .mobileTexts
+                                          .b1
+                                          .fontSize,
+                                      fontWeight:
+                                          FontWeight.bold,
+                                    ),
+                                    '${returnUserProvider(context: context).currentUser?.name} ${returnUserProvider(context: context).currentUser?.lastName ?? ''}',
                                   ),
-                                  '${returnUserProvider(context: context).currentUser?.name} ${returnUserProvider(context: context).currentUser?.lastName ?? ''}',
-                                ),
-                                Text(
-                                  style: TextStyle(
-                                    fontSize: theme
-                                        .mobileTexts
-                                        .b4
-                                        .fontSize,
-                                    fontWeight:
-                                        FontWeight.normal,
-                                    color: theme
-                                        .lightModeColor
-                                        .prColor100,
+                                  Text(
+                                    style: TextStyle(
+                                      fontSize: theme
+                                          .mobileTexts
+                                          .b4
+                                          .fontSize,
+                                      fontWeight:
+                                          FontWeight.normal,
+                                      color: theme
+                                          .lightModeColor
+                                          .prColor100,
+                                    ),
+                                    // returnAdminProvider(
+                                    //           context: context,
+                                    //         ).admin ==
+                                    //         null
+                                    //     ? 'Agent (${returnUserProvider(context: context, listen: false).currentUser?.role})'
+                                    //     :
+                                    'Agent',
                                   ),
-                                  // returnAdminProvider(
-                                  //           context: context,
-                                  //         ).admin ==
-                                  //         null
-                                  //     ? 'Agent (${returnUserProvider(context: context, listen: false).currentUser?.role})'
-                                  //     :
-                                  'Agent',
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              }
-            },
-          ),
-          Row(
-            spacing: 5,
-            children: [
-              Material(
-                color: Colors.transparent,
-                child: Ink(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey.shade100,
-                  ),
-                  child: InkWell(
-                    mouseCursor: SystemMouseCursors.click,
-                    borderRadius: BorderRadius.circular(40),
-                    onTap: () {
-                      returnShopProvider().getShops();
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Builder(
-                        builder: (context) {
-                          if (returnShopProvider(
-                            context: context,
-                          ).isLoading) {
-                            return SizedBox(
-                              height: 18,
-                              width: 18,
-                              child:
-                                  CircularProgressIndicator(
-                                    color: Colors.amber,
-                                    strokeWidth: 2,
-                                  ),
-                            );
-                          } else {
-                            return Icon(
-                              size: 20,
-                              color: Colors.grey,
-                              Icons.refresh,
-                            );
-                          }
-                        },
+                  );
+                }
+              },
+            ),
+            Row(
+              spacing: 5,
+              children: [
+                Material(
+                  color: Colors.transparent,
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey.shade100,
+                    ),
+                    child: InkWell(
+                      mouseCursor: SystemMouseCursors.click,
+                      borderRadius: BorderRadius.circular(
+                        40,
+                      ),
+                      onTap: () {
+                        returnShopProvider().getShops();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Builder(
+                          builder: (context) {
+                            if (returnShopProvider(
+                              context: context,
+                            ).isLoading) {
+                              return SizedBox(
+                                height: 18,
+                                width: 18,
+                                child:
+                                    CircularProgressIndicator(
+                                      color: Colors.amber,
+                                      strokeWidth: 2,
+                                    ),
+                              );
+                            } else {
+                              return Icon(
+                                size: 20,
+                                color: Colors.grey,
+                                Icons.refresh,
+                              );
+                            }
+                          },
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Builder(
-                builder: (context) {
-                  if (widget.lastWidget != null) {
-                    return widget.lastWidget ?? Container();
-                  } else {
-                    return Material(
-                      color: Colors.transparent,
-                      child: Ink(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey.shade100,
-                        ),
-                        child: InkWell(
-                          mouseCursor:
-                              SystemMouseCursors.click,
-                          borderRadius:
-                              BorderRadius.circular(40),
-                          onTap: () {
-                            // var safeContext = context;
-                            showDialog(
-                              context: context,
-                              builder: (logoutContext) {
-                                return DialogTemplate(
-                                  title: 'Are you sure?',
-                                  action: () async {
-                                    returnResourceProvider()
-                                        .toggleLoading(
-                                          true,
-                                        );
-                                    await AuthService()
-                                        .signOut(context);
-                                    if (logoutContext
-                                        .mounted) {
-                                      Navigator.of(
-                                        logoutContext,
-                                      ).pop();
-                                    }
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return BasePage();
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  message:
-                                      'Are you sure you want to Logout?',
-                                );
-                              },
-                            );
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            child: Icon(
-                              size: 20,
-                              color: Colors.red,
-                              Icons.logout_rounded,
+                Builder(
+                  builder: (context) {
+                    if (widget.lastWidget != null) {
+                      return widget.lastWidget ??
+                          Container();
+                    } else {
+                      return Material(
+                        color: Colors.transparent,
+                        child: Ink(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey.shade100,
+                          ),
+                          child: InkWell(
+                            mouseCursor:
+                                SystemMouseCursors.click,
+                            borderRadius:
+                                BorderRadius.circular(40),
+                            onTap: () {
+                              // var safeContext = context;
+                              showDialog(
+                                context: context,
+                                builder: (logoutContext) {
+                                  return DialogTemplate(
+                                    title: 'Are you sure?',
+                                    action: () async {
+                                      returnResourceProvider()
+                                          .toggleLoading(
+                                            true,
+                                          );
+                                      await AuthService()
+                                          .signOut(context);
+                                      if (logoutContext
+                                          .mounted) {
+                                        Navigator.of(
+                                          logoutContext,
+                                        ).pop();
+                                      }
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return BasePage();
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    message:
+                                        'Are you sure you want to Logout?',
+                                  );
+                                },
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              child: Icon(
+                                size: 20,
+                                color: Colors.red,
+                                Icons.logout_rounded,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-        ],
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

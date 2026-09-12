@@ -54,6 +54,7 @@ class TopStoreFilterButton extends StatelessWidget {
   final int mainIndex;
   final String title;
   final Function()? action;
+  final double? containerWidth;
 
   const TopStoreFilterButton({
     super.key,
@@ -61,6 +62,7 @@ class TopStoreFilterButton extends StatelessWidget {
     required this.mainIndex,
     required this.title,
     this.action,
+    this.containerWidth,
   });
 
   @override
@@ -79,7 +81,7 @@ class TopStoreFilterButton extends StatelessWidget {
           mouseCursor: SystemMouseCursors.click,
           onTap: action,
           child: Container(
-            width: 110,
+            width: containerWidth ?? 110,
             padding: EdgeInsets.symmetric(
               vertical: 7,
               horizontal: 5,

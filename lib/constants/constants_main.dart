@@ -100,6 +100,7 @@ String formatDateOrDaysAgo(DateTime date) {
   final now = DateTime.now();
 
   final today = DateTime(now.year, now.month, now.day);
+
   final activityDate = DateTime(
     date.year,
     date.month,
@@ -108,16 +109,23 @@ String formatDateOrDaysAgo(DateTime date) {
 
   final daysAgo = today.difference(activityDate).inDays;
 
+  final time =
+      '${date.hour > 12
+          ? date.hour - 12
+          : date.hour == 0
+          ? 12
+          : date.hour}:${date.minute.toString().padLeft(2, '0')}${date.hour >= 12 ? 'PM' : 'AM'}';
+
   if (daysAgo > 30) {
     return formatDate(date);
   }
 
   if (daysAgo == 0) {
-    return 'Today';
+    return 'Today ($time)';
   }
 
   if (daysAgo == 1) {
-    return 'Yesterday';
+    return 'Yesterday ($time)';
   }
 
   return '$daysAgo days ago';

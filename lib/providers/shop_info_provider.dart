@@ -16,6 +16,18 @@ class ShopInfoProvider extends ChangeNotifier {
 
   List<ShopInfo> shopInfos = [];
 
+  List<ShopInfo> getAgentsShops({String? userId}) {
+    if (userId == null) {
+      return shopInfos
+          .where((item) => item.agentUuid == null)
+          .toList();
+    } else {
+      return shopInfos
+          .where((item) => item.agentUuid == userId)
+          .toList();
+    }
+  }
+
   Future<List<ShopInfo>> getShops() async {
     if (!isLoading) {
       toggleLoading(true);
@@ -199,8 +211,8 @@ class ShopInfoProvider extends ChangeNotifier {
   Future<int> setBusinessBoolValues({
     bool? isDelete,
     bool? isImportant,
-    bool? isImportanter,
-    bool? isImportantest,
+    bool? isFollowUp,
+    bool? isUrgent,
     required String uuidd,
     required int shopId,
   }) async {
@@ -208,13 +220,45 @@ class ShopInfoProvider extends ChangeNotifier {
       toggleLoading(true);
       Map<String, dynamic> value() {
         if (isDelete != null) {
-          return {'is_deleted': isDelete};
+          return {
+            'is_deleted': isDelete,
+            'is_important': false,
+            'is_importanter': false,
+            'is_importantest': false,
+            'marked_date': isDelete
+                ? DateTime.now().toIso8601String()
+                : null,
+          };
         } else if (isImportant != null) {
-          return {'is_important': isImportant};
-        } else if (isImportanter != null) {
-          return {'is_importanter': isImportanter};
+          return {
+            'is_important': isImportant,
+            'is_deleted': false,
+            'is_importanter': false,
+            'is_importantest': false,
+            'marked_date': isImportant
+                ? DateTime.now().toIso8601String()
+                : null,
+          };
+        } else if (isFollowUp != null) {
+          return {
+            'is_importanter': isFollowUp,
+            'is_deleted': false,
+            'is_important': false,
+            'is_importantest': false,
+            'marked_date': isFollowUp
+                ? DateTime.now().toIso8601String()
+                : null,
+          };
         } else {
-          return {'is_importantest': isImportantest};
+          return {
+            'is_importantest': isUrgent,
+            'is_deleted': false,
+            'is_important': false,
+            'is_importanter': false,
+            'marked_date': isUrgent == true
+                ? DateTime.now().toIso8601String()
+                : null,
+          };
         }
       }
 
@@ -243,8 +287,10 @@ class ShopInfoProvider extends ChangeNotifier {
           );
           shopTwo.isDeleted = tempShop.isDeleted;
           shopTwo.isImportant = tempShop.isImportant;
-          shopTwo.isImportanter = tempShop.isImportanter;
-          shopTwo.isImportantest = tempShop.isImportantest;
+          shopTwo.isFollowUp = tempShop.isFollowUp;
+          shopTwo.isUrgent = tempShop.isUrgent;
+          shopTwo.markedDate = tempShop.markedDate;
+          shopTwo.assignedDate = tempShop.assignedDate;
         }
       } catch (e) {
         print(

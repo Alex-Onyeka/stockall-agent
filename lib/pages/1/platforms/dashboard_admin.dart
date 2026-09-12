@@ -52,336 +52,357 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                 color: theme.lightModeColor.prColor250,
                 child: ListView(
                   children: [
-                    ClipRRect(
-                      clipBehavior: Clip.hardEdge,
-                      child: Stack(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 20,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(10),
-                              color: const Color.fromARGB(
-                                255,
-                                1,
-                                29,
-                                53,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
+                    Material(
+                      type: MaterialType.transparency,
+                      child: InkWell(
+                        onTap: () {
+                          toggleViewMore();
+                        },
+                        mouseCursor:
+                            SystemMouseCursors.click,
+                        child: ClipRRect(
+                          clipBehavior: Clip.hardEdge,
+                          child: Stack(
+                            children: [
+                              Container(
+                                padding:
+                                    EdgeInsets.symmetric(
+                                      vertical: 20,
+                                      horizontal: 20,
+                                    ),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(
+                                        10,
+                                      ),
                                   color:
                                       const Color.fromARGB(
-                                        5,
-                                        0,
-                                        0,
-                                        0,
+                                        255,
+                                        1,
+                                        29,
+                                        53,
                                       ),
-                                  blurRadius: 10,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          const Color.fromARGB(
+                                            5,
+                                            0,
+                                            0,
+                                            0,
+                                          ),
+                                      blurRadius: 10,
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                              children: [
-                                DashboardRowWidget(
-                                  showTopDivider: false,
-                                  title1: 'Total Stores',
-                                  value1: formatNumber(
-                                    shopProv.getAllShops(),
-                                  ),
-                                  title2: 'Headquaters',
-                                  value2: formatNumber(
-                                    shopProv
-                                        .shopInfos
-                                        .length
-                                        .toDouble(),
-                                  ),
-                                  title3: 'Branches',
-                                  value3: formatNumber(
-                                    shopProv
-                                        .getTotalBranchShops(),
-                                  ),
-                                ),
-
-                                DashboardRowWidget(
-                                  showTopDivider: true,
-                                  title1: 'Active',
-                                  value1: formatNumber(
-                                    shopProv
-                                        .getTotalActiveShops()
-                                        .length
-                                        .toDouble(),
-                                  ),
-                                  title2: 'Semi Active',
-                                  value2: formatNumber(
-                                    shopProv
-                                        .getTotalSemiActiveShops()
-                                        .length
-                                        .toDouble(),
-                                  ),
-                                  title3: 'Inactive',
-                                  value3: formatNumber(
-                                    shopProv
-                                        .getTotalInActiveShops()
-                                        .length
-                                        .toDouble(),
-                                  ),
-                                ),
-
-                                DashboardRowWidget(
-                                  showTopDivider: true,
-                                  title1: 'Total Subsc.',
-                                  value1: formatNumber(
-                                    shopProv
-                                        .getTotalSubscribedShops()
-                                        .length
-                                        .toDouble(),
-                                  ),
-                                  title2: 'Subsc. Today',
-                                  value2: formatNumber(
-                                    shopProv
-                                        .getTodaysSubscribedShops()
-                                        .length
-                                        .toDouble(),
-                                  ),
-                                  title3: 'New Stores',
-                                  value3: formatNumber(
-                                    shopProv
-                                        .getTodaysRegisteredStores()
-                                        .length
-                                        .toDouble(),
-                                  ),
-                                ),
-
-                                DashboardRowWidget(
-                                  showTopDivider: true,
-                                  title1: 'Total Trial',
-                                  value1: formatNumber(
-                                    shopProv
-                                        .getTotalTrialShops()
-                                        .length
-                                        .toDouble(),
-                                  ),
-                                  title2: 'Total Free',
-                                  value2: formatNumber(
-                                    shopProv
-                                        .getTotalFreeShops()
-                                        .length
-                                        .toDouble(),
-                                  ),
-                                  title3: 'Total Expired',
-                                  value3: formatNumber(
-                                    shopProv
-                                        .getTotalExpiredShops()
-                                        .length
-                                        .toDouble(),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: viewMore,
-                                  child: Column(
-                                    children: [
-                                      DashboardRowWidget(
-                                        showTopDivider:
-                                            true,
-                                        title1:
-                                            'Total Basic',
-                                        value1: formatNumber(
-                                          shopProv
-                                              .getTotalSubscribedBasic()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                        title2:
-                                            'Total Standard',
-                                        value2: formatNumber(
-                                          shopProv
-                                              .getTotalSubscribedStandard()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                        title3:
-                                            'Total Premium',
-                                        value3: formatNumber(
-                                          shopProv
-                                              .getTotalSubscribedPremium()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                      ),
-                                      DashboardRowWidget(
-                                        showTopDivider:
-                                            true,
-                                        title1:
-                                            'Total Silver',
-                                        value1: formatNumber(
-                                          shopProv
-                                              .getTotalSubscribedSilver()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                        title2:
-                                            'Total Gold',
-                                        value2: formatNumber(
-                                          shopProv
-                                              .getTotalSubscribedGold()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                        title3: '',
-                                        value3: formatNumber(
-                                          shopProv
-                                              .getTotalSubscribedPremium()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                      ),
-                                      DashboardRowWidget(
-                                        showTopDivider:
-                                            true,
-                                        title1:
-                                            'Today\'s Free',
-                                        value1: formatNumber(
-                                          shopProv
-                                              .getTodaysSubscribedShopsFree()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                        title2:
-                                            'Today\'s Basic',
-                                        value2: formatNumber(
-                                          shopProv
-                                              .getTodaysSubscribedShopsBasic()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                        title3:
-                                            'Today\'s Standard',
-                                        value3: formatNumber(
-                                          shopProv
-                                              .getTodaysSubscribedShopsStandard()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                      ),
-                                      DashboardRowWidget(
-                                        showTopDivider:
-                                            true,
-                                        title1:
-                                            'Today\'s Premium',
-                                        value1: formatNumber(
-                                          shopProv
-                                              .getTodaysSubscribedShopsPremium()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                        title2:
-                                            'Today\'s Silver',
-                                        value2: formatNumber(
-                                          shopProv
-                                              .getTodaysSubscribedShopsSilver()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                        title3:
-                                            'Today\'s Gold',
-                                        value3: formatNumber(
-                                          shopProv
-                                              .getTodaysSubscribedShopsGold()
-                                              .length
-                                              .toDouble(),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Row(
+                                child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment
                                           .center,
                                   children: [
-                                    Material(
-                                      type: MaterialType
-                                          .transparency,
-                                      child: InkWell(
-                                        mouseCursor:
-                                            SystemMouseCursors
-                                                .click,
-                                        onTap: () {
-                                          toggleViewMore();
-                                        },
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.symmetric(
-                                                horizontal:
-                                                    10,
-                                                vertical:
-                                                    5.0,
-                                              ),
-                                          child: Row(
-                                            mainAxisSize:
-                                                MainAxisSize
-                                                    .min,
-                                            spacing: 4,
+                                    DashboardRowWidget(
+                                      showTopDivider: false,
+                                      title1:
+                                          'Total Stores',
+                                      value1: formatNumber(
+                                        shopProv
+                                            .getAllShops(),
+                                      ),
+                                      title2: 'Headquaters',
+                                      value2: formatNumber(
+                                        shopProv
+                                            .shopInfos
+                                            .length
+                                            .toDouble(),
+                                      ),
+                                      title3: 'Branches',
+                                      value3: formatNumber(
+                                        shopProv
+                                            .getTotalBranchShops(),
+                                      ),
+                                    ),
 
-                                            children: [
-                                              Text(
-                                                style: TextStyle(
-                                                  fontSize: theme
-                                                      .mobileTexts
-                                                      .b5
-                                                      .fontSize,
-                                                  color: Colors
-                                                      .amber,
-                                                ),
-                                                viewMore
-                                                    ? 'View Less'
-                                                    : 'View More',
+                                    DashboardRowWidget(
+                                      showTopDivider: true,
+                                      title1: 'Active',
+                                      value1: formatNumber(
+                                        shopProv
+                                            .getTotalActiveShops()
+                                            .length
+                                            .toDouble(),
+                                      ),
+                                      title2: 'Semi Active',
+                                      value2: formatNumber(
+                                        shopProv
+                                            .getTotalSemiActiveShops()
+                                            .length
+                                            .toDouble(),
+                                      ),
+                                      title3: 'Inactive',
+                                      value3: formatNumber(
+                                        shopProv
+                                            .getTotalInActiveShops()
+                                            .length
+                                            .toDouble(),
+                                      ),
+                                    ),
+
+                                    DashboardRowWidget(
+                                      showTopDivider: true,
+                                      title1:
+                                          'Total Subsc.',
+                                      value1: formatNumber(
+                                        shopProv
+                                            .getTotalSubscribedShops()
+                                            .length
+                                            .toDouble(),
+                                      ),
+                                      title2:
+                                          'Subsc. Today',
+                                      value2: formatNumber(
+                                        shopProv
+                                            .getTodaysSubscribedShops()
+                                            .length
+                                            .toDouble(),
+                                      ),
+                                      title3: 'New Stores',
+                                      value3: formatNumber(
+                                        shopProv
+                                            .getTodaysRegisteredStores()
+                                            .length
+                                            .toDouble(),
+                                      ),
+                                    ),
+
+                                    DashboardRowWidget(
+                                      showTopDivider: true,
+                                      title1: 'Total Trial',
+                                      value1: formatNumber(
+                                        shopProv
+                                            .getTotalTrialShops()
+                                            .length
+                                            .toDouble(),
+                                      ),
+                                      title2: 'Total Free',
+                                      value2: formatNumber(
+                                        shopProv
+                                            .getTotalFreeShops()
+                                            .length
+                                            .toDouble(),
+                                      ),
+                                      title3:
+                                          'Total Expired',
+                                      value3: formatNumber(
+                                        shopProv
+                                            .getTotalExpiredShops()
+                                            .length
+                                            .toDouble(),
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible: viewMore,
+                                      child: Column(
+                                        children: [
+                                          DashboardRowWidget(
+                                            showTopDivider:
+                                                true,
+                                            title1:
+                                                'Total Basic',
+                                            value1: formatNumber(
+                                              shopProv
+                                                  .getTotalSubscribedBasic()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                            title2:
+                                                'Total Standard',
+                                            value2: formatNumber(
+                                              shopProv
+                                                  .getTotalSubscribedStandard()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                            title3:
+                                                'Total Premium',
+                                            value3: formatNumber(
+                                              shopProv
+                                                  .getTotalSubscribedPremium()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                          ),
+                                          DashboardRowWidget(
+                                            showTopDivider:
+                                                true,
+                                            title1:
+                                                'Total Silver',
+                                            value1: formatNumber(
+                                              shopProv
+                                                  .getTotalSubscribedSilver()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                            title2:
+                                                'Total Gold',
+                                            value2: formatNumber(
+                                              shopProv
+                                                  .getTotalSubscribedGold()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                            title3: '',
+                                            value3: formatNumber(
+                                              shopProv
+                                                  .getTotalSubscribedPremium()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                          ),
+                                          DashboardRowWidget(
+                                            showTopDivider:
+                                                true,
+                                            title1:
+                                                'Today\'s Free',
+                                            value1: formatNumber(
+                                              shopProv
+                                                  .getTodaysSubscribedShopsFree()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                            title2:
+                                                'Today\'s Basic',
+                                            value2: formatNumber(
+                                              shopProv
+                                                  .getTodaysSubscribedShopsBasic()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                            title3:
+                                                'Today\'s Standard',
+                                            value3: formatNumber(
+                                              shopProv
+                                                  .getTodaysSubscribedShopsStandard()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                          ),
+                                          DashboardRowWidget(
+                                            showTopDivider:
+                                                true,
+                                            title1:
+                                                'Today\'s Premium',
+                                            value1: formatNumber(
+                                              shopProv
+                                                  .getTodaysSubscribedShopsPremium()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                            title2:
+                                                'Today\'s Silver',
+                                            value2: formatNumber(
+                                              shopProv
+                                                  .getTodaysSubscribedShopsSilver()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                            title3:
+                                                'Today\'s Gold',
+                                            value3: formatNumber(
+                                              shopProv
+                                                  .getTodaysSubscribedShopsGold()
+                                                  .length
+                                                  .toDouble(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .center,
+                                      children: [
+                                        Material(
+                                          type: MaterialType
+                                              .transparency,
+                                          child: InkWell(
+                                            mouseCursor:
+                                                SystemMouseCursors
+                                                    .click,
+                                            onTap: () {
+                                              toggleViewMore();
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        10,
+                                                    vertical:
+                                                        5.0,
+                                                  ),
+                                              child: Row(
+                                                mainAxisSize:
+                                                    MainAxisSize
+                                                        .min,
+                                                spacing: 4,
+
+                                                children: [
+                                                  Text(
+                                                    style: TextStyle(
+                                                      fontSize: theme
+                                                          .mobileTexts
+                                                          .b5
+                                                          .fontSize,
+                                                      color:
+                                                          Colors.amber,
+                                                    ),
+                                                    viewMore
+                                                        ? 'View Less'
+                                                        : 'View More',
+                                                  ),
+                                                  Icon(
+                                                    size:
+                                                        20,
+                                                    color: Colors
+                                                        .amber,
+                                                    viewMore
+                                                        ? Icons.keyboard_arrow_up_rounded
+                                                        : Icons.keyboard_arrow_down_rounded,
+                                                  ),
+                                                ],
                                               ),
-                                              Icon(
-                                                size: 20,
-                                                color: Colors
-                                                    .amber,
-                                                viewMore
-                                                    ? Icons
-                                                          .keyboard_arrow_up_rounded
-                                                    : Icons
-                                                          .keyboard_arrow_down_rounded,
-                                              ),
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ),
-                          Align(
-                            alignment: AlignmentGeometry.xy(
-                              -1.4,
-                              0,
-                            ),
-                            child: Container(
-                              height: 140,
-                              width: 140,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: const Color.fromARGB(
-                                  15,
-                                  255,
-                                  255,
-                                  255,
+                              ),
+                              Align(
+                                alignment:
+                                    AlignmentGeometry.xy(
+                                      -1.4,
+                                      0,
+                                    ),
+                                child: Container(
+                                  height: 140,
+                                  width: 140,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color:
+                                        const Color.fromARGB(
+                                          15,
+                                          255,
+                                          255,
+                                          255,
+                                        ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     SizedBox(height: 20),
